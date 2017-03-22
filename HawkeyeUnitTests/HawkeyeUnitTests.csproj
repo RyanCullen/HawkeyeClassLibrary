@@ -52,6 +52,12 @@
   <ItemGroup>
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\HawkeyehvkBLL\HawkeyehvkBLL.csproj">
+      <Project>{8436810a-afb7-435a-a63a-b6ae24568a08}</Project>
+      <Name>HawkeyehvkBLL</Name>
+    </ProjectReference>
+  </ItemGroup>
   <Choose>
     <When Condition="'$(VisualStudioVersion)' == '10.0' And '$(IsCodedUITest)' == 'True'">
       <ItemGroup>
