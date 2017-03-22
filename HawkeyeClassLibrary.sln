@@ -9,6 +9,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HawkeyeUnitTests", "Hawkeye
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HawkeyehvkBLL", "HawkeyehvkBLL\HawkeyehvkBLL.csproj", "{8436810A-AFB7-435A-A63A-B6AE24568A08}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "testXaml", "testXaml\testXaml.csproj", "{2C2D2DE1-1055-4A4F-BE59-AAFA45057BF4}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -27,6 +29,10 @@ Global
 		{8436810A-AFB7-435A-A63A-B6AE24568A08}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{8436810A-AFB7-435A-A63A-B6AE24568A08}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{8436810A-AFB7-435A-A63A-B6AE24568A08}.Release|Any CPU.Build.0 = Release|Any CPU
+		{2C2D2DE1-1055-4A4F-BE59-AAFA45057BF4}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{2C2D2DE1-1055-4A4F-BE59-AAFA45057BF4}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{2C2D2DE1-1055-4A4F-BE59-AAFA45057BF4}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{2C2D2DE1-1055-4A4F-BE59-AAFA45057BF4}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

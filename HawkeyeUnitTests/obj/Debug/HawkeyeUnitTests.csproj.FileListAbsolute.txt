@@ -1,0 +1,8 @@
+C:\Users\braew\Source\Repos\HawkeyeClassLibrary\HawkeyeUnitTests\obj\Debug\HawkeyeUnitTests.csprojResolveAssemblyReference.cache
+C:\Users\braew\Source\Repos\HawkeyeClassLibrary\HawkeyeUnitTests\bin\Debug\HawkeyeUnitTests.dll
+C:\Users\braew\Source\Repos\HawkeyeClassLibrary\HawkeyeUnitTests\bin\Debug\HawkeyeUnitTests.pdb
+C:\Users\braew\Source\Repos\HawkeyeClassLibrary\HawkeyeUnitTests\bin\Debug\HawkeyehvkBLL.dll
+C:\Users\braew\Source\Repos\HawkeyeClassLibrary\HawkeyeUnitTests\bin\Debug\Microsoft.VisualStudio.QualityTools.UnitTestFramework.dll
+C:\Users\braew\Source\Repos\HawkeyeClassLibrary\HawkeyeUnitTests\bin\Debug\HawkeyehvkBLL.pdb
+C:\Users\braew\Source\Repos\HawkeyeClassLibrary\HawkeyeUnitTests\obj\Debug\HawkeyeUnitTests.dll
+C:\Users\braew\Source\Repos\HawkeyeClassLibrary\HawkeyeUnitTests\obj\Debug\HawkeyeUnitTests.pdb

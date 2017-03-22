@@ -43,7 +43,7 @@ namespace HawkeyehvkDB
 
         public DataSet addVet(int vetNum, string vetName, string vetPhone, string vetStreet, string vetCity, string vetProvince, string vetPostalCode)
         {
-
+            return null;
         }
 
     }

@@ -35,5 +35,9 @@ namespace hawkeye_HVK
             this.mediumRate = medium;
             this.largeRate = large;
         }
+        public List<ReservedService> listServices(long petResNum) {
+            return null;
+
+        }
     }
 }
