@@ -40,7 +40,16 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="DiscountDB.cs" />
+    <Compile Include="FoodDB.cs" />
+    <Compile Include="MedicationDB.cs" />
+    <Compile Include="OwnerDB.cs" />
+    <Compile Include="PetDB.cs" />
+    <Compile Include="PetFoodDB.cs" />
+    <Compile Include="PetReservationDB.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="ReservationDB.cs" />
+    <Compile Include="ServiceDB.cs" />
     <Compile Include="VaccinationDB.cs" />
     <Compile Include="VetDB.cs" />
   </ItemGroup>
