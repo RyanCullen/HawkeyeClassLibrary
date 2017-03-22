@@ -40,8 +40,11 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="OwnerDB.cs" />
     <Compile Include="PetDB.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="ReservationDB.cs" />
+    <Compile Include="ServiceDB.cs" />
     <Compile Include="VaccinationDB.cs" />
     <Compile Include="VetDB.cs" />
   </ItemGroup>
