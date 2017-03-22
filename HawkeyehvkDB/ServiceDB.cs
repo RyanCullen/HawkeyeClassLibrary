@@ -14,7 +14,11 @@ namespace HawkeyehvkDB
         public DataSet listServices(long petRes) {
             string conString = ConfigurationManager.ConnectionStrings["ConnectionString"].ConnectionString;
             OracleConnection con = new OracleConnection(conString);
-            string cmdStr = "";
+            string cmdStr = @"select s.service_number, s.service_description, rs.service_frequency, dr.DAILY_RATE_NUMBER, dr.DAILY_RATE_DOG_SIZE
+from HVK_SERVICE s, HVK_PET_RESERVATION_SERVICE rs, HVK_Daily_rate dr
+where rs.serv_service_number = s.service_number
+and dr.serv_service_number = s.service_number
+and rs.PR_PET_RES_NUMBER = 200";
             OracleCommand cmd = new OracleCommand(cmdStr, con);
 
             OracleDataAdapter da = new OracleDataAdapter(cmd);
