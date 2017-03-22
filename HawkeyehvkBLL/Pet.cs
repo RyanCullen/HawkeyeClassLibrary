@@ -9,7 +9,7 @@ namespace hawkeye_HVK
     public class Pet
     {
         public int petNumber { get; set; }
-
+        //just a comment 
         public string name { get; set; }
 
         public char gender { get; set; }
