@@ -48,6 +48,11 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="DiscountDB.cs" />
+    <Compile Include="dsReservation.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>dsReservation.xsd</DependentUpon>
+    </Compile>
     <Compile Include="FoodDB.cs" />
     <Compile Include="MedicationDB.cs" />
     <Compile Include="OwnerDB.cs" />
@@ -67,6 +72,17 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="app.config" />
+    <None Include="dsReservation.xsc">
+      <DependentUpon>dsReservation.xsd</DependentUpon>
+    </None>
+    <None Include="dsReservation.xsd">
+      <Generator>MSDataSetGenerator</Generator>
+      <LastGenOutput>dsReservation.Designer.cs</LastGenOutput>
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="dsReservation.xss">
+      <DependentUpon>dsReservation.xsd</DependentUpon>
+    </None>
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
       <LastGenOutput>Settings.Designer.cs</LastGenOutput>
