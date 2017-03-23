@@ -41,45 +41,8 @@ namespace HawkeyehvkDB
             return ds;
         }
 
-        public void addVet(int vetNum, string vetName, string vetPhone, string vetStreet, string vetCity, string vetProvince, string vetPostalCode)
+        public DataSet addVet(int vetNum, string vetName, string vetPhone, string vetStreet, string vetCity, string vetProvince, string vetPostalCode)
         {
-            string conString = ConfigurationManager.ConnectionStrings["ConnectionString"].ConnectionString;
-            OracleConnection con = new OracleConnection(conString);
-            string cmdStr = @"INSERT INTO HVK_VETERINARIAN(vet_number,
-                            vet_name,
-                            vet_phone,
-                            vet_street,
-                            vet_city, 
-                            vet_province, 
-                            vet_postal_code)
-                            VALUES(HVK_VET_SEQ.NEXTVAL, 
-                            :vetName, 
-                            :vetPhone,
-                            :vetStreet,
-                            :vetCity,
-                            :vetProvince,
-                            :vetPostalCode 
-                            ";
-            OracleCommand cmd = new OracleCommand(cmdStr, con);
-            cmd.Parameters.Add("vetName", vetName);
-            cmd.Parameters.Add("vetPhone", vetPhone);
-            cmd.Parameters.Add("vetStreet", vetStreet);
-            cmd.Parameters.Add("vetCity", vetCity);
-            cmd.Parameters.Add("vetProvince", vetProvince);
-            cmd.Parameters.Add("vetPostalCode", vetPostalCode);
-
-            OracleDataAdapter da = new OracleDataAdapter(cmd);
-            da.InsertCommand = cmd;
-
-            try
-            {
-                con.Open();
-                cmd.ExecuteNonQuery();
-            }
-            catch
-            {
-                con.Close();
-            }
 
         }
 
