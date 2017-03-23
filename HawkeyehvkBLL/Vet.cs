@@ -1,10 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Data;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using HawkeyehvkDB;
 
-namespace hawkeye_HVK
+namespace HawkeyehvkBLL
 {
     public class Vet
     {
@@ -29,6 +31,27 @@ namespace hawkeye_HVK
             this.name = name;
             this.phoneNumber = phone;
             this.address = address;
+        }
+
+        public DataSet listVets()
+        {
+            VetDB vDB = new VetDB();
+            DataSet vals = vDB.listVets();
+            return vals;
+        }
+
+        public DataSet getVetByOwnerNum(int ownerNum)
+        {
+            VetDB vDB = new VetDB();
+            DataSet vals = vDB.getVetByOwnerNum(ownerNum);
+            return vals;
+        }
+
+        public void addVet()
+        {
+            VetDB vDB = new VetDB();
+            vDB.addVet(this.name, this.phoneNumber, this.address.street, this.address.city, this.address.province, this.address.postalCode);
+            
         }
     }
 }

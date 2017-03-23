@@ -1,10 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Data;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using HawkeyehvkDB;
 
-namespace hawkeye_HVK
+namespace HawkeyehvkBLL
 {
     public class Owner : User
     {
@@ -96,6 +98,20 @@ namespace hawkeye_HVK
         {
             res.owner = new Owner();
             return this.reservationList.Remove(res);
+        }
+
+        public DataSet fillBox()
+        {
+            OwnerDB ownDB= new OwnerDB();
+            DataSet vals = ownDB.listOwners();
+            return vals;
+        }
+
+        public DataSet fillBox(int ownerNum)
+        {
+            OwnerDB ownDB = new OwnerDB();
+            DataSet vals = ownDB.listOwner(ownerNum);
+            return vals;
         }
     }
 }

@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 
 namespace HawkeyehvkDB
 {
-    class OwnerDB
+    public class OwnerDB
     {
         public DataSet listOwners()
         {

@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 
 namespace HawkeyehvkDB
 {
-    class FoodDB
+    public class FoodDB
     {
         public DataSet listFood()
         {

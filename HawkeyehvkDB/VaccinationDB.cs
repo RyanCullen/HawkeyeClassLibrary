@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 
 namespace HawkeyehvkDB
 {
-    class VaccinationDB
+    public class VaccinationDB
     {
         public DataSet listVaccinations()
         {
@@ -73,6 +73,46 @@ namespace HawkeyehvkDB
             OracleCommand cmd = new OracleCommand(cmdStr, con);
             cmd.Parameters.Add("pet", petNum);
             cmd.Parameters.Add("res", resNum);
+            OracleDataAdapter da = new OracleDataAdapter(cmd);
+            da.SelectCommand = cmd;
+
+            DataSet ds = new DataSet("vaccDataSet");
+            da.Fill(ds, "hvk_vaccination");
+            return ds;
+        }
+
+        public DataSet checkVaccinations(int petNum, DateTime byDate)
+        {
+            string conString = ConfigurationManager.ConnectionStrings["ConnectionString"].ConnectionString;
+            OracleConnection con = new OracleConnection(conString);
+            string cmdStr = @"SELECT V.VACCINATION_NAME
+                                FROM HVK_VACCINATION V,
+                                  HVK_PET_VACCINATION PV,
+                                  HVK_PET P,
+                                  HVK_RESERVATION R
+                                WHERE 
+                                P.PET_NUMBER                 = :pet
+                                AND P.PET_NUMBER                 = PV.PET_PET_NUMBER
+                                AND (PV.VACCINATION_EXPIRY_DATE  < :byDate
+                                OR PV.VACCINATION_CHECKED_STATUS = 'N')
+                                AND PV.VACC_VACCINATION_NUMBER   = V.VACCINATION_NUMBER
+                                UNION
+                                SELECT V.VACCINATION_NAME FROM HVK_VACCINATION V WHERE V.VACCINATION_NAME
+                                NOT IN
+                                (SELECT V.VACCINATION_NAME
+                                FROM HVK_VACCINATION V,
+                                  HVK_PET_VACCINATION PV,
+                                  HVK_PET P,
+                                  HVK_RESERVATION R
+                                WHERE
+                                AND P.PET_NUMBER                 = :pet
+                                AND P.PET_NUMBER                 = PV.PET_PET_NUMBER
+                                AND (PV.VACCINATION_EXPIRY_DATE  < :byDate
+                                OR PV.VACCINATION_CHECKED_STATUS = 'Y' OR PV.VACCINATION_CHECKED_STATUS = 'N')
+                                AND PV.VACC_VACCINATION_NUMBER   = V.VACCINATION_NUMBER)";
+            OracleCommand cmd = new OracleCommand(cmdStr, con);
+            cmd.Parameters.Add("pet", petNum);
+            cmd.Parameters.Add("byDate", byDate);
             OracleDataAdapter da = new OracleDataAdapter(cmd);
             da.SelectCommand = cmd;
 

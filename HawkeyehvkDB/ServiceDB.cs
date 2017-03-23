@@ -9,7 +9,7 @@ using Oracle.ManagedDataAccess.Client;
 
 namespace HawkeyehvkDB
 {
-    class ServiceDB
+    public class ServiceDB
     {
         public DataSet listServicesDB(long petRes) {
             string conString = ConfigurationManager.ConnectionStrings["ConnectionString"].ConnectionString;

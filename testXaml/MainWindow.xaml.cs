@@ -12,6 +12,8 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using HawkeyehvkBLL;
+using System.Data;
 
 namespace testXaml
 {
@@ -23,6 +25,13 @@ namespace testXaml
         public MainWindow()
         {
             InitializeComponent();
+            //Set Parameters
+
+            //Make Object And Call Method
+            Owner owner = new Owner();
+            //Set datagrid to returned data
+            //Not functioning still playing with it
+            datagrid.ItemsSource = new DataView(owner.fillBox().Tables["hvk_owner"]);
         }
     }
 }

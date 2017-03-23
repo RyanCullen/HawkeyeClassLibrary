@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace HawkeyehvkDB
 {
-    class PetDB
+    public class PetDB
     {
     }
 }

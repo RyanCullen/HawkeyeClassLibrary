@@ -41,7 +41,7 @@ namespace HawkeyehvkDB
             return ds;
         }
 
-        public void addVet(int vetNum, string vetName, string vetPhone, string vetStreet, string vetCity, string vetProvince, string vetPostalCode)
+        public void addVet(string vetName, string vetPhone, string vetStreet, string vetCity, string vetProvince, string vetPostalCode)
         {
             string conString = ConfigurationManager.ConnectionStrings["ConnectionString"].ConnectionString;
             OracleConnection con = new OracleConnection(conString);

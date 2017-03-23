@@ -3,8 +3,10 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using HawkeyehvkDB;
+using System.Data;
 
-namespace hawkeye_HVK
+namespace HawkeyehvkBLL
 {
     public class PetFood
     {
@@ -22,6 +24,20 @@ namespace hawkeye_HVK
         {
             this.brand = brand;
             this.variety = variety;
+        }
+
+        public DataSet listFood()
+        {
+            FoodDB foodDB = new FoodDB();
+            DataSet vals = foodDB.listFood();
+            return vals;
+        }
+
+        public DataSet listPetResFood(int petRes)
+        {
+            PetFoodDB pfDB = new PetFoodDB();
+            DataSet vals = pfDB.listFoodByPetRes(petRes);
+            return vals;
         }
     }
 }
