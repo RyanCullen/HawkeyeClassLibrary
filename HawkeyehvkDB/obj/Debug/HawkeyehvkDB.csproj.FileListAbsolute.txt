@@ -1,0 +1,6 @@
+C:\Users\Alexandre\Source\Repos\HawkeyeClassLibrary\HawkeyehvkDB\bin\Debug\HawkeyehvkDB.dll.config
+C:\Users\Alexandre\Source\Repos\HawkeyeClassLibrary\HawkeyehvkDB\bin\Debug\HawkeyehvkDB.dll
+C:\Users\Alexandre\Source\Repos\HawkeyeClassLibrary\HawkeyehvkDB\bin\Debug\HawkeyehvkDB.pdb
+C:\Users\Alexandre\Source\Repos\HawkeyeClassLibrary\HawkeyehvkDB\bin\Debug\Oracle.ManagedDataAccess.dll
+C:\Users\Alexandre\Source\Repos\HawkeyeClassLibrary\HawkeyehvkDB\obj\Debug\HawkeyehvkDB.dll
+C:\Users\Alexandre\Source\Repos\HawkeyeClassLibrary\HawkeyehvkDB\obj\Debug\HawkeyehvkDB.pdb

@@ -1,0 +1,8 @@
+C:\Users\Alexandre\Source\Repos\HawkeyeClassLibrary\HawkeyehvkBLL\obj\Debug\HawkeyehvkBLL.csprojResolveAssemblyReference.cache
+C:\Users\Alexandre\Source\Repos\HawkeyeClassLibrary\HawkeyehvkBLL\bin\Debug\HawkeyehvkBLL.dll
+C:\Users\Alexandre\Source\Repos\HawkeyeClassLibrary\HawkeyehvkBLL\bin\Debug\HawkeyehvkBLL.pdb
+C:\Users\Alexandre\Source\Repos\HawkeyeClassLibrary\HawkeyehvkBLL\bin\Debug\HawkeyehvkDB.dll
+C:\Users\Alexandre\Source\Repos\HawkeyeClassLibrary\HawkeyehvkBLL\bin\Debug\Oracle.ManagedDataAccess.dll
+C:\Users\Alexandre\Source\Repos\HawkeyeClassLibrary\HawkeyehvkBLL\bin\Debug\HawkeyehvkDB.pdb
+C:\Users\Alexandre\Source\Repos\HawkeyeClassLibrary\HawkeyehvkBLL\obj\Debug\HawkeyehvkBLL.dll
+C:\Users\Alexandre\Source\Repos\HawkeyeClassLibrary\HawkeyehvkBLL\obj\Debug\HawkeyehvkBLL.pdb
