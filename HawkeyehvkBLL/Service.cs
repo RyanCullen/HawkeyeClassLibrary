@@ -35,5 +35,24 @@ namespace hawkeye_HVK
             this.mediumRate = medium;
             this.largeRate = large;
         }
+        public List<ReservedService> listServices(long petResNum)
+        {
+            List<ReservedService> services = new List<ReservedService>();
+            //dsNaman.EmployeeDataTable table = db.getEmployeesByDeptNameDB(deptName);
+            //if (table != null)
+            //{
+            //    for (int i = 0; i < table.Rows.Count; i++)
+            //    {
+            //        try
+            //        {
+            //        }
+            //        catch
+            //        {
+            //            Console.Write("Error");
+            //        }
+            //    }//for
+            //}//if not null
+            return services;
+        }
     }
 }
