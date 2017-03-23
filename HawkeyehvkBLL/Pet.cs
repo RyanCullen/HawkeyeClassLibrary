@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using HawkeyehvkDB;
+using System.Data;
 
 namespace HawkeyehvkBLL
 {
@@ -93,6 +95,33 @@ namespace HawkeyehvkBLL
         public bool removeVaccination(PetVaccination petVaccination)
         {
             return this.vaccinationList.Remove(petVaccination);
+        }
+
+        private static Pet fillFromDataRow(DataRow row)
+        {
+            Pet pet = new Pet();
+            pet.petNumber = Convert.ToInt32(row["PET_NUMBER"].ToString());
+            pet.name = row["PET_NAME"].ToString();
+            pet.gender = Convert.ToChar(row["PET_GENDER"].ToString());
+            pet.isFixed = Convert.ToChar(row["PET_FIXED"].ToString());
+            pet.breed = row["PET_BREED"].ToString();
+            string bday = row["PET_BIRTHDATE"].ToString();
+            pet.birthday = (bday.Length > 0) ? Convert.ToDateTime(bday) : DateTime.MinValue;
+            pet.size = Convert.ToChar(row["DOG_SIZE"].ToString());
+            pet.notes = row["SPECIAL_NOTES"].ToString();
+            return pet;
+        }
+
+        public static List<Pet> listPets(int ownerNumber)
+        {
+            List<Pet> petList = new List<Pet>();
+            PetDB db = new PetDB();
+            foreach(DataRow row in db.listPets(ownerNumber).Tables["hvk_pet"].Rows)
+            {
+                Pet pet = fillFromDataRow(row);
+                petList.Add(pet);
+            }
+            return petList;
         }
     }
 }
