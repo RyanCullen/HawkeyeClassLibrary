@@ -47,11 +47,12 @@ Temporary Items
 .apdisk
 /.vs/HawkeyeClassLibrary/v14/.suo
 *.lref
-testXaml/bin/
-testXaml/obj/
-HawkeyehvkDB/bin/
-HawkeyehvkDB/obj/
-HawkeyehvkBLL/bin/
-HawkeyehvkBLL/obj/
+testXaml/bin/*
+testXaml/obj/*
+testXaml/obj/Debug/*
+HawkeyehvkDB/bin/*
+HawkeyehvkDB/obj/*
+HawkeyehvkBLL/bin/*
+HawkeyehvkBLL/obj/*
 
 
