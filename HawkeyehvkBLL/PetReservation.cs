@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using HawkeyehvkDB; 
 
 namespace HawkeyehvkBLL
 {
@@ -124,6 +125,11 @@ namespace HawkeyehvkBLL
         {
             return this.serviceList.Remove(service);
         }
+
+
+
+
+
 
     }
 }

@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-
+using HawkeyehvkDB; 
 namespace HawkeyehvkBLL
 {
     public class Reservation
@@ -85,5 +85,17 @@ namespace HawkeyehvkBLL
             petRes.reservation = new Reservation();
             return this.petReservationList.Remove(petRes);
         }
+
+
+        public List<PetReservation> listReservation()
+        {
+            ReservationDB db = new ReservationDB();
+            db.listResevation();
+
+            //Amir is here 
+           // return getEmployees(datatable);
+        }
+
+
     }
 }
