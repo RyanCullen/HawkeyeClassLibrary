@@ -63,9 +63,57 @@ namespace HawkeyehvkDB
             da.SelectCommand = cmd;
             DataSet ds = new DataSet("dsReservation");
             
-
             return ds;
         }
+
+
+        public DataSet listActiveReservations()
+        {
+            //List all active reservation 
+            //Display : clerk Home page 
+            string conString = ConfigurationManager.ConnectionStrings["ConnectionString"].ConnectionString;
+            OracleConnection con = new OracleConnection(conString);
+            string cmdStr = @"SELECT RES.RESERVATION_NUMBER, OWN.OWNER_LAST_NAME, OWN.OWNER_FIRST_NAME, PRES.PET_PET_NUMBER, PET.PET_NAME, PRES.RUN_RUN_NUMBER, RES.RESERVATION_START_DATE, RES.RESERVATION_END_DATE
+             FROM   TEAMHAWKEYE.HVK_RESERVATION RES INNER JOIN
+             TEAMHAWKEYE.HVK_PET_RESERVATION PRES ON RES.RESERVATION_NUMBER = PRES.RES_RESERVATION_NUMBER INNER JOIN
+             TEAMHAWKEYE.HVK_PET PET ON PRES.PET_PET_NUMBER = PET.PET_NUMBER INNER JOIN
+             TEAMHAWKEYE.HVK_OWNER OWN ON PET.OWN_OWNER_NUMBER = OWN.OWNER_NUMBER
+             WHERE (RES.RESERVATION_START_DATE <= SYSDATE) AND (RES.RESERVATION_END_DATE > SYSDATE) AND (PRES.RUN_RUN_NUMBER IS NOT NULL)";
+
+            OracleCommand cmd = new OracleCommand(cmdStr, con);
+            OracleDataAdapter da = new OracleDataAdapter(cmd);
+            da.SelectCommand = cmd;
+            DataSet ds = new DataSet("dsActiveReservation");
+
+            return ds;
+
+        }
+
+
+        public DataSet listActiveReservations(int ownerNumber)
+        {
+            //Overloaded List all active reservation base on owner number 
+            //Display : clerk or user Home page 
+            string conString = ConfigurationManager.ConnectionStrings["ConnectionString"].ConnectionString;
+            OracleConnection con = new OracleConnection(conString);
+            string cmdStr = @"SELECT RES.RESERVATION_NUMBER, OWN.OWNER_LAST_NAME, OWN.OWNER_FIRST_NAME, PRES.PET_PET_NUMBER, PET.PET_NAME, PRES.RUN_RUN_NUMBER, RES.RESERVATION_START_DATE, RES.RESERVATION_END_DATE
+             FROM   TEAMHAWKEYE.HVK_RESERVATION RES INNER JOIN
+             TEAMHAWKEYE.HVK_PET_RESERVATION PRES ON RES.RESERVATION_NUMBER = PRES.RES_RESERVATION_NUMBER INNER JOIN
+             TEAMHAWKEYE.HVK_PET PET ON PRES.PET_PET_NUMBER = PET.PET_NUMBER INNER JOIN
+             TEAMHAWKEYE.HVK_OWNER OWN ON PET.OWN_OWNER_NUMBER = OWN.OWNER_NUMBER
+             WHERE (RES.RESERVATION_START_DATE <= SYSDATE) AND (RES.RESERVATION_END_DATE > SYSDATE) AND (PRES.RUN_RUN_NUMBER IS NOT NULL)
+             AND PET.OWN_OWNER_NUMBER = :OWNER_NUMBER ";
+
+            OracleCommand cmd = new OracleCommand(cmdStr, con);
+            cmd.Parameters.Add("OWNER_NUMBER", ownerNumber);
+            OracleDataAdapter da = new OracleDataAdapter(cmd);
+            da.SelectCommand = cmd;
+            DataSet ds = new DataSet("dsActiveReservation");
+
+            return ds;
+
+        }
+
 
     }
 }

@@ -901,7 +901,7 @@ namespace HawkeyehvkDB.dsReservationTableAdapters {
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
         private void InitCommandCollection() {
-            this._commandCollection = new global::Oracle.ManagedDataAccess.Client.OracleCommand[2];
+            this._commandCollection = new global::Oracle.ManagedDataAccess.Client.OracleCommand[4];
             this._commandCollection[0] = new global::Oracle.ManagedDataAccess.Client.OracleCommand();
             this._commandCollection[0].Connection = this.Connection;
             this._commandCollection[0].CommandText = "SELECT RESERVATION_NUMBER, RESERVATION_START_DATE, RESERVATION_END_DATE FROM TEAM" +
@@ -909,7 +909,34 @@ namespace HawkeyehvkDB.dsReservationTableAdapters {
             this._commandCollection[0].CommandType = global::System.Data.CommandType.Text;
             this._commandCollection[1] = new global::Oracle.ManagedDataAccess.Client.OracleCommand();
             this._commandCollection[1].Connection = this.Connection;
-            this._commandCollection[1].CommandText = @"SELECT RES.RESERVATION_NUMBER, RES.RESERVATION_START_DATE, RES.RESERVATION_END_DATE, PRES.RUN_RUN_NUMBER, PET.PET_NAME, SERV.SERVICE_DESCRIPTION, RES_SERV.SERVICE_FREQUENCY, FOOD.FOOD_BRAND, 
+            this._commandCollection[1].CommandText = @"SELECT RES.RESERVATION_NUMBER, OWN.OWNER_LAST_NAME, OWN.OWNER_FIRST_NAME, PRES.PET_PET_NUMBER, PET.PET_NAME, PRES.RUN_RUN_NUMBER, RES.RESERVATION_START_DATE, RES.RESERVATION_END_DATE
+FROM   TEAMHAWKEYE.HVK_RESERVATION RES INNER JOIN
+             TEAMHAWKEYE.HVK_PET_RESERVATION PRES ON RES.RESERVATION_NUMBER = PRES.RES_RESERVATION_NUMBER INNER JOIN
+             TEAMHAWKEYE.HVK_PET PET ON PRES.PET_PET_NUMBER = PET.PET_NUMBER INNER JOIN
+             TEAMHAWKEYE.HVK_OWNER OWN ON PET.OWN_OWNER_NUMBER = OWN.OWNER_NUMBER
+WHERE (RES.RESERVATION_START_DATE <= SYSDATE) AND (RES.RESERVATION_END_DATE > SYSDATE) AND (PRES.RUN_RUN_NUMBER IS NOT NULL)";
+            this._commandCollection[1].CommandType = global::System.Data.CommandType.Text;
+            this._commandCollection[2] = new global::Oracle.ManagedDataAccess.Client.OracleCommand();
+            this._commandCollection[2].Connection = this.Connection;
+            this._commandCollection[2].CommandText = @"SELECT RES.RESERVATION_NUMBER, OWN.OWNER_LAST_NAME, OWN.OWNER_FIRST_NAME, PRES.PET_PET_NUMBER, PET.PET_NAME, PRES.RUN_RUN_NUMBER, RES.RESERVATION_START_DATE, RES.RESERVATION_END_DATE
+             FROM   TEAMHAWKEYE.HVK_RESERVATION RES INNER JOIN
+             TEAMHAWKEYE.HVK_PET_RESERVATION PRES ON RES.RESERVATION_NUMBER = PRES.RES_RESERVATION_NUMBER INNER JOIN
+             TEAMHAWKEYE.HVK_PET PET ON PRES.PET_PET_NUMBER = PET.PET_NUMBER INNER JOIN
+             TEAMHAWKEYE.HVK_OWNER OWN ON PET.OWN_OWNER_NUMBER = OWN.OWNER_NUMBER
+             WHERE (RES.RESERVATION_START_DATE <= SYSDATE) AND (RES.RESERVATION_END_DATE > SYSDATE) AND (PRES.RUN_RUN_NUMBER IS NOT NULL)
+             AND PET.OWN_OWNER_NUMBER = :OWNER_NUMBER ";
+            this._commandCollection[2].CommandType = global::System.Data.CommandType.Text;
+            global::Oracle.ManagedDataAccess.Client.OracleParameter param = new global::Oracle.ManagedDataAccess.Client.OracleParameter();
+            param.ParameterName = ":OWNER_NUMBER";
+            param.DbType = global::System.Data.DbType.Decimal;
+            param.OracleDbTypeEx = global::Oracle.ManagedDataAccess.Client.OracleDbType.Decimal;
+            param.Size = 22;
+            param.IsNullable = true;
+            param.SourceColumn = "OWN_OWNER_NUMBER";
+            this._commandCollection[2].Parameters.Add(param);
+            this._commandCollection[3] = new global::Oracle.ManagedDataAccess.Client.OracleCommand();
+            this._commandCollection[3].Connection = this.Connection;
+            this._commandCollection[3].CommandText = @"SELECT RES.RESERVATION_NUMBER, RES.RESERVATION_START_DATE, RES.RESERVATION_END_DATE, PRES.RUN_RUN_NUMBER, PET.PET_NAME, SERV.SERVICE_DESCRIPTION, RES_SERV.SERVICE_FREQUENCY, FOOD.FOOD_BRAND, 
              PFOOD.PET_FOOD_FREQUENCY, PFOOD.PET_FOOD_QUANTITY, MED.MEDICATION_NAME, MED.MEDICATION_DOSAGE, MED.MEDICATION_END_DATE, MED.MEDICATION_SPECIAL_INSTRUCT, PRES.PR_SHARING_WITH
 FROM   TEAMHAWKEYE.HVK_RESERVATION RES INNER JOIN
              TEAMHAWKEYE.HVK_PET_RESERVATION PRES ON RES.RESERVATION_NUMBER = PRES.RES_RESERVATION_NUMBER INNER JOIN
@@ -919,7 +946,7 @@ FROM   TEAMHAWKEYE.HVK_RESERVATION RES INNER JOIN
              TEAMHAWKEYE.HVK_PET_FOOD PFOOD ON PRES.PET_RES_NUMBER = PFOOD.PR_PET_RES_NUMBER INNER JOIN
              TEAMHAWKEYE.HVK_FOOD FOOD ON PFOOD.FOOD_FOOD_NUMBER = FOOD.FOOD_NUMBER INNER JOIN
              TEAMHAWKEYE.HVK_MEDICATION MED ON PRES.PET_RES_NUMBER = MED.PR_PET_RES_NUMBER";
-            this._commandCollection[1].CommandType = global::System.Data.CommandType.Text;
+            this._commandCollection[3].CommandType = global::System.Data.CommandType.Text;
         }
         
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
@@ -950,7 +977,7 @@ FROM   TEAMHAWKEYE.HVK_RESERVATION RES INNER JOIN
         [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
         [global::System.ComponentModel.Design.HelpKeywordAttribute("vs.data.TableAdapter")]
         [global::System.ComponentModel.DataObjectMethodAttribute(global::System.ComponentModel.DataObjectMethodType.Fill, false)]
-        public virtual int FillReservation(dsReservation.HVK_RESERVATIONDataTable dataTable) {
+        public virtual int FillByActiveReservation(dsReservation.HVK_RESERVATIONDataTable dataTable) {
             this.Adapter.SelectCommand = this.CommandCollection[1];
             if ((this.ClearBeforeFill == true)) {
                 dataTable.Clear();
@@ -963,8 +990,58 @@ FROM   TEAMHAWKEYE.HVK_RESERVATION RES INNER JOIN
         [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
         [global::System.ComponentModel.Design.HelpKeywordAttribute("vs.data.TableAdapter")]
         [global::System.ComponentModel.DataObjectMethodAttribute(global::System.ComponentModel.DataObjectMethodType.Select, false)]
-        public virtual dsReservation.HVK_RESERVATIONDataTable GetReservation() {
+        public virtual dsReservation.HVK_RESERVATIONDataTable GetDataByActiveReservation() {
             this.Adapter.SelectCommand = this.CommandCollection[1];
+            dsReservation.HVK_RESERVATIONDataTable dataTable = new dsReservation.HVK_RESERVATIONDataTable();
+            this.Adapter.Fill(dataTable);
+            return dataTable;
+        }
+        
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+        [global::System.ComponentModel.Design.HelpKeywordAttribute("vs.data.TableAdapter")]
+        [global::System.ComponentModel.DataObjectMethodAttribute(global::System.ComponentModel.DataObjectMethodType.Fill, false)]
+        public virtual int FillByActiveReservationOwner(dsReservation.HVK_RESERVATIONDataTable dataTable, decimal OWNER_NUMBER) {
+            this.Adapter.SelectCommand = this.CommandCollection[2];
+            this.Adapter.SelectCommand.Parameters[0].Value = ((decimal)(OWNER_NUMBER));
+            if ((this.ClearBeforeFill == true)) {
+                dataTable.Clear();
+            }
+            int returnValue = this.Adapter.Fill(dataTable);
+            return returnValue;
+        }
+        
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+        [global::System.ComponentModel.Design.HelpKeywordAttribute("vs.data.TableAdapter")]
+        [global::System.ComponentModel.DataObjectMethodAttribute(global::System.ComponentModel.DataObjectMethodType.Select, false)]
+        public virtual dsReservation.HVK_RESERVATIONDataTable GetActiveReservationByOwnerNumber(decimal OWNER_NUMBER) {
+            this.Adapter.SelectCommand = this.CommandCollection[2];
+            this.Adapter.SelectCommand.Parameters[0].Value = ((decimal)(OWNER_NUMBER));
+            dsReservation.HVK_RESERVATIONDataTable dataTable = new dsReservation.HVK_RESERVATIONDataTable();
+            this.Adapter.Fill(dataTable);
+            return dataTable;
+        }
+        
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+        [global::System.ComponentModel.Design.HelpKeywordAttribute("vs.data.TableAdapter")]
+        [global::System.ComponentModel.DataObjectMethodAttribute(global::System.ComponentModel.DataObjectMethodType.Fill, false)]
+        public virtual int FillReservation(dsReservation.HVK_RESERVATIONDataTable dataTable) {
+            this.Adapter.SelectCommand = this.CommandCollection[3];
+            if ((this.ClearBeforeFill == true)) {
+                dataTable.Clear();
+            }
+            int returnValue = this.Adapter.Fill(dataTable);
+            return returnValue;
+        }
+        
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+        [global::System.ComponentModel.Design.HelpKeywordAttribute("vs.data.TableAdapter")]
+        [global::System.ComponentModel.DataObjectMethodAttribute(global::System.ComponentModel.DataObjectMethodType.Select, false)]
+        public virtual dsReservation.HVK_RESERVATIONDataTable GetReservation() {
+            this.Adapter.SelectCommand = this.CommandCollection[3];
             dsReservation.HVK_RESERVATIONDataTable dataTable = new dsReservation.HVK_RESERVATIONDataTable();
             this.Adapter.Fill(dataTable);
             return dataTable;
