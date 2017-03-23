@@ -11,3 +11,4 @@ C:\Users\Alexandre\Source\Repos\HawkeyeClassLibrary\HawkeyehvkDB\bin\Debug\Hawke
 C:\Users\Alexandre\Source\Repos\HawkeyeClassLibrary\HawkeyehvkDB\bin\Debug\Oracle.ManagedDataAccess.dll
 C:\Users\Alexandre\Source\Repos\HawkeyeClassLibrary\HawkeyehvkDB\obj\Debug\HawkeyehvkDB.dll
 C:\Users\Alexandre\Source\Repos\HawkeyeClassLibrary\HawkeyehvkDB\obj\Debug\HawkeyehvkDB.pdb
+C:\Users\Alexandre\Source\Repos\HawkeyeClassLibrary\HawkeyehvkDB\obj\Debug\HawkeyehvkDB.csprojResolveAssemblyReference.cache

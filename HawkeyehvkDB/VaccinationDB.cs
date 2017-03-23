@@ -30,7 +30,7 @@ namespace HawkeyehvkDB
         {
             string conString = ConfigurationManager.ConnectionStrings["ConnectionString"].ConnectionString;
             OracleConnection con = new OracleConnection(conString);
-            string cmdStr = "Select V.vaccination_name, PV.vaccination_expiry_date, PV.vaccination_checked_status from HVK_vaccination V, HVK_pet_vaccination PV where PV.pet_pet_number = :pet and PV.vacc_vaccination_number = V.vaccination_number";
+            string cmdStr = "Select V.vaccination_number, V.vaccination_name, PV.vaccination_expiry_date, PV.vaccination_checked_status from HVK_vaccination V, HVK_pet_vaccination PV where PV.pet_pet_number = :pet and PV.vacc_vaccination_number = V.vaccination_number";
             OracleCommand cmd = new OracleCommand(cmdStr, con);
             cmd.Parameters.Add("pet", petNum);
             OracleDataAdapter da = new OracleDataAdapter(cmd);
@@ -45,31 +45,40 @@ namespace HawkeyehvkDB
         {
             string conString = ConfigurationManager.ConnectionStrings["ConnectionString"].ConnectionString;
             OracleConnection con = new OracleConnection(conString);
-            string cmdStr = @"SELECT V.VACCINATION_NAME
-                                FROM HVK_VACCINATION V,
-                                  HVK_PET_VACCINATION PV,
-                                  HVK_PET P,
-                                  HVK_RESERVATION R
-                                WHERE R.RESERVATION_NUMBER       = :res
-                                AND P.PET_NUMBER                 = :pet
-                                AND P.PET_NUMBER                 = PV.PET_PET_NUMBER
-                                AND (PV.VACCINATION_EXPIRY_DATE  < R.RESERVATION_END_DATE
-                                OR PV.VACCINATION_CHECKED_STATUS = 'N')
-                                AND PV.VACC_VACCINATION_NUMBER   = V.VACCINATION_NUMBER
-                                UNION
-                                SELECT V.VACCINATION_NAME FROM HVK_VACCINATION V WHERE V.VACCINATION_NAME
-                                NOT IN
-                                (SELECT V.VACCINATION_NAME
-                                FROM HVK_VACCINATION V,
-                                  HVK_PET_VACCINATION PV,
-                                  HVK_PET P,
-                                  HVK_RESERVATION R
-                                WHERE R.RESERVATION_NUMBER       = :res
-                                AND P.PET_NUMBER                 = :pet
-                                AND P.PET_NUMBER                 = PV.PET_PET_NUMBER
-                                AND (PV.VACCINATION_EXPIRY_DATE  < R.RESERVATION_END_DATE
-                                OR PV.VACCINATION_CHECKED_STATUS = 'Y' OR PV.VACCINATION_CHECKED_STATUS = 'N')
-                                AND PV.VACC_VACCINATION_NUMBER   = V.VACCINATION_NUMBER)";
+            string cmdStr = @"SELECT V.vaccination_number,
+                              V.vaccination_name,
+                              PV.vaccination_expiry_date,
+                              PV.vaccination_checked_status
+                            FROM HVK_VACCINATION V,
+                              HVK_PET_VACCINATION PV,
+                              HVK_PET P,
+                              HVK_RESERVATION R
+                            WHERE R.RESERVATION_NUMBER       = :res
+                            AND P.PET_NUMBER                 = :pet
+                            AND P.PET_NUMBER                 = PV.PET_PET_NUMBER
+                            AND (PV.VACCINATION_EXPIRY_DATE  < R.RESERVATION_END_DATE
+                            OR PV.VACCINATION_CHECKED_STATUS = 'N')
+                            AND PV.VACC_VACCINATION_NUMBER   = V.VACCINATION_NUMBER
+                            UNION
+                            SELECT V.VACCINATION_NUMBER,
+                              V.VACCINATION_NAME,
+                              NULL AS VACCINATION_EXPIRY_DATE,
+                              NULL AS VACCINATION_CHECKED_STATUS
+                            FROM HVK_VACCINATION V
+                            WHERE V.VACCINATION_NAME NOT IN
+                              (SELECT V.VACCINATION_NAME
+                              FROM HVK_VACCINATION V,
+                                HVK_PET_VACCINATION PV,
+                                HVK_PET P,
+                                HVK_RESERVATION R
+                              WHERE R.RESERVATION_NUMBER       = :res
+                              AND P.PET_NUMBER                 = :pet
+                              AND P.PET_NUMBER                 = PV.PET_PET_NUMBER
+                              AND (PV.VACCINATION_EXPIRY_DATE  < R.RESERVATION_END_DATE
+                              OR PV.VACCINATION_CHECKED_STATUS = 'Y'
+                              OR PV.VACCINATION_CHECKED_STATUS = 'N')
+                              AND PV.VACC_VACCINATION_NUMBER   = V.VACCINATION_NUMBER
+                              )";
             OracleCommand cmd = new OracleCommand(cmdStr, con);
             cmd.Parameters.Add("pet", petNum);
             cmd.Parameters.Add("res", resNum);
@@ -85,31 +94,41 @@ namespace HawkeyehvkDB
         {
             string conString = ConfigurationManager.ConnectionStrings["ConnectionString"].ConnectionString;
             OracleConnection con = new OracleConnection(conString);
-            string cmdStr = @"SELECT V.VACCINATION_NAME
-                                FROM HVK_VACCINATION V,
-                                  HVK_PET_VACCINATION PV,
-                                  HVK_PET P,
-                                  HVK_RESERVATION R
-                                WHERE 
-                                P.PET_NUMBER                 = :pet
-                                AND P.PET_NUMBER                 = PV.PET_PET_NUMBER
-                                AND (PV.VACCINATION_EXPIRY_DATE  < :byDate
-                                OR PV.VACCINATION_CHECKED_STATUS = 'N')
-                                AND PV.VACC_VACCINATION_NUMBER   = V.VACCINATION_NUMBER
-                                UNION
-                                SELECT V.VACCINATION_NAME FROM HVK_VACCINATION V WHERE V.VACCINATION_NAME
-                                NOT IN
-                                (SELECT V.VACCINATION_NAME
-                                FROM HVK_VACCINATION V,
-                                  HVK_PET_VACCINATION PV,
-                                  HVK_PET P,
-                                  HVK_RESERVATION R
-                                WHERE
-                                AND P.PET_NUMBER                 = :pet
-                                AND P.PET_NUMBER                 = PV.PET_PET_NUMBER
-                                AND (PV.VACCINATION_EXPIRY_DATE  < :byDate
-                                OR PV.VACCINATION_CHECKED_STATUS = 'Y' OR PV.VACCINATION_CHECKED_STATUS = 'N')
-                                AND PV.VACC_VACCINATION_NUMBER   = V.VACCINATION_NUMBER)";
+            string cmdStr = @"SELECT V.vaccination_number,
+                              V.vaccination_name,
+                              PV.vaccination_expiry_date,
+                              PV.vaccination_checked_status
+                            FROM HVK_VACCINATION V,
+                              HVK_PET_VACCINATION PV,
+                              HVK_PET P,
+                              HVK_RESERVATION R
+                            WHERE 
+                            P.PET_NUMBER                 = :pet
+                            AND P.PET_NUMBER                 = PV.PET_PET_NUMBER
+                            AND (PV.VACCINATION_EXPIRY_DATE  < :byDate
+                            OR PV.VACCINATION_CHECKED_STATUS = 'N')
+                            AND PV.VACC_VACCINATION_NUMBER   = V.VACCINATION_NUMBER
+                            UNION
+                            SELECT V.VACCINATION_NUMBER,
+                              V.VACCINATION_NAME,
+                              NULL AS VACCINATION_EXPIRY_DATE,
+                              NULL AS VACCINATION_CHECKED_STATUS
+                            FROM HVK_VACCINATION V
+                            WHERE V.VACCINATION_NAME NOT IN
+                              (SELECT V.VACCINATION_NAME
+                              FROM HVK_VACCINATION V,
+                                HVK_PET_VACCINATION PV,
+                                HVK_PET P,
+                                HVK_RESERVATION R
+                              WHERE
+                              P.PET_NUMBER                 = :pet
+                              AND P.PET_NUMBER                 = PV.PET_PET_NUMBER
+                              AND (PV.VACCINATION_EXPIRY_DATE  < :byDate
+                              OR PV.VACCINATION_CHECKED_STATUS = 'Y'
+                              OR PV.VACCINATION_CHECKED_STATUS = 'N')
+                              AND PV.VACC_VACCINATION_NUMBER   = V.VACCINATION_NUMBER
+                              )";
+
             OracleCommand cmd = new OracleCommand(cmdStr, con);
             cmd.Parameters.Add("pet", petNum);
             cmd.Parameters.Add("byDate", byDate);

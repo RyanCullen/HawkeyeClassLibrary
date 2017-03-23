@@ -100,18 +100,56 @@ namespace HawkeyehvkBLL
             return this.reservationList.Remove(res);
         }
 
-        public DataSet fillBox()
+        public List<Owner> listTheOwners()
         {
             OwnerDB ownDB= new OwnerDB();
-            DataSet vals = ownDB.listOwners();
-            return vals;
-        }
+        
+            List<Owner> ownerList = new List<Owner>();
+            foreach (DataRow row in ownDB.listOwners().Tables["hvk_owner"].Rows)
+            {
 
-        public DataSet fillBox(int ownerNum)
+                ownerList.Add(fillBox(row));
+            }
+            return ownerList;
+        }
+        public List<Owner> getOwner(int ownerNum)
         {
             OwnerDB ownDB = new OwnerDB();
-            DataSet vals = ownDB.listOwner(ownerNum);
-            return vals;
+
+            List<Owner> ownerList = new List<Owner>();
+            foreach (DataRow row in ownDB.listOwner(ownerNum).Tables["hvk_owner"].Rows)
+            {
+
+                ownerList.Add(fillBox(row));
+            }
+            return ownerList;
         }
+
+        public Owner fillBox(DataRow theRow)
+        {
+            Owner own = new Owner();
+            try
+            {
+                own.ownerNumber = Convert.ToInt32(theRow["OWNER_NUMBER"].ToString());
+                own.lastName = theRow["OWNER_LAST_NAME"].ToString();
+                own.firstName = theRow["OWNER_FIRST_NAME"].ToString();
+                own.address.street = theRow["OWNER_STREET"].ToString();
+                own.address.city = theRow["OWNER_CITY"].ToString();
+                own.address.province = theRow["OWNER_PROVINCE"].ToString();
+                own.address.postalCode = theRow["OWNER_POSTAL_CODE"].ToString();
+                own.phoneNumber = theRow["OWNER_PHONE"].ToString();
+                own.email = theRow["OWNER_EMAIL"].ToString();
+                own.emergencyFirstName = theRow["EMERGENCY_CONTACT_FIRST_NAME"].ToString();
+                own.emergencyLastName = theRow["EMERGENCY_CONTACT_LAST_NAME"].ToString();
+                own.emergencyPhone = theRow["EMERGENCY_CONTACT_PHONE"].ToString();
+            }
+            catch
+            {
+                Console.Write("Error");
+            }
+            return own;
+        }
+
+      
     }
 }

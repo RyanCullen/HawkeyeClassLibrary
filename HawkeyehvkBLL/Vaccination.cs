@@ -31,14 +31,7 @@ namespace HawkeyehvkBLL
             DataSet vals = vaccDB.listVaccinations();
             return vals;
         }
-
-        public DataSet listPetVaccinations(int petNum)
-        {
-            VaccinationDB vaccDB = new VaccinationDB();
-            DataSet vals = vaccDB.listVaccinations(petNum);
-            return vals;
-        }
-
+      
         public DataSet getVaccinations(int vacNum)
         {
             VaccinationDB vaccDB = new VaccinationDB();
@@ -46,18 +39,6 @@ namespace HawkeyehvkBLL
             return vals;
         }
 
-        public DataSet checkVaccinations(int petNum, int resNum)
-        {
-            VaccinationDB vaccDB = new VaccinationDB();
-            DataSet vals = vaccDB.checkVaccinations(petNum, resNum);
-            return vals;
-        }
-
-        public DataSet checkVaccinations(int petNum, DateTime byDate)
-        {
-            VaccinationDB vaccDB = new VaccinationDB();
-            DataSet vals = vaccDB.checkVaccinations(petNum, byDate);
-            return vals;
-        }
+     
     }
 }
