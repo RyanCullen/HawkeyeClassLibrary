@@ -97,20 +97,51 @@ namespace HawkeyehvkBLL
             return fillReservation(ds);
         }
 
+        public List<Reservation> listReservation(int ownerNumber)
+        {
+            ReservationDB db = new ReservationDB();
+            DataSet ds = db.listResevation(ownerNumber);
+
+            return fillReservation(ds);
+        }
+
+        public List<Reservation> listActiveReservation()
+        {
+            ReservationDB db = new ReservationDB();
+            DataSet ds = db.listActiveReservations(); 
+
+            return fillReservation(ds);
+        }
+
+
+        public List<Reservation> listActiveReservation(int ownerNumber)
+        {
+            ReservationDB db = new ReservationDB();
+            DataSet ds = db.listActiveReservations(ownerNumber);
+
+            return fillReservation(ds);
+        }
+
+
 
 
         public List<Reservation> fillReservation(DataSet ds )
         {
             Reservation res = new Reservation();
             List<Reservation> resList = new List<Reservation>(); 
-            for (int i = 0; i < ds.Tables["HVK_RESERVATION"].Rows.Count; i++) {
+            for (int i = 0; i < ds.Tables[0].Rows.Count; i++) {
 
                 try
                 {
-                    res.reservationNumber = Convert.ToInt32(ds.Tables["HVK_RESERVATION"].Rows[i]["RESERVATION_NUMBER"]);
-                    res.startDate = DateTime.Parse(ds.Tables["HVK_RESERVATION"].Rows[i]["RESERVATION_START_DATE"].ToString());
-                    res.endDate = DateTime.Parse(ds.Tables["HVK_RESERVATION"].Rows[i]["RESERVATION_END_DATE"].ToString());
-                    res.petReservationList.Add(new PetReservation()); 
+                    //Retrieve pet info , owner # , reservation detail 
+                    res.reservationNumber = Convert.ToInt32(ds.Tables[0].Rows[i]["RESERVATION_NUMBER"]);
+                    res.startDate = DateTime.Parse(ds.Tables[0].Rows[i]["RESERVATION_START_DATE"].ToString());
+                    res.endDate = DateTime.Parse(ds.Tables[0].Rows[i]["RESERVATION_END_DATE"].ToString());
+                    res.petReservationList.Add(new PetReservation());
+                    res.owner.ownerNumber = Convert.ToInt16(ds.Tables[0].Rows[i]["OWN_OWNER_NUMBER"].ToString());
+                    res.petReservationList[i].pet.name = ds.Tables[0].Rows[i]["PET_NAME"].ToString();
+                    res.petReservationList[i].pet.petNumber = Convert.ToInt16(ds.Tables[0].Rows[i]["PET_NAME"].ToString());
+                    res.petReservationList[i].run.runNumber = Convert.ToInt16(ds.Tables[0].Rows[i]["RUN_RUN_NUMBER"].ToString());
                     resList.Add(res); 
 
                 }
@@ -124,6 +155,45 @@ namespace HawkeyehvkBLL
 
 
         }
+
+
+        public List<Reservation> fillReservationDetail(DataSet ds)
+        {
+            Reservation res = new Reservation();
+            List<Reservation> resList = new List<Reservation>();
+            for (int i = 0; i < ds.Tables[0].Rows.Count; i++)
+            {
+
+                try
+                {
+                    //Retrieve pet info , owner # , reservation detail 
+                    res.reservationNumber = Convert.ToInt32(ds.Tables[0].Rows[i]["RESERVATION_NUMBER"]);
+                    res.startDate = DateTime.Parse(ds.Tables[0].Rows[i]["RESERVATION_START_DATE"].ToString());
+                    res.endDate = DateTime.Parse(ds.Tables[0].Rows[i]["RESERVATION_END_DATE"].ToString());
+                    res.petReservationList.Add(new PetReservation());
+                    res.owner.ownerNumber = Convert.ToInt16(ds.Tables[0].Rows[i]["OWN_OWNER_NUMBER"].ToString());
+                    res.petReservationList[i].pet.name = ds.Tables[0].Rows[i]["PET_NAME"].ToString();
+                    res.petReservationList[i].pet.breed = ds.Tables[0].Rows[i]["pet_breed"].ToString();
+                    res.petReservationList[i].pet.size = Convert.ToChar(ds.Tables[0].Rows[i]["dog_size"].ToString());
+                    res.petReservationList[i].pet.isFixed = Convert.ToChar(ds.Tables[i].Rows[i]["pet_fixed"]);
+                    res.petReservationList[i].pet.petNumber = Convert.ToInt16(ds.Tables[0].Rows[i]["PET_NAME"].ToString());
+                    res.petReservationList[i].pet.notes = ds.Tables[0].Rows[i]["SPECIAL_NOTES"].ToString();
+                    res.petReservationList[i].pet.gender = Convert.ToChar(ds.Tables[0].Rows[i]["PET_GENDER"].ToString());
+                    res.petReservationList[i].run.runNumber = Convert.ToInt16(ds.Tables[0].Rows[i]["RUN_RUN_NUMBER"].ToString());
+                    resList.Add(res);
+
+                }
+                catch
+                {
+                    Console.Write("Error");
+                }
+
+            }
+            return resList;
+
+
+        }
+
 
     }
 }
