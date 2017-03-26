@@ -3,7 +3,9 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using HawkeyehvkDB; 
+using HawkeyehvkDB;
+using System.Data;
+
 namespace HawkeyehvkBLL
 {
     public class Reservation
@@ -87,17 +89,41 @@ namespace HawkeyehvkBLL
         }
 
 
-        public List<PetReservation> listReservation()
+        public List<Reservation> listReservation()
         {
             ReservationDB db = new ReservationDB();
-            db.listResevation();
-
-            return null;
-            //Amir is here 
-            // return getEmployees(datatable);
-            return null;
+            DataSet ds = db.listResevation();
+             
+            return fillReservation(ds);
         }
 
+
+
+        public List<Reservation> fillReservation(DataSet ds )
+        {
+            Reservation res = new Reservation();
+            List<Reservation> resList = new List<Reservation>(); 
+            for (int i = 0; i < ds.Tables["HVK_RESERVATION"].Rows.Count; i++) {
+
+                try
+                {
+                    res.reservationNumber = Convert.ToInt32(ds.Tables["HVK_RESERVATION"].Rows[i]["RESERVATION_NUMBER"]);
+                    res.startDate = DateTime.Parse(ds.Tables["HVK_RESERVATION"].Rows[i]["RESERVATION_START_DATE"].ToString());
+                    res.endDate = DateTime.Parse(ds.Tables["HVK_RESERVATION"].Rows[i]["RESERVATION_END_DATE"].ToString());
+                    res.petReservationList.Add(new PetReservation()); 
+                    resList.Add(res); 
+
+                }
+                catch
+                {
+                    Console.Write("Error");
+                }
+
+            }
+            return resList;
+
+
+        }
 
     }
 }
