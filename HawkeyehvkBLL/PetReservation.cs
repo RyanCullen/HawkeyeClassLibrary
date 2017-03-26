@@ -3,7 +3,8 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using HawkeyehvkDB; 
+using HawkeyehvkDB;
+using System.Data;
 
 namespace HawkeyehvkBLL
 {
@@ -126,6 +127,40 @@ namespace HawkeyehvkBLL
             return this.serviceList.Remove(service);
         }
 
+        public List<Run> listAvailableRuns(DateTime start, DateTime end) {
+            List<Run> runs = new List<Run>();
+            PetReservationDB db = new PetReservationDB();
+            foreach (DataRow row in db.listAvailableRunsDB(start, end).Tables["hvk_runsAvail"].Rows)
+            {
+                runs.Add(convertToRun(row));
+            }
+                return runs;
+        }
+        public int NumberOfRunsAvailable(DateTime start, DateTime end, char dogSize) {
+            // gives the number of available runs for this stay
+            int count=-1;
+            PetReservationDB db = new PetReservationDB();
+            dogSize = Char.ToUpper(dogSize);
+            foreach (DataRow row in db.NumberOfRunsAvailableDB(start, end).Tables["hvk_numRuns"].Rows)
+            {
+                if (dogSize == Convert.ToString(row["DOG_SIZE"]).ToUpper()[0]) {
+                    count = Convert.ToInt32(row[1]);
+                }
+            }
+            return count;
+        }
+        private Run convertToRun(DataRow row) {
+            Run run = new HawkeyehvkBLL.Run();
+            run.runNumber = Convert.ToInt32(row[0]);
+            if (((String)row[1]).ToUpper().Equals(("L")))
+            {
+                run.size = 'L';
+            }
+            else {
+                run.size = 'R';
+            }
+            return run;
+        }
 
 
 
