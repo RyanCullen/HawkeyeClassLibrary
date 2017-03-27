@@ -242,24 +242,28 @@ WHERE TEAMHAWKEYE.HVK_RESERVATION.RESERVATION_START_DATE >= :DateParameter";
             da.Fill(ds, "hvk_runsAvail");
             return ds;
         }
-        public DataSet numberOfRunsAvailableDB(DateTime start, DateTime end, char size)
+        public int numberOfRunsAvailableDB(DateTime start, DateTime end, char size)
         {
             string conString = ConfigurationManager.ConnectionStrings["ConnectionString"].ConnectionString;
             OracleConnection con = new OracleConnection(conString);
-            string cmdStr = @"numberOfRunsAvailable
-                            (:START_DATE, -- input date
-                             :END_DATE, -- input date
-                             :RUN_SIZE, -- input size, the input is large or not large becuase it uses the dog size
-                             lv_count);";
+            string cmdStr = "select numberOfRunsAvailable_fn(:START_DATE, :END_DATE, :RUN_SIZE) from dual";
             OracleCommand cmd = new OracleCommand(cmdStr, con);
+            cmd.CommandType = CommandType.Text;
             cmd.Parameters.Add("START_DATE", start);
             cmd.Parameters.Add("END_DATE", end);
             cmd.Parameters.Add("RUN_SIZE", size);
-            OracleDataAdapter da = new OracleDataAdapter(cmd);
-            da.SelectCommand = cmd;
-            DataSet ds = new DataSet("NumRuns");
-            da.Fill(ds, "hvk_numRuns");
-            return ds;
+
+            int returnVal = -1;
+            try
+            {
+                con.Open();
+                returnVal = Convert.ToInt32(cmd.ExecuteScalar());
+            }
+            finally {
+                con.Close();
+            }
+
+            return returnVal;
         }
 
     }
