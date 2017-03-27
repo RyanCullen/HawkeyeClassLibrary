@@ -291,7 +291,7 @@ namespace HawkeyehvkBLL
             public ReservationCounts(DataRow row)
             {
                 this.numRegReservations = Convert.ToInt32(row["REGULAR_RESERVATIONS"].ToString());
-                this.numLargeReservations = Convert.ToInt32(row["REGULAR_RESERVATIONS"].ToString());
+                this.numLargeReservations = Convert.ToInt32(row["LARGE_RESERVATIONS"].ToString());
                 this.numTotalReservations = numRegReservations + numLargeReservations;
             }
         }
