@@ -244,12 +244,32 @@ WHERE TEAMHAWKEYE.HVK_RESERVATION.RESERVATION_START_DATE >= :DateParameter";
         {
             string conString = ConfigurationManager.ConnectionStrings["ConnectionString"].ConnectionString;
             OracleConnection con = new OracleConnection(conString);
-            string cmdStr = "select numberOfRunsAvailable_fn(:START_DATE, :END_DATE, :RUN_SIZE) from dual";
+            string cmdStr = @"select * from (
+                              select  count(*) from
+                            hvk_reservation r
+                            join hvk_pet_reservation pr
+                            on r.RESERVATION_NUMBER = pr.RES_RESERVATION_NUMBER
+                            join hvk_pet p
+                            on pr.PET_PET_NUMBER = p.PET_NUMBER
+                            cross
+                                 join
+                              (SELECT
+                                 (CAST(:endDate as DATE) - level + 1) AS day
+                                    FROM
+                                      dual
+                                    CONNECT BY LEVEL <= (CAST(:endDate as DATE) - CAST(:startDate as DATE) + 1))
+                                    where day BETWEEN r.RESERVATION_START_DATE AND r.RESERVATION_END_DATE
+                                    AND
+                                    ((:dogSize = 'L' AND p.DOG_SIZE = :dogSize)
+                                    OR :dogSize <> 'L')
+                                    GROUP BY day
+                                    ORDER BY count(*) DESC) where rownum = 1";
             OracleCommand cmd = new OracleCommand(cmdStr, con);
             cmd.CommandType = CommandType.Text;
-            cmd.Parameters.Add("START_DATE", start);
-            cmd.Parameters.Add("END_DATE", end);
-            cmd.Parameters.Add("RUN_SIZE", size);
+            cmd.BindByName = true;
+            cmd.Parameters.Add("startDate", start);
+            cmd.Parameters.Add("endDate", end);
+            cmd.Parameters.Add("dogSize", size);
 
             int returnVal = -1;
             try

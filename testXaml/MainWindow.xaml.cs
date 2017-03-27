@@ -26,7 +26,9 @@ namespace testXaml
         {
             InitializeComponent();
             //Set Parameters
+            Reservation re = new Reservation();
 
+           lblNum.Content = re.numberOfRunsAvailable(new DateTime(2017,03,03), new DateTime(2017, 03, 04), 'L');
             //Make Object And Call Method
             //Set datagrid to returned data
           
