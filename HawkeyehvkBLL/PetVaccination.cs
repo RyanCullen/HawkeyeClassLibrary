@@ -46,7 +46,7 @@ namespace HawkeyehvkBLL
         {
             VaccinationDB vaccDB = new VaccinationDB();
             List<PetVaccination> petVaccList = new List<PetVaccination>();
-            foreach(DataRow row in vaccDB.checkVaccinations(petNum, resNum).Tables["hvk_vaccination"].Rows)
+            foreach(DataRow row in vaccDB.checkVaccinationsDB(petNum, resNum).Tables["hvk_vaccination"].Rows)
             {
                 petVaccList.Add(fillVaccination(row));
             }
@@ -57,7 +57,7 @@ namespace HawkeyehvkBLL
         {
             VaccinationDB vaccDB = new VaccinationDB();
             List<PetVaccination> petVaccList = new List<PetVaccination>();
-            foreach (DataRow row in vaccDB.checkVaccinations(petNum, byDate).Tables["hvk_vaccination"].Rows)
+            foreach (DataRow row in vaccDB.checkVaccinationsDB(petNum, byDate).Tables["hvk_vaccination"].Rows)
             {
                 petVaccList.Add(fillVaccination(row));
             }
@@ -68,7 +68,7 @@ namespace HawkeyehvkBLL
         {
             VaccinationDB vaccDB = new VaccinationDB();
             List<PetVaccination> vaccList = new List<PetVaccination>();
-            foreach (DataRow row in vaccDB.listVaccinations(petNum).Tables["hvk_vaccination"].Rows)
+            foreach (DataRow row in vaccDB.listVaccinationsDB(petNum).Tables["hvk_vaccination"].Rows)
             {
                 vaccList.Add(fillVaccination(row));
             }

@@ -11,7 +11,7 @@ namespace HawkeyehvkDB
 {
     public class DiscountDB
     {
-        public DataSet listReservationDiscounts(int reservationNumber)
+        public DataSet listReservationDiscountsDB(int reservationNumber)
         {
             string conString = ConfigurationManager.ConnectionStrings["ConnectionString"].ConnectionString;
             OracleConnection con = new OracleConnection(conString);
@@ -29,7 +29,7 @@ namespace HawkeyehvkDB
             return ds;
         }
 
-        public DataSet listPetReservationDiscounts(int petReservationNumber)
+        public DataSet listPetReservationDiscountsDB(int petReservationNumber)
         {
             string conString = ConfigurationManager.ConnectionStrings["ConnectionString"].ConnectionString;
             OracleConnection con = new OracleConnection(conString);

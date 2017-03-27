@@ -11,7 +11,7 @@ namespace HawkeyehvkDB
 {
     public class VetDB
     {
-        public DataSet listVets()
+        public DataSet listVetsDB()
         {
             string conString = ConfigurationManager.ConnectionStrings["ConnectionString"].ConnectionString;
             OracleConnection con = new OracleConnection(conString);
@@ -26,7 +26,7 @@ namespace HawkeyehvkDB
             return ds;
         }
 
-        public DataSet getVetByOwnerNum(int ownerNum)
+        public DataSet getVetByOwnerNumDB(int ownerNum)
         {
             string conString = ConfigurationManager.ConnectionStrings["ConnectionString"].ConnectionString;
             OracleConnection con = new OracleConnection(conString);
@@ -41,7 +41,7 @@ namespace HawkeyehvkDB
             return ds;
         }
 
-        public void addVet(string vetName, string vetPhone, string vetStreet, string vetCity, string vetProvince, string vetPostalCode)
+        public void addVetDB(string vetName, string vetPhone, string vetStreet, string vetCity, string vetProvince, string vetPostalCode)
         {
             string conString = ConfigurationManager.ConnectionStrings["ConnectionString"].ConnectionString;
             OracleConnection con = new OracleConnection(conString);

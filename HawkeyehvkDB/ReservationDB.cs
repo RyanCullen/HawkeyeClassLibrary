@@ -12,7 +12,7 @@ namespace HawkeyehvkDB
     public class ReservationDB
     {
 
-        public DataSet listResevation()
+        public DataSet listResevationsDB()
         {
             //return a list of reservation with it details 
             //Display : clerk or user edit reservation 
@@ -40,7 +40,7 @@ namespace HawkeyehvkDB
             return ds;
         }
 
-        public DataSet listResevation(int ownerNumber)
+        public DataSet listResevationsDB(int ownerNumber)
         {
             //Overloaded return a list of reservation with it details base on owner number 
             //Display : clerk or user edit reservation 
@@ -69,7 +69,7 @@ namespace HawkeyehvkDB
         }
 
 
-        public DataSet listActiveReservations()
+        public DataSet listActiveReservationsDB()
         {
             //List all active reservation 
             //Display : clerk Home page 
@@ -92,7 +92,7 @@ namespace HawkeyehvkDB
         }
 
 
-        public DataSet listActiveReservations(int ownerNumber)
+        public DataSet listActiveReservationsDB(int ownerNumber)
         {
             //Overloaded List all active reservation base on owner number 
             //Display : clerk or user Home page 
@@ -117,7 +117,7 @@ namespace HawkeyehvkDB
         }
 
 
-        public DataSet listUpcomingReservation(DateTime reservationDate)
+        public DataSet listUpcomingReservationsDB(DateTime reservationDate)
         {
             string conString = ConfigurationManager.ConnectionStrings["ConnectionString"].ConnectionString;
             OracleConnection con = new OracleConnection(conString);
@@ -143,7 +143,7 @@ WHERE TEAMHAWKEYE.HVK_RESERVATION.RESERVATION_START_DATE >= :DateParameter";
             return ds;
         }
 
-        public void addReservation(int petNum, DateTime startDate, DateTime endDate)
+        public void addReservationDB(int petNum, DateTime startDate, DateTime endDate)
         {
             
             string conString = ConfigurationManager.ConnectionStrings["ConnectionString"].ConnectionString;
@@ -267,7 +267,7 @@ WHERE TEAMHAWKEYE.HVK_RESERVATION.RESERVATION_START_DATE >= :DateParameter";
         }
 
         //error checking required 
-        public int addToReservation(int resNumber , int petNumber) {
+        public int addToReservationDB(int resNumber , int petNumber) {
 
 
 

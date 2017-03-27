@@ -36,21 +36,21 @@ namespace HawkeyehvkBLL
         public DataSet listVets()
         {
             VetDB vDB = new VetDB();
-            DataSet vals = vDB.listVets();
+            DataSet vals = vDB.listVetsDB();
             return vals;
         }
 
         public DataSet getVetByOwnerNum(int ownerNum)
         {
             VetDB vDB = new VetDB();
-            DataSet vals = vDB.getVetByOwnerNum(ownerNum);
+            DataSet vals = vDB.getVetByOwnerNumDB(ownerNum);
             return vals;
         }
 
         public void addVet()
         {
             VetDB vDB = new VetDB();
-            vDB.addVet(this.name, this.phoneNumber, this.address.street, this.address.city, this.address.province, this.address.postalCode);
+            vDB.addVetDB(this.name, this.phoneNumber, this.address.street, this.address.city, this.address.province, this.address.postalCode);
             
         }
     }
