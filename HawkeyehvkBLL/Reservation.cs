@@ -122,6 +122,13 @@ namespace HawkeyehvkBLL
             return fillReservation(ds);
         }
 
+        public List<Reservation> listUpcomingReservation(DateTime reservationDate)
+        {
+            ReservationDB db = new ReservationDB();
+            DataSet ds = db.listUpcomingReservation(reservationDate);
+
+            return fillReservation(ds);
+        }
 
 
 
@@ -139,8 +146,7 @@ namespace HawkeyehvkBLL
                     res.endDate = DateTime.Parse(ds.Tables[0].Rows[i]["RESERVATION_END_DATE"].ToString());
                     res.petReservationList.Add(new PetReservation());
                     res.owner.ownerNumber = Convert.ToInt16(ds.Tables[0].Rows[i]["OWN_OWNER_NUMBER"].ToString());
-                    res.petReservationList[i].pet.name = ds.Tables[0].Rows[i]["PET_NAME"].ToString();
-                    res.petReservationList[i].pet.petNumber = Convert.ToInt16(ds.Tables[0].Rows[i]["PET_NAME"].ToString());
+                    res.petReservationList[i].pet.petNumber = Convert.ToInt16(ds.Tables[0].Rows[i]["PET_NUMBER"].ToString());
                     res.petReservationList[i].run.runNumber = Convert.ToInt16(ds.Tables[0].Rows[i]["RUN_RUN_NUMBER"].ToString());
                     resList.Add(res); 
 

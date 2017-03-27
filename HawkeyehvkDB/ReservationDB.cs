@@ -117,5 +117,33 @@ namespace HawkeyehvkDB
         }
 
 
+        public DataSet listUpcomingReservation(DateTime reservationDate)
+        {
+            string conString = ConfigurationManager.ConnectionStrings["ConnectionString"].ConnectionString;
+            OracleConnection con = new OracleConnection(conString);
+            string cmdStr = @"SELECT TEAMHAWKEYE.HVK_RESERVATION.RESERVATION_NUMBER,
+  TEAMHAWKEYE.HVK_RESERVATION.RESERVATION_START_DATE,
+  TEAMHAWKEYE.HVK_RESERVATION.RESERVATION_END_DATE,
+  TEAMHAWKEYE.HVK_PET.PET_NUMBER,
+  TEAMHAWKEYE.HVK_RUN.RUN_NUMBER,
+  TEAMHAWKEYE.HVK_OWNER.OWNER_NUMBER
+FROM TEAMHAWKEYE.HVK_OWNER
+INNER JOIN TEAMHAWKEYE.HVK_PET
+ON TEAMHAWKEYE.HVK_OWNER.OWNER_NUMBER = TEAMHAWKEYE.HVK_PET.OWN_OWNER_NUMBER,
+  TEAMHAWKEYE.HVK_RESERVATION,
+  TEAMHAWKEYE.HVK_RUN
+WHERE TEAMHAWKEYE.HVK_RESERVATION.RESERVATION_START_DATE >= :DateParameter";
+
+            OracleCommand cmd = new OracleCommand(cmdStr, con);
+            cmd.Parameters.Add("DateParameter", reservationDate);
+            OracleDataAdapter da = new OracleDataAdapter(cmd);
+            da.SelectCommand = cmd;
+            DataSet ds = new DataSet("dsActiveReservation");
+
+            return ds;
+        }
+
+
+
     }
 }
