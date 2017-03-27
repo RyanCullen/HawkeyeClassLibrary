@@ -105,7 +105,7 @@ namespace HawkeyehvkBLL
             OwnerDB ownDB= new OwnerDB();
         
             List<Owner> ownerList = new List<Owner>();
-            foreach (DataRow row in ownDB.listOwners().Tables["hvk_owner"].Rows)
+            foreach (DataRow row in ownDB.listOwnersDB().Tables["hvk_owner"].Rows)
             {
 
                 ownerList.Add(fillBox(row));
@@ -117,7 +117,7 @@ namespace HawkeyehvkBLL
             OwnerDB ownDB = new OwnerDB();
 
             List<Owner> ownerList = new List<Owner>();
-            foreach (DataRow row in ownDB.listOwner(ownerNum).Tables["hvk_owner"].Rows)
+            foreach (DataRow row in ownDB.listOwnersDB(ownerNum).Tables["hvk_owner"].Rows)
             {
 
                 ownerList.Add(fillBox(row));

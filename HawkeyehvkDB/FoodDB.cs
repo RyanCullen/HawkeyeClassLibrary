@@ -11,7 +11,7 @@ namespace HawkeyehvkDB
 {
     public class FoodDB
     {
-        public DataSet listFood()
+        public DataSet listFoodDB()
         {
             string conString = ConfigurationManager.ConnectionStrings["ConnectionString"].ConnectionString;
             OracleConnection con = new OracleConnection(conString);

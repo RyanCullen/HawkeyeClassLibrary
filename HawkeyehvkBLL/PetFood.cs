@@ -29,14 +29,14 @@ namespace HawkeyehvkBLL
         public DataSet listFood()
         {
             FoodDB foodDB = new FoodDB();
-            DataSet vals = foodDB.listFood();
+            DataSet vals = foodDB.listFoodDB();
             return vals;
         }
 
         public DataSet listPetResFood(int petRes)
         {
             PetFoodDB pfDB = new PetFoodDB();
-            DataSet vals = pfDB.listFoodByPetRes(petRes);
+            DataSet vals = pfDB.listFoodByPetResDB(petRes);
             return vals;
         }
     }

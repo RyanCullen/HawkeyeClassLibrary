@@ -49,7 +49,7 @@ namespace HawkeyehvkBLL
         {
             List<Discount> list = new List<Discount>();
             DiscountDB db = new DiscountDB();
-            foreach(DataRow row in db.listReservationDiscounts(reservationNumber).Tables["hvk_res_discount"].Rows)
+            foreach(DataRow row in db.listReservationDiscountsDB(reservationNumber).Tables["hvk_res_discount"].Rows)
             {
                 list.Add(fillFromDataRow(row));
             }
@@ -60,7 +60,7 @@ namespace HawkeyehvkBLL
         {
             List<Discount> list = new List<Discount>();
             DiscountDB db = new DiscountDB();
-            foreach (DataRow row in db.listPetReservationDiscounts(petReservationNumber).Tables["hvk_pet_res_discount"].Rows)
+            foreach (DataRow row in db.listPetReservationDiscountsDB(petReservationNumber).Tables["hvk_pet_res_discount"].Rows)
             {
                 list.Add(fillFromDataRow(row));
             }

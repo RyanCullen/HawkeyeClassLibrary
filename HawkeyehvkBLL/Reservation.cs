@@ -89,43 +89,43 @@ namespace HawkeyehvkBLL
         }
 
 
-        public List<Reservation> listReservation()
+        public List<Reservation> listReservations()
         {
             ReservationDB db = new ReservationDB();
-            DataSet ds = db.listResevation();
+            DataSet ds = db.listResevationsDB();
              
             return fillReservation(ds);
         }
 
-        public List<Reservation> listReservation(int ownerNumber)
+        public List<Reservation> listReservations(int ownerNumber)
         {
             ReservationDB db = new ReservationDB();
-            DataSet ds = db.listResevation(ownerNumber);
+            DataSet ds = db.listResevationsDB(ownerNumber);
 
             return fillReservation(ds);
         }
 
-        public List<Reservation> listActiveReservation()
+        public List<Reservation> listActiveReservations()
         {
             ReservationDB db = new ReservationDB();
-            DataSet ds = db.listActiveReservations(); 
+            DataSet ds = db.listActiveReservationsDB(); 
 
             return fillReservation(ds);
         }
 
 
-        public List<Reservation> listActiveReservation(int ownerNumber)
+        public List<Reservation> listActiveReservations(int ownerNumber)
         {
             ReservationDB db = new ReservationDB();
-            DataSet ds = db.listActiveReservations(ownerNumber);
+            DataSet ds = db.listActiveReservationsDB(ownerNumber);
 
             return fillReservation(ds);
         }
 
-        public List<Reservation> listUpcomingReservation(DateTime reservationDate)
+        public List<Reservation> listUpcomingReservations(DateTime reservationDate)
         {
             ReservationDB db = new ReservationDB();
-            DataSet ds = db.listUpcomingReservation(reservationDate);
+            DataSet ds = db.listUpcomingReservationsDB(reservationDate);
 
             return fillReservation(ds);
         }
@@ -147,7 +147,7 @@ namespace HawkeyehvkBLL
                     res.petReservationList.Add(new PetReservation());
                     res.owner.ownerNumber = Convert.ToInt16(ds.Tables[0].Rows[i]["OWN_OWNER_NUMBER"].ToString());
                     res.petReservationList[i].pet.petNumber = Convert.ToInt16(ds.Tables[0].Rows[i]["PET_NUMBER"].ToString());
-                    res.petReservationList[i].run.runNumber = Convert.ToInt16(ds.Tables[0].Rows[i]["RUN_RUN_NUMBER"].ToString());
+                   // res.petReservationList[i].run.runNumber = Convert.ToInt16(ds.Tables[0].Rows[i]["RUN_RUN_NUMBER"].ToString());
                     resList.Add(res); 
 
                 }
@@ -199,7 +199,36 @@ namespace HawkeyehvkBLL
 
 
         }
+        public List<Run> listAvailableRuns(DateTime start, DateTime end)
+        {
+            List<Run> runs = new List<Run>();
+            ReservationDB db = new ReservationDB();
+            foreach (DataRow row in db.listAvailableRunsDB(start, end).Tables["hvk_runsAvail"].Rows)
+            {
+                runs.Add(convertToRun(row));
+            }
+            return runs;
+        }
+        public ReservationCounts getReservationCounts(DateTime start, DateTime end)
+        {
+            RunDB db = new RunDB();
+            return new ReservationCounts(db.getReservationCountsDB(start, end).Tables[0].Rows[0]);
+        }
 
+        private Run convertToRun(DataRow row)
+        {
+            Run run = new HawkeyehvkBLL.Run();
+            run.runNumber = Convert.ToInt32(row[0]);
+            if (((String)row[1]).ToUpper().Equals(("L")))
+            {
+                run.size = 'L';
+            }
+            else
+            {
+                run.size = 'R';
+            }
+            return run;
+        }
         public int addReservation(int petNumber, DateTime startDate, DateTime endDate)
         {
 
@@ -239,8 +268,48 @@ namespace HawkeyehvkBLL
 
         public int checkRunAvailability(DateTime startDate, DateTime endDate, char runSize)
         {
+            int count = -1;
+           
+            Reservation res = new Reservation();
+            ReservationCounts resc = res.getReservationCounts(startDate, endDate);
+            RunDB run = new RunDB();
+            int totalRunsL = run.totalLargeRunsDB();
+            int totalRunsR = run.totalRegularRunsDB();
+            
 
-            return 0;
+
+            if (runSize == 'L') {
+                if ((resc.numRegReservations - totalRunsR) > 0) 
+                { // this will determine if the regular size runs have run out. in which case there may be large runs used for smaller dogs
+                    count = (totalRunsL - (resc.numRegReservations - totalRunsR))-resc.numLargeReservations;// from total large runs take off the large runs already needed (on busiest day) and the overlap from small dogs in big runs
+                }
+                else { // otherwise just subtract the hights on a day from the total.
+                    count = totalRunsL - resc.numLargeReservations;
+                }
+            }
+            else { // if not large return the total number of runs 
+                   // subtracting the highest number of reservations between the entered dates
+                count =  totalRunsL+totalRunsR- resc.numTotalReservations;
+            }
+
+            return count;
         }
+
+        public class ReservationCounts
+        {
+            public int numRegReservations { get; private set; }
+
+            public int numLargeReservations { get; private set; }
+
+            public int numTotalReservations { get; private set; }
+
+            public ReservationCounts(DataRow row)
+            {
+                this.numRegReservations = Convert.ToInt32(row["REGULAR_RESERVATIONS"].ToString());
+                this.numLargeReservations = Convert.ToInt32(row["LARGE_RESERVATIONS"].ToString());
+                this.numTotalReservations = numRegReservations + numLargeReservations;
+            }
+        }
+
     }
 }

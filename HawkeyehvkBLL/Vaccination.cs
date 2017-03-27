@@ -25,17 +25,17 @@ namespace HawkeyehvkBLL
             this.name = name;
         }
 
-        public DataSet listVaccinations()
+        public DataSet listAllVaccinations()
         {
             VaccinationDB vaccDB = new VaccinationDB();
-            DataSet vals = vaccDB.listVaccinations();
+            DataSet vals = vaccDB.listVaccinationsDB();
             return vals;
         }
       
         public DataSet getVaccinations(int vacNum)
         {
             VaccinationDB vaccDB = new VaccinationDB();
-            DataSet vals = vaccDB.getVaccination(vacNum);
+            DataSet vals = vaccDB.getVaccinationDB(vacNum);
             return vals;
         }
 

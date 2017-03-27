@@ -11,7 +11,7 @@ namespace HawkeyehvkDB
 {
     public class VaccinationDB
     {
-        public DataSet listVaccinations()
+        public DataSet listVaccinationsDB()
         {
             string conString = ConfigurationManager.ConnectionStrings["ConnectionString"].ConnectionString;
             OracleConnection con = new OracleConnection(conString);
@@ -26,7 +26,7 @@ namespace HawkeyehvkDB
             return ds;
         }
 
-        public DataSet listVaccinations(int petNum)
+        public DataSet listVaccinationsDB(int petNum)
         {
             string conString = ConfigurationManager.ConnectionStrings["ConnectionString"].ConnectionString;
             OracleConnection con = new OracleConnection(conString);
@@ -41,7 +41,7 @@ namespace HawkeyehvkDB
             return ds;
         }
 
-        public DataSet checkVaccinations(int petNum, int resNum)
+        public DataSet checkVaccinationsDB(int petNum, int resNum)
         {
             string conString = ConfigurationManager.ConnectionStrings["ConnectionString"].ConnectionString;
             OracleConnection con = new OracleConnection(conString);
@@ -90,7 +90,7 @@ namespace HawkeyehvkDB
             return ds;
         }
 
-        public DataSet checkVaccinations(int petNum, DateTime byDate)
+        public DataSet checkVaccinationsDB(int petNum, DateTime byDate)
         {
             string conString = ConfigurationManager.ConnectionStrings["ConnectionString"].ConnectionString;
             OracleConnection con = new OracleConnection(conString);
@@ -140,7 +140,7 @@ namespace HawkeyehvkDB
             return ds;
         }
 
-        public DataSet getVaccination(int vaccNum)
+        public DataSet getVaccinationDB(int vaccNum)
         {
             string conString = ConfigurationManager.ConnectionStrings["ConnectionString"].ConnectionString;
             OracleConnection con = new OracleConnection(conString);

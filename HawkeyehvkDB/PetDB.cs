@@ -11,7 +11,7 @@ namespace HawkeyehvkDB
 {
     public class PetDB
     {
-        public DataSet listPets(int ownerNumber)
+        public DataSet listPetsDB(int ownerNumber)
         {
             string conString = ConfigurationManager.ConnectionStrings["ConnectionString"].ConnectionString;
             OracleConnection con = new OracleConnection(conString);

@@ -116,7 +116,7 @@ namespace HawkeyehvkBLL
         {
             List<Pet> petList = new List<Pet>();
             PetDB db = new PetDB();
-            foreach(DataRow row in db.listPets(ownerNumber).Tables["hvk_pet"].Rows)
+            foreach(DataRow row in db.listPetsDB(ownerNumber).Tables["hvk_pet"].Rows)
             {
                 Pet pet = fillFromDataRow(row);
                 petList.Add(pet);

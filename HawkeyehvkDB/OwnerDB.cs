@@ -11,7 +11,7 @@ namespace HawkeyehvkDB
 {
     public class OwnerDB
     {
-        public DataSet listOwners()
+        public DataSet listOwnersDB()
         {
             string conString = ConfigurationManager.ConnectionStrings["ConnectionString"].ConnectionString;
             OracleConnection con = new OracleConnection(conString);
@@ -26,7 +26,7 @@ namespace HawkeyehvkDB
             return ds;
         }
 
-        public DataSet listOwner(int ownerNum)
+        public DataSet listOwnersDB(int ownerNum)
         {
             string conString = ConfigurationManager.ConnectionStrings["ConnectionString"].ConnectionString;
             OracleConnection con = new OracleConnection(conString);

@@ -11,6 +11,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HawkeyehvkBLL", "Hawkeyehvk
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "testXaml", "testXaml\testXaml.csproj", "{2C2D2DE1-1055-4A4F-BE59-AAFA45057BF4}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WpfApplication1", "WpfApplication1\WpfApplication1.csproj", "{A675502D-E1C0-4003-88A5-C9096F2EC92E}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -33,6 +35,10 @@ Global
 		{2C2D2DE1-1055-4A4F-BE59-AAFA45057BF4}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{2C2D2DE1-1055-4A4F-BE59-AAFA45057BF4}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{2C2D2DE1-1055-4A4F-BE59-AAFA45057BF4}.Release|Any CPU.Build.0 = Release|Any CPU
+		{A675502D-E1C0-4003-88A5-C9096F2EC92E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{A675502D-E1C0-4003-88A5-C9096F2EC92E}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{A675502D-E1C0-4003-88A5-C9096F2EC92E}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{A675502D-E1C0-4003-88A5-C9096F2EC92E}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
