@@ -212,7 +212,7 @@ namespace HawkeyehvkBLL
         public ReservationCounts getReservationCounts(DateTime start, DateTime end)
         {
             RunDB db = new RunDB();
-            return new ReservationCounts(db.numberOfRunsReservedDB(start, end).Tables[0].Rows[0]);
+            return new ReservationCounts(db.getReservationCountsDB(start, end).Tables[0].Rows[0]);
         }
 
         private Run convertToRun(DataRow row)

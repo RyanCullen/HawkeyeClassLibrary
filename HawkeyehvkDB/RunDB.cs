@@ -29,7 +29,7 @@ namespace HawkeyehvkDB
             return Convert.ToInt32(cmd.ExecuteScalar());
         }
 
-        public DataSet numberOfRunsReservedDB(DateTime start, DateTime end)
+        public DataSet getReservationCountsDB(DateTime start, DateTime end)
         {
             string conString = ConfigurationManager.ConnectionStrings["ConnectionString"].ConnectionString;
             OracleConnection con = new OracleConnection(conString);
