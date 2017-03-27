@@ -282,11 +282,11 @@ namespace HawkeyehvkBLL
 
         public class ReservationCounts
         {
-            public int numRegReservations { get; set; }
+            public int numRegReservations { get; private set; }
 
-            public int numLargeReservations { get; set; }
+            public int numLargeReservations { get; private set; }
 
-            public int numTotalReservations { get; set; }
+            public int numTotalReservations { get; private set; }
 
             public ReservationCounts(DataRow row)
             {
