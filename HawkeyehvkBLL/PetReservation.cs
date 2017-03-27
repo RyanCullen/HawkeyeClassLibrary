@@ -136,7 +136,7 @@ namespace HawkeyehvkBLL
             }
                 return runs;
         }
-        public int NumberOfRunsAvailable(DateTime start, DateTime end, char dogSize) {
+        public int numberOfRunsAvailable(DateTime start, DateTime end, char dogSize) {
             // gives the number of available runs for this stay
             int count=-1;
             PetReservationDB db = new PetReservationDB();

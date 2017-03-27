@@ -200,6 +200,47 @@ namespace HawkeyehvkBLL
 
         }
 
+        public int addReservation(int petNumber, DateTime startDate, DateTime endDate)
+        {
 
+
+            return 0;
+        }
+
+        public int addToReservation(int reservationNumber, int petNumber)
+        {
+
+            return 0;
+        }
+
+        public int cancelReservation(int reservationNumber)
+        {
+
+            return 0;
+        }
+
+        public int changeReservation(int reservationNumber, DateTime startDate, DateTime endDate)
+        {
+
+            return 0;
+        }
+
+        public int deleteDogFromReservation(int reservationNumber, int petNumber)
+        {
+
+            return 0;
+        }
+
+        public int checkVaccinations(int petNumber, DateTime byDate)
+        {
+
+            return 0;
+        }
+
+        public int checkRunAvailability(DateTime startDate, DateTime endDate, char runSize)
+        {
+
+            return 0;
+        }
     }
 }
