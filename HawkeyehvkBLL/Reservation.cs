@@ -209,14 +209,12 @@ namespace HawkeyehvkBLL
             }
             return runs;
         }
-        public int numberOfRunsAvailable(DateTime start, DateTime end, char dogSize)
+        public DataSet numberOfRunsReserved(DateTime start, DateTime end, char dogSize)
         {
-            int count = -1;
             ReservationDB db = new ReservationDB();
-            dogSize = Char.ToUpper(dogSize);
-            count = db.numberOfRunsAvailableDB(start, end, Char.ToUpper(dogSize));
-            return count;
+            return db.numberOfRunsReservedDB(start, end);
         }
+
         private Run convertToRun(DataRow row)
         {
             Run run = new HawkeyehvkBLL.Run();
@@ -272,7 +270,8 @@ namespace HawkeyehvkBLL
         {
             int count = -1;
             bool returnVal = false;
-            count = numberOfRunsAvailable(startDate, endDate, runSize);
+          //  count = numberOfRunsAvailable(startDate, endDate, runSize);
+          // run availability has changed TODO
 
             if (count>0) {
                 returnVal = true;
