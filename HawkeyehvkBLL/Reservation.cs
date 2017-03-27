@@ -199,7 +199,38 @@ namespace HawkeyehvkBLL
 
 
         }
-
+        public List<Run> listAvailableRuns(DateTime start, DateTime end)
+        {
+            List<Run> runs = new List<Run>();
+            ReservationDB db = new ReservationDB();
+            foreach (DataRow row in db.listAvailableRunsDB(start, end).Tables["hvk_runsAvail"].Rows)
+            {
+                runs.Add(convertToRun(row));
+            }
+            return runs;
+        }
+        public int numberOfRunsAvailable(DateTime start, DateTime end, char dogSize)
+        {
+            int count = -1;
+            ReservationDB db = new ReservationDB();
+            dogSize = Char.ToUpper(dogSize);
+            count = db.numberOfRunsAvailableDB(start, end, Char.ToUpper(dogSize));
+            return count;
+        }
+        private Run convertToRun(DataRow row)
+        {
+            Run run = new HawkeyehvkBLL.Run();
+            run.runNumber = Convert.ToInt32(row[0]);
+            if (((String)row[1]).ToUpper().Equals(("L")))
+            {
+                run.size = 'L';
+            }
+            else
+            {
+                run.size = 'R';
+            }
+            return run;
+        }
         public int addReservation(int petNumber, DateTime startDate, DateTime endDate)
         {
 
@@ -237,10 +268,18 @@ namespace HawkeyehvkBLL
             return 0;
         }
 
-        public int checkRunAvailability(DateTime startDate, DateTime endDate, char runSize)
+        public bool checkRunAvailability(DateTime startDate, DateTime endDate, char runSize)
         {
+            int count = -1;
+            bool returnVal = false;
+            count = numberOfRunsAvailable(startDate, endDate, runSize);
 
-            return 0;
+            if (count>0) {
+                returnVal = true;
+            }
+
+            return returnVal;
         }
+       
     }
 }
