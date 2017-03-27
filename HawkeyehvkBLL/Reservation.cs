@@ -266,18 +266,33 @@ namespace HawkeyehvkBLL
             return 0;
         }
 
-        public bool checkRunAvailability(DateTime startDate, DateTime endDate, char runSize)
+        public int checkRunAvailability(DateTime startDate, DateTime endDate, char runSize)
         {
             int count = -1;
-            bool returnVal = false;
-          //  count = numberOfRunsAvailable(startDate, endDate, runSize);
-          // run availability has changed TODO
+           
+            Reservation res = new Reservation();
+            ReservationCounts resc = res.getReservationCounts(startDate, endDate);
+            RunDB run = new RunDB();
+            int totalRunsL = run.totalLargeRunsDB();
+            int totalRunsR = run.totalRegularRunsDB();
+            
 
-            if (count>0) {
-                returnVal = true;
+
+            if (runSize == 'L') {
+                if ((resc.numRegReservations - totalRunsR) > 0) 
+                { // this will determine if the regular size runs have run out. in which case there may be large runs used for smaller dogs
+                    count = (totalRunsL - (resc.numRegReservations - totalRunsR))-resc.numLargeReservations;// from total large runs take off the large runs already needed (on busiest day) and the overlap from small dogs in big runs
+                }
+                else { // otherwise just subtract the hights on a day from the total.
+                    count = totalRunsL - resc.numLargeReservations;
+                }
+            }
+            else { // if not large return the total number of runs 
+                   // subtracting the highest number of reservations between the entered dates
+                count =  totalRunsL+totalRunsR- resc.numTotalReservations;
             }
 
-            return returnVal;
+            return count;
         }
 
         public class ReservationCounts

@@ -8,6 +8,6 @@
         Title="MainWindow" Height="350" Width="525">
     <Grid>
         <DataGrid x:Name="datagrid" AutoGenerateColumns="True" Margin="10,112,10,11"></DataGrid>
-        <Label x:Name="lblNum" Content="Label" HorizontalAlignment="Left" Margin="210,51,0,0" VerticalAlignment="Top" Height="27" Width="207"/>
+        <Label x:Name="lblNum" Content="" HorizontalAlignment="Left" Margin="10,67,0,0" VerticalAlignment="Top" Height="27" Width="497"/>
     </Grid>
 </Window>

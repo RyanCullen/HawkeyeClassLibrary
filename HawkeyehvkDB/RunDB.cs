@@ -17,7 +17,16 @@ namespace HawkeyehvkDB
             OracleConnection con = new OracleConnection(conString);
             string cmdStr = "SELECT COUNT(*) FROM HVK_RUN WHERE RUN_SIZE = 'L'";
             OracleCommand cmd = new OracleCommand(cmdStr, con);
-            return Convert.ToInt32(cmd.ExecuteScalar());
+            int returned = -1;
+            try
+            {
+                con.Open();
+                returned = Convert.ToInt32(cmd.ExecuteScalar());
+            }
+            finally {
+                con.Close();
+            }
+            return returned;
         }
 
         public int totalRegularRunsDB()
@@ -26,7 +35,18 @@ namespace HawkeyehvkDB
             OracleConnection con = new OracleConnection(conString);
             string cmdStr = "SELECT COUNT(*) FROM HVK_RUN WHERE RUN_SIZE = 'R'";
             OracleCommand cmd = new OracleCommand(cmdStr, con);
-            return Convert.ToInt32(cmd.ExecuteScalar());
+            
+            int returned = -1;
+            try
+            {
+                con.Open();
+                returned = Convert.ToInt32(cmd.ExecuteScalar());
+            }
+            finally
+            {
+                con.Close();
+            }
+            return returned;
         }
 
         public DataSet getReservationCountsDB(DateTime start, DateTime end)
