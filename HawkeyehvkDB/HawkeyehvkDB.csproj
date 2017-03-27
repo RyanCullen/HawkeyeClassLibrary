@@ -66,6 +66,7 @@
       <DependentUpon>Settings.settings</DependentUpon>
     </Compile>
     <Compile Include="ReservationDB.cs" />
+    <Compile Include="RunDB.cs" />
     <Compile Include="ServiceDB.cs" />
     <Compile Include="VaccinationDB.cs" />
     <Compile Include="VetDB.cs" />

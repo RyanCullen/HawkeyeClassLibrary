@@ -28,7 +28,7 @@ namespace testXaml
             //Set Parameters
             Reservation re = new Reservation();
             
-           datagrid.ItemsSource = new DataView(re.numberOfRunsReserved(new DateTime(2017,03,03), new DateTime(2017, 03, 04), 'L').Tables[0]);
+         //  datagrid.ItemsSource = new DataView(re.numberOfRunsReserved(new DateTime(2017,03,03), new DateTime(2017, 03, 04), 'L').Tables[0]);
             //Make Object And Call Method
             //Set datagrid to returned data
           

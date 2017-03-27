@@ -209,10 +209,10 @@ namespace HawkeyehvkBLL
             }
             return runs;
         }
-        public DataSet numberOfRunsReserved(DateTime start, DateTime end, char dogSize)
+        public ReservationCounts getReservationCounts(DateTime start, DateTime end)
         {
-            ReservationDB db = new ReservationDB();
-            return db.numberOfRunsReservedDB(start, end);
+            RunDB db = new RunDB();
+            return new ReservationCounts(db.numberOfRunsReservedDB(start, end).Tables[0].Rows[0]);
         }
 
         private Run convertToRun(DataRow row)
@@ -279,6 +279,22 @@ namespace HawkeyehvkBLL
 
             return returnVal;
         }
-       
+
+        public class ReservationCounts
+        {
+            public int numRegReservations { get; set; }
+
+            public int numLargeReservations { get; set; }
+
+            public int numTotalReservations { get; set; }
+
+            public ReservationCounts(DataRow row)
+            {
+                this.numRegReservations = Convert.ToInt32(row["REGULAR_RESERVATIONS"].ToString());
+                this.numLargeReservations = Convert.ToInt32(row["REGULAR_RESERVATIONS"].ToString());
+                this.numTotalReservations = numRegReservations + numLargeReservations;
+            }
+        }
+
     }
 }
