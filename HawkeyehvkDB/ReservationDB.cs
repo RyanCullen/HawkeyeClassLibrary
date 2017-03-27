@@ -217,20 +217,57 @@ WHERE TEAMHAWKEYE.HVK_RESERVATION.RESERVATION_START_DATE >= :DateParameter";
         //error checking required 
         public int addToReservation(int resNumber , int petNumber) {
 
+
+
             string conString = ConfigurationManager.ConnectionStrings["ConnectionString"].ConnectionString;
             OracleConnection con = new OracleConnection(conString);
+
+            string cmdSelect = @"SELECT RUN_RUN_NUMBER
+FROM            TEAMHAWKEYE.HVK_PET_RESERVATION
+WHERE        (RESERVATION_NUMBER = :ResNumber)";
+
             string cmdStr = @"INSERT INTO TEAMHAWKEYE.HVK_PET_RESERVATION
                          (PET_RES_NUMBER, PET_PET_NUMBER, RES_RESERVATION_NUMBER, RUN_RUN_NUMBER, PR_SHARING_WITH)
-VALUES        (HVK_PET_RES_SEQ.NEXTVAL, :PetNumber, :resNumber, NULL, NULL)";
+VALUES        (HVK_PET_RES_SEQ.NEXTVAL, :PetNumber, :resNumber, :runNumber, NULL)";
 
-            OracleCommand cmd = new OracleCommand(cmdStr, con);
-            cmd.Parameters.Add("PetNumber", resNumber);
-            cmd.Parameters.Add("resNumber", resNumber);
-            OracleDataAdapter da = new OracleDataAdapter(cmd);
-            da.SelectCommand = cmd;
+
+
+
+
+
+            OracleCommand cmd = new OracleCommand(cmdSelect, con);
+            OracleCommand cmd2 = new OracleCommand(cmdStr, con);
+
+            cmd.Parameters.Add("ResNumber", resNumber);
+            OracleDataAdapter da1 = new OracleDataAdapter(cmd);
+            da1.SelectCommand = cmd;
+           
+
+
+
+            try
+            {
+                con.Open();
+                int runNumber = Convert.ToInt16(cmd.ExecuteScalar());
+                cmd2.Parameters.Add("PetNumber", petNumber);
+                cmd2.Parameters.Add("resNumber", resNumber);
+                cmd2.Parameters.Add("runNumber", runNumber);
+
+                OracleDataAdapter da = new OracleDataAdapter(cmd2);
+                da.InsertCommand = cmd2; 
+                cmd.ExecuteNonQuery();
+            }
+            catch
+            {
+                con.Close();
+            }
 
             return 1;
+
+
         }
+
+
 
 
     }
