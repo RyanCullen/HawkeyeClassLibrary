@@ -64,7 +64,7 @@ namespace HawkeyehvkDB
             OracleDataAdapter da = new OracleDataAdapter(cmd);
             da.SelectCommand = cmd;
             DataSet ds = new DataSet("dsReservation");
-            
+            da.Fill(ds);
             return ds;
         }
 
@@ -86,7 +86,7 @@ namespace HawkeyehvkDB
             OracleDataAdapter da = new OracleDataAdapter(cmd);
             da.SelectCommand = cmd;
             DataSet ds = new DataSet("dsActiveReservation");
-
+            da.Fill(ds);
             return ds;
 
         }
@@ -111,7 +111,7 @@ namespace HawkeyehvkDB
             OracleDataAdapter da = new OracleDataAdapter(cmd);
             da.SelectCommand = cmd;
             DataSet ds = new DataSet("dsActiveReservation");
-
+            da.Fill(ds);
             return ds;
 
         }
@@ -139,11 +139,80 @@ WHERE TEAMHAWKEYE.HVK_RESERVATION.RESERVATION_START_DATE >= :DateParameter";
             OracleDataAdapter da = new OracleDataAdapter(cmd);
             da.SelectCommand = cmd;
             DataSet ds = new DataSet("dsActiveReservation");
-
+            da.Fill(ds);
             return ds;
         }
 
+        public void addReservation(int petNum, DateTime startDate, DateTime endDate)
+        {
+            
+            string conString = ConfigurationManager.ConnectionStrings["ConnectionString"].ConnectionString;
+            OracleConnection con = new OracleConnection(conString);
+            string cmdStr = @"INSERT INTO HVK_RESERVATION
+                                (
+                                    RESERVATION_NUMBER, 
+                                    RESERVATION_START_DATE,
+                                    RESERVATION_END_DATE
+                                )
+                                VALUES
+                                (
+                                    HVK_RESERVATION_SEQ.NEXTVAL,
+                                    :start,
+                                    :end,
+                                )";
+            string cmdAddPetRes = @"INSERT INTO HVK_PET_RESERVATION
+                                (
+                                    PET_RES_NUMBER,
+                                    PET_PET_NUMBER,
+                                    RES_RESERVATION_NUMBER
+                                )
+                                VALUES
+                                (
+                                    HVK_PET_RES_SEQ.NEXTVAL,
+                                    :petNum,
+                                    HVK_RESERVATION_SEQ.CURRVAL
+                                )";
 
+            string cmdAddService = @"INSERT INTO HVK_PET_RESERVATION
+                                (
+                                    SERVICE_FREQUENCY,
+                                    PR_PET_RES_NUMBER,
+                                    SERV_SERVICE_NUMBER
+                                )
+                                VALUES
+                                (
+                                    NULL,
+                                    HVK_PET_RES_SEQ.CURRVAL,
+                                    1
+                                )";
+
+            OracleCommand cmd = new OracleCommand(cmdStr, con);
+            cmd.Parameters.Add("start", startDate);
+            cmd.Parameters.Add("end", endDate);
+
+            OracleCommand cmd2 = new OracleCommand(cmdAddPetRes, con);
+            cmd2.Parameters.Add("petNum", cmdAddPetRes);
+            OracleCommand cmd3 = new OracleCommand(cmdAddService, con);
+            
+            OracleDataAdapter da = new OracleDataAdapter(cmd);
+            da.InsertCommand = cmd;
+            OracleDataAdapter da2 = new OracleDataAdapter(cmd2);
+            da2.InsertCommand = cmd2;
+            OracleDataAdapter da3 = new OracleDataAdapter(cmd3);
+            da3.InsertCommand = cmd3;
+
+            try
+            {
+                con.Open();
+                cmd.ExecuteNonQuery();
+                cmd2.ExecuteNonQuery();
+                cmd3.ExecuteNonQuery();
+            }
+            catch
+            {
+                con.Close();
+            }
+        }
 
     }
 }
