@@ -64,7 +64,7 @@ namespace HawkeyehvkBLL
             return petVaccList;
         }
 
-        public List<PetVaccination> listPetVaccinations(int petNum)
+        public List<PetVaccination> listVaccinations(int petNum)
         {
             VaccinationDB vaccDB = new VaccinationDB();
             List<PetVaccination> vaccList = new List<PetVaccination>();
