@@ -208,8 +208,14 @@ WHERE TEAMHAWKEYE.HVK_RESERVATION.RESERVATION_START_DATE >= :DateParameter";
             }
             catch
             {
+                result = -1;
+            }
+            finally
+            {
                 con.Close();
             }
+
+            return result;
         }
         public DataSet listAvailableRunsDB(DateTime start, DateTime end)
         {
