@@ -143,9 +143,9 @@ WHERE TEAMHAWKEYE.HVK_RESERVATION.RESERVATION_START_DATE >= :DateParameter";
             return ds;
         }
 
-        public void addReservation(int petNum, DateTime startDate, DateTime endDate)
+        public int addReservation(int petNum, DateTime startDate, DateTime endDate)
         {
-            
+            int result = 0;
             string conString = ConfigurationManager.ConnectionStrings["ConnectionString"].ConnectionString;
             OracleConnection con = new OracleConnection(conString);
             string cmdStr = @"INSERT INTO HVK_RESERVATION
@@ -210,9 +210,52 @@ WHERE TEAMHAWKEYE.HVK_RESERVATION.RESERVATION_START_DATE >= :DateParameter";
             }
             catch
             {
+                result = -1;
+            }
+            finally
+            {
                 con.Close();
             }
+            return result;
         }
 
+
+        public int changeReservation(int resNum, DateTime startDate, DateTime endDate)
+        {
+            int result = 0;
+            string conString = ConfigurationManager.ConnectionStrings["ConnectionString"].ConnectionString;
+            OracleConnection con = new OracleConnection(conString);
+            string cmdStr = @"INSERT INTO HVK_RESERVATION
+                                (
+                                    RESERVATION_NUMBER, 
+                                    RESERVATION_START_DATE,
+                                    RESERVATION_END_DATE
+                                )
+                                VALUES
+                                (
+                                    HVK_RESERVATION_SEQ.NEXTVAL,
+                                    :start,
+                                    :end,
+                                )";
+            OracleCommand cmd = new OracleCommand(cmdStr, con);
+            cmd.Parameters.Add("start", startDate);
+            cmd.Parameters.Add("end", endDate);
+            OracleDataAdapter da = new OracleDataAdapter(cmd);
+            da.InsertCommand = cmd;
+            try
+            {
+                con.Open();
+                cmd.ExecuteNonQuery();
+            }
+            catch
+            {
+                result = -1;
+            }
+            finally
+            {
+                con.Close(); 
+            }
+            return result;
+        }
     }
 }

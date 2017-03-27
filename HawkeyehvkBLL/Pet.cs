@@ -123,5 +123,11 @@ namespace HawkeyehvkBLL
             }
             return petList;
         }
+
+        public static int checkPetsInRes(int resNum)
+        {
+            PetDB petDB = new PetDB();
+            return petDB.checkPetsInReservation(resNum);
+        }
     }
 }
