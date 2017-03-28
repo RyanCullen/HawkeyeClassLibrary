@@ -72,17 +72,17 @@
     </Compile>
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\HawkeyehvkBLL\HawkeyehvkBLL.csproj">
-      <Project>{8436810a-afb7-435a-a63a-b6ae24568a08}</Project>
-      <Name>HawkeyehvkBLL</Name>
-    </ProjectReference>
-  </ItemGroup>
-  <ItemGroup>
     <None Include="app.config" />
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
       <LastGenOutput>Settings.Designer.cs</LastGenOutput>
     </None>
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\HawkeyehvkBLL\HawkeyehvkBLL.csproj">
+      <Project>{8436810a-afb7-435a-a63a-b6ae24568a08}</Project>
+      <Name>HawkeyehvkBLL</Name>
+    </ProjectReference>
   </ItemGroup>
   <Choose>
     <When Condition="'$(VisualStudioVersion)' == '10.0' And '$(IsCodedUITest)' == 'True'">

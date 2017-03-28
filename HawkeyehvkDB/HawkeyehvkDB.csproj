@@ -48,9 +48,6 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="DiscountDB.cs" />
-    <Compile Include="dsReservation.cs">
-      <DependentUpon>dsReservation.xsd</DependentUpon>
-    </Compile>
     <Compile Include="dsReservation.Designer.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
