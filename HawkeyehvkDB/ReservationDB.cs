@@ -343,5 +343,83 @@ VALUES        (HVK_PET_RES_SEQ.NEXTVAL, :PetNumber, :resNumber, :runNumber, NULL
             }
             return result;
         }
+        public int deleteDogFromReservationDB(int reservationNumber, int dogNumber) {
+            // before using make sure the following scripts are run
+            //Delete from hvk_pet_reservation_discount;
+            //delete from hvk_pet_food;
+            // update sharing with to null
+            int result = 0;
+            string conString = ConfigurationManager.ConnectionStrings["ConnectionString"].ConnectionString;
+            OracleConnection con = new OracleConnection(conString);
+            string cmdStr = @"Delete From hvk_pet_reservation_service
+                            where PR_PET_RES_NUMBER= (select pet_res_number 
+                                                      from hvk_pet_reservation 
+                                                      where RES_RESERVATION_NUMBER = :RESNUM
+                                                      and pet_pet_number = :PETNUM )";
+            string cmdStr2 = @"Delete from hvk_pet_reservation
+                                where RES_RESERVATION_NUMBER = :RESNUM
+                                and pet_pet_number = :PETNUM";
+            string cmdStr3 = @"delete from hvk_reservation where reservation_number in
+                                (select reservation_number from hvk_reservation 
+                                where reservation_number not in (select res_reservation_number 
+                                                                 from hvk_pet_reservation))";
+            OracleCommand cmd = new OracleCommand(cmdStr, con);
+            cmd.Parameters.Add("PETNUM", dogNumber);
+            cmd.Parameters.Add("RESNUM", reservationNumber);
+            OracleCommand cmd2 = new OracleCommand(cmdStr2, con);
+            cmd2.Parameters.Add("PETNUM", dogNumber);
+            cmd2.Parameters.Add("RESNUM", reservationNumber);
+            OracleCommand cmd3 = new OracleCommand(cmdStr3, con);
+
+            OracleDataAdapter da = new OracleDataAdapter(cmd);
+            da.DeleteCommand = cmd;
+            OracleDataAdapter da2 = new OracleDataAdapter(cmd2);
+            da2.DeleteCommand = cmd2;
+            OracleDataAdapter da3 = new OracleDataAdapter(cmd3);
+            da3.DeleteCommand = cmd3;
+
+            try
+            {
+                con.Open();
+                cmd.ExecuteNonQuery();
+                cmd2.ExecuteNonQuery();
+                cmd3.ExecuteNonQuery();
+            }
+            catch
+            {
+                result = -1;
+            }
+            finally
+            {
+                con.Close();
+            }
+
+            return result;
+        }
+        public int cancelReservationDB(int resNum) {
+            // test case in the workings
+            //Delete from hvk_pet_reservation_discount;
+            //delete from hvk_pet_food;
+            //delete from hvk_medication;
+            //Update hvk_pet_reservation
+            //set PR_SHARING_WITH = null;
+
+            //Delete from HVK_RESERVATION_DISCOUNT
+            //where RES_RESERVATION_NUMBER = 100;
+
+            //Delete From hvk_pet_reservation_service
+            //where PR_PET_RES_NUMBER = (select pet_res_number
+            //                           from hvk_pet_reservation
+            //                           where RES_RESERVATION_NUMBER = 100
+            //              and rownum = 0);
+
+            //Delete from hvk_pet_reservation
+            //where RES_RESERVATION_NUMBER = 100;
+
+            //Delete from HVK_Reservation
+            //where RESERVATION_NUMBER = 100;
+
+            return 0;
+        }
     }
 }
