@@ -16,6 +16,7 @@ namespace HawkeyehvkBLL
 
         public DateTime endDate { get; set; }
 
+
         public List<Discount> discountList { get; protected set; }
 
         public List<PetReservation> petReservationList { get; protected set; }
