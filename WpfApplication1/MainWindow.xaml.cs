@@ -26,7 +26,7 @@ namespace WpfApplication1
             HawkeyehvkBLL.Reservation reservation = new HawkeyehvkBLL.Reservation();
             //dataGrid.ItemsSource =  reservation.listReservation(); 
             //dataGrid.ItemsSource = reservation.listReservations(4); 
-            dataGrid.ItemsSource = reservation.listReservations(); 
+            int a  = reservation.addToReservation(603, 30); 
 
         }
     }

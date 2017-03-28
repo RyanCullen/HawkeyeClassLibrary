@@ -297,8 +297,8 @@ INTO TEAMHAWKEYE.HVK_PET_RESERVATION
   VALUES
   (
     HVK_PET_RES_SEQ.NEXTVAL,
-    :PetNumber,
-    :resNumber,
+    :PET_PET_NUMBER,
+    :RES_RESERVATION_NUMBER,
     NULL,
     NULL
   )";
@@ -314,33 +314,34 @@ INTO TEAMHAWKEYE.HVK_PET_RESERVATION
             cmd.Parameters.Add("ResNumber", resNumber);
             OracleDataAdapter da1 = new OracleDataAdapter(cmd);
             da1.SelectCommand = cmd;
-           
 
 
 
-            //try
-            //{
+
+            try
+            {
                 con.Open();
             //if(cmd.ExecuteScalar() != null )
-            //    int runNumber = Convert.ToInt16();
-                cmd2.Parameters.Add("PetNumber", petNumber);
-                cmd2.Parameters.Add("resNumber", resNumber);
+            //    int runNumber = cmd.ExecuteScalar().ToString();
+                cmd2.Parameters.Add("PET_PET_NUMBER", petNumber);
+                cmd2.Parameters.Add("RES_RESERVATION_NUMBER", resNumber);
                 //cmd2.Parameters.Add("runNumber", (cmd.ExecuteScalar() is DBNull) ? null : cmd.ExecuteScalar());
             
 
             OracleDataAdapter da = new OracleDataAdapter(cmd2);
-                da.InsertCommand = cmd2;
-            cmd.ExecuteNonQuery(); 
-            //}
-            //catch
-            //{
-            //    return -1;
-            //}
-            //finally
-            //{
+            da.InsertCommand = cmd2;
+            cmd.ExecuteNonQuery();
+            cmd2.ExecuteNonQuery();
+            }
+            catch
+            {
+                return -1;
+            }
+            finally
+            {
                 con.Close();
 
-            //}
+            }
 
             return 1;
 
