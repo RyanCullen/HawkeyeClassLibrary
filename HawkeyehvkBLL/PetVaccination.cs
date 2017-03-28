@@ -79,11 +79,14 @@ namespace HawkeyehvkBLL
         {
             PetVaccination petVacc = new PetVaccination();
 
-            petVacc.vaccination.vaccinationNumber = Convert.ToInt32(row["VACCINATION_NUMBER"].ToString());
-            petVacc.vaccination.name = row["VACCINATION_NAME"].ToString();
-            petVacc.expirationDate = Convert.ToDateTime(row["VACCINATION_EXPIRY_DATE"].ToString());
-            petVacc.isValidated = Convert.ToChar(row["VACCINATION_CHECKED_STATUS"].ToString());
-
+            petVacc.vaccination.vaccinationNumber = Convert.ToInt32(row["vaccination_number"].ToString());
+            petVacc.vaccination.name = row["vaccination_name"].ToString();
+            string expireDate = row["VACCINATION_EXPIRY_DATE"].ToString();
+            petVacc.expirationDate = (expireDate.Length > 0) ? Convert.ToDateTime(expireDate) : DateTime.MinValue;
+            //petVacc.expirationDate = Convert.ToDateTime(row["VACCINATION_EXPIRY_DATE"].ToString());
+            string valid = row["VACCINATION_CHECKED_STATUS"].ToString();
+            petVacc.isValidated = (valid.Length > 0) ? Convert.ToChar(valid) : 'N';
+            //petVacc.isValidated = Convert.ToChar(row["VACCINATION_CHECKED_STATUS"].ToString());
             return petVacc;
 
         }

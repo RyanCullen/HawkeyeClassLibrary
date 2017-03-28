@@ -80,8 +80,9 @@ namespace HawkeyehvkDB
                               AND PV.VACC_VACCINATION_NUMBER   = V.VACCINATION_NUMBER
                               )";
             OracleCommand cmd = new OracleCommand(cmdStr, con);
-            cmd.Parameters.Add("pet", petNum);
             cmd.Parameters.Add("res", resNum);
+            cmd.Parameters.Add("pet", petNum);
+            
             OracleDataAdapter da = new OracleDataAdapter(cmd);
             da.SelectCommand = cmd;
 

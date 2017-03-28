@@ -27,12 +27,13 @@ namespace testXaml
             InitializeComponent();
             //Set Parameters
             Reservation re = new Reservation();
-            lblNum.Content = "Between march 3rd and 4th 2017 there are : "+re.checkRunAvailability(new DateTime(2017,3,3), new DateTime(2017,3,4), 'L')+" Large Runs Available.";
-
+            //lblNum.Content = "Between march 3rd and 4th 2017 there are : "+re.checkRunAvailability(new DateTime(2017,3,3), new DateTime(2017,3,4), 'L')+" Large Runs Available.";
+           // PetVaccination petVac = new PetVaccination();
+            //lblNum.Content = petVac.checkVaccinations(1, 100)[0].isValidated;
             //Make Object And Call Method
             //Set datagrid or label to returned data
-            Owner own = new Owner();
-            datagrid.ItemsSource = own.listTheOwners(); 
+            PetVaccination petVac = new PetVaccination();
+            datagrid.ItemsSource = petVac.checkVaccinations(9, 999); 
         }
     }
 }
