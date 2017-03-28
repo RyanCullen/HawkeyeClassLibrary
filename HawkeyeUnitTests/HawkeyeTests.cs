@@ -525,7 +525,7 @@ namespace HawkeyeUnitTests
         [TestMethod]
         public void RunAvailability1()
         {
-            Reservation hvk = new Reservation();
+            Run hvk = new Run();
 
             //Input:              2015, 09, 12;
             //                    2017, 1, 31;
@@ -539,7 +539,7 @@ namespace HawkeyeUnitTests
         [TestMethod]
         public void RunAvailability2()
         {
-            Reservation hvk = new Reservation();
+            Run hvk = new Run();
             //Input     2015, 09, 18;
             //          2017, 1, 31;
             //Expected : 0 Run Available 
@@ -557,7 +557,7 @@ namespace HawkeyeUnitTests
         [TestMethod]
         public void RunAvailability3()
         {
-            Reservation hvk = new Reservation();
+            Run hvk = new Run();
             //Input :             2015, 09, 10;
             //                    2017, 1, 31;
             //Expected            0 Run Available 
@@ -573,7 +573,7 @@ namespace HawkeyeUnitTests
         [TestMethod]
         public void RunAvailability4()
         {
-            Reservation hvk = new Reservation();
+            Run hvk = new Run();
             //Input               (2015, 09, 12);
             //                    (2017, 04, 15);
             //Expected            0 Run Available 
@@ -590,7 +590,7 @@ namespace HawkeyeUnitTests
         [TestMethod]
         public void RunAvailability5()
         {
-            Reservation newReservation = new Reservation();
+            Run newReservation = new Run();
             //Input             (2015, 09, 12);
             //                  (2016, 12, 05);
             //Expected          0 Run Available 
@@ -605,7 +605,7 @@ namespace HawkeyeUnitTests
         [TestMethod]
         public void RunAvailability6()
         {
-            Reservation newReservation = new Reservation();
+            Run newReservation = new Run();
             //Input              (2015, 09, 18);
             //                   (2017, 02, 15);
             //Expected           0 Run Available 
@@ -620,7 +620,7 @@ namespace HawkeyeUnitTests
         [TestMethod]
         public void RunAvailability7()
         {
-            Reservation newReservation = new Reservation();
+            Run newReservation = new Run();
             //Happy Path 
             //Start date Greater than Reservation Start Date 
             //End date Greater than Reservation End Date 
@@ -633,7 +633,7 @@ namespace HawkeyeUnitTests
         [TestMethod]
         public void RunAvailability8()
         {
-            Reservation newReservation = new Reservation();
+            Run newReservation = new Run();
             //Input                 (2017, 02, 20);
             //                      (2017, 01, 31);
             //Expected              0 Run Available 
@@ -648,7 +648,7 @@ namespace HawkeyeUnitTests
         [TestMethod]
         public void RunAvailability9()
         {
-            Reservation newReservation = new Reservation();
+            Run newReservation = new Run();
             //Input                     (2015, 09, 10);
             //Expected                  (2017, 02, 15);
             //Expected                  0 Run Available 
@@ -663,7 +663,7 @@ namespace HawkeyeUnitTests
         [TestMethod]
         public void RunAvailability10()
         {
-            Reservation newReservation = new Reservation();
+            Run newReservation = new Run();
             //Input                          (2015, 09, 19);
             //                               (2017, 01, 15);
             //Expected :                      Run Available 
@@ -678,7 +678,7 @@ namespace HawkeyeUnitTests
         [TestMethod]
         public void RunAvailability11()
         {
-            Reservation newReservation = new Reservation();
+            Run newReservation = new Run();
             //Input                            (2015, 09, 10);
             //                                 (2017, 01, 25);
             //Expected :                        0 Run Available 
@@ -699,6 +699,11 @@ namespace HawkeyeUnitTests
             //                   petNumber - 27
             // Expected Result: 0
             Assert.AreEqual(0, hvk.deleteDogFromReservation(140, 27), "Solo dog in reservation didn't return 0");
+            //This should also delete the entire reservation
+            
+
+
+
             // Test Method: Sharing pet in reservation
             // Input Parameters: reservationNumber - 140
             //                   petNumber - 26
@@ -720,17 +725,20 @@ namespace HawkeyeUnitTests
             // Expected Result: 3
             Assert.AreEqual(3, hvk.deleteDogFromReservation(140, 1), "Pet not in reservation didn't return 3");
         }
+        [TestMethod]
+        public void testCancelReservation() {
+
+        }
+
+            /* addToReservation Test Cases  */
+            // reservation# 603 , owner# 17 , pet in reservation 31 , 32 
+            //Input : pet# 30   Expected : 1 row inserted  
 
 
-        /* addToReservation Test Cases  */
-        // reservation# 603 , owner# 17 , pet in reservation 31 , 32 
-        //Input : pet# 30   Expected : 1 row inserted  
 
 
 
-
-
-    }
+        }
 
 
 

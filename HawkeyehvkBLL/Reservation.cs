@@ -245,11 +245,7 @@ namespace HawkeyehvkBLL
             }
             return runs;
         }
-        public ReservationCounts getReservationCounts(DateTime start, DateTime end)
-        {
-            RunDB db = new RunDB();
-            return new ReservationCounts(db.getReservationCountsDB(start, end).Tables[0].Rows[0]);
-        }
+        
 
         private Run convertToRun(DataRow row)
         {
@@ -291,72 +287,38 @@ namespace HawkeyehvkBLL
 
         public int cancelReservation(int reservationNumber)
         {
-
-            return 0;
+            // check reservation number
+            int returned = ReservationDB.cancelReservationDB(reservationNumber);
+            
+            return returned;
         }
 
         public int changeReservation(int reservationNumber, DateTime startDate, DateTime endDate)
         {
-
+            // check reservation number
             return 0;
         }
 
         public int deleteDogFromReservation(int reservationNumber, int petNumber)
         {
-
-            return 0;
+            // check reservation number
+            // check pet number
+            int returned = ReservationDB.deleteDogFromReservationDB(reservationNumber, petNumber);
+            // check that dog is in reservation
+            if (ReservationDB.isDogInReservation(reservationNumber, petNumber)) {
+                return 3;
+            }
+            
+            return returned;
         }
 
         public int checkVaccinations(int petNumber, DateTime byDate)
         {
-
+            // check pet number
             return 0;
         }
 
-        public int checkRunAvailability(DateTime startDate, DateTime endDate, char runSize)
-        {
-            int count = -1;
-           
-            Reservation res = new Reservation();
-            ReservationCounts resc = res.getReservationCounts(startDate, endDate);
-            RunDB run = new RunDB();
-            int totalRunsL = run.totalLargeRunsDB();
-            int totalRunsR = run.totalRegularRunsDB();
-            
 
-
-            if (runSize == 'L') {
-                if ((resc.numRegReservations - totalRunsR) > 0) 
-                { // this will determine if the regular size runs have run out. in which case there may be large runs used for smaller dogs
-                    count = (totalRunsL - (resc.numRegReservations - totalRunsR))-resc.numLargeReservations;// from total large runs take off the large runs already needed (on busiest day) and the overlap from small dogs in big runs
-                }
-                else { // otherwise just subtract the hights on a day from the total.
-                    count = totalRunsL - resc.numLargeReservations;
-                }
-            }
-            else { // if not large return the total number of runs 
-                   // subtracting the highest number of reservations between the entered dates
-                count =  totalRunsL+totalRunsR- resc.numTotalReservations;
-            }
-
-            return count;
-        }
-
-        public class ReservationCounts
-        {
-            public int numRegReservations { get; private set; }
-
-            public int numLargeReservations { get; private set; }
-
-            public int numTotalReservations { get; private set; }
-
-            public ReservationCounts(DataRow row)
-            {
-                this.numRegReservations = Convert.ToInt32(row["REGULAR_RESERVATIONS"].ToString());
-                this.numLargeReservations = Convert.ToInt32(row["LARGE_RESERVATIONS"].ToString());
-                this.numTotalReservations = numRegReservations + numLargeReservations;
-            }
-        }
 
     }
 }

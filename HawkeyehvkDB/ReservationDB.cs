@@ -20,30 +20,30 @@ namespace HawkeyehvkDB
             string conString = ConfigurationManager.ConnectionStrings["ConnectionString"].ConnectionString;
             OracleConnection con = new OracleConnection(conString);
             string cmdStr = @"SELECT RES.RESERVATION_NUMBER,
-  RES.RESERVATION_START_DATE,
-  RES.RESERVATION_END_DATE,
-  PRES.RUN_RUN_NUMBER,
-  PET.PET_NAME,
-  SERV.SERVICE_DESCRIPTION,
-  RES_SERV.SERVICE_FREQUENCY,
-  PET.PET_NUMBER,
-  PET.PET_GENDER,
-  PET.PET_FIXED,
-  PET.PET_BREED,
-  PET.PET_BIRTHDATE,
-  PET.DOG_SIZE,
-  PET.SPECIAL_NOTES,
-  PET.OWN_OWNER_NUMBER
-FROM TEAMHAWKEYE.HVK_RESERVATION RES
-INNER JOIN TEAMHAWKEYE.HVK_PET_RESERVATION PRES
-ON RES.RESERVATION_NUMBER = PRES.RES_RESERVATION_NUMBER
-INNER JOIN TEAMHAWKEYE.HVK_PET PET
-ON PRES.PET_PET_NUMBER = PET.PET_NUMBER
-INNER JOIN TEAMHAWKEYE.HVK_PET_RESERVATION_SERVICE RES_SERV
-ON PRES.PET_RES_NUMBER = RES_SERV.PR_PET_RES_NUMBER
-INNER JOIN TEAMHAWKEYE.HVK_SERVICE SERV
-ON RES_SERV.SERV_SERVICE_NUMBER = SERV.SERVICE_NUMBER
-ORDER BY RES.RESERVATION_NUMBER  ";
+                              RES.RESERVATION_START_DATE,
+                              RES.RESERVATION_END_DATE,
+                              PRES.RUN_RUN_NUMBER,
+                              PET.PET_NAME,
+                              SERV.SERVICE_DESCRIPTION,
+                              RES_SERV.SERVICE_FREQUENCY,
+                              PET.PET_NUMBER,
+                              PET.PET_GENDER,
+                              PET.PET_FIXED,
+                              PET.PET_BREED,
+                              PET.PET_BIRTHDATE,
+                              PET.DOG_SIZE,
+                              PET.SPECIAL_NOTES,
+                              PET.OWN_OWNER_NUMBER
+                            FROM TEAMHAWKEYE.HVK_RESERVATION RES
+                            INNER JOIN TEAMHAWKEYE.HVK_PET_RESERVATION PRES
+                            ON RES.RESERVATION_NUMBER = PRES.RES_RESERVATION_NUMBER
+                            INNER JOIN TEAMHAWKEYE.HVK_PET PET
+                            ON PRES.PET_PET_NUMBER = PET.PET_NUMBER
+                            INNER JOIN TEAMHAWKEYE.HVK_PET_RESERVATION_SERVICE RES_SERV
+                            ON PRES.PET_RES_NUMBER = RES_SERV.PR_PET_RES_NUMBER
+                            INNER JOIN TEAMHAWKEYE.HVK_SERVICE SERV
+                            ON RES_SERV.SERV_SERVICE_NUMBER = SERV.SERVICE_NUMBER
+                            ORDER BY RES.RESERVATION_NUMBER  ";
             OracleCommand cmd = new OracleCommand(cmdStr, con);
 
             OracleDataAdapter da = new OracleDataAdapter(cmd);
@@ -62,31 +62,31 @@ ORDER BY RES.RESERVATION_NUMBER  ";
             string conString = ConfigurationManager.ConnectionStrings["ConnectionString"].ConnectionString;
             OracleConnection con = new OracleConnection(conString);
             string cmdStr = @"SELECT RES.RESERVATION_NUMBER,
-  RES.RESERVATION_START_DATE,
-  RES.RESERVATION_END_DATE,
-  PRES.RUN_RUN_NUMBER,
-  PET.PET_NAME,
-  SERV.SERVICE_DESCRIPTION,
-  RES_SERV.SERVICE_FREQUENCY,
-  PET.PET_NUMBER,
-  PET.PET_GENDER,
-  PET.PET_FIXED,
-  PET.PET_BREED,
-  PET.PET_BIRTHDATE,
-  PET.DOG_SIZE,
-  PET.SPECIAL_NOTES,
-  PET.OWN_OWNER_NUMBER
-FROM TEAMHAWKEYE.HVK_RESERVATION RES
-INNER JOIN TEAMHAWKEYE.HVK_PET_RESERVATION PRES
-ON RES.RESERVATION_NUMBER = PRES.RES_RESERVATION_NUMBER
-INNER JOIN TEAMHAWKEYE.HVK_PET PET
-ON PRES.PET_PET_NUMBER = PET.PET_NUMBER
-INNER JOIN TEAMHAWKEYE.HVK_PET_RESERVATION_SERVICE RES_SERV
-ON PRES.PET_RES_NUMBER = RES_SERV.PR_PET_RES_NUMBER
-INNER JOIN TEAMHAWKEYE.HVK_SERVICE SERV
-ON RES_SERV.SERV_SERVICE_NUMBER = SERV.SERVICE_NUMBER
-WHERE  PET.OWN_OWNER_NUMBER = :OwnerNum
-ORDER BY RES.RESERVATION_NUMBER";
+                              RES.RESERVATION_START_DATE,
+                              RES.RESERVATION_END_DATE,
+                              PRES.RUN_RUN_NUMBER,
+                              PET.PET_NAME,
+                              SERV.SERVICE_DESCRIPTION,
+                              RES_SERV.SERVICE_FREQUENCY,
+                              PET.PET_NUMBER,
+                              PET.PET_GENDER,
+                              PET.PET_FIXED,
+                              PET.PET_BREED,
+                              PET.PET_BIRTHDATE,
+                              PET.DOG_SIZE,
+                              PET.SPECIAL_NOTES,
+                              PET.OWN_OWNER_NUMBER
+                            FROM TEAMHAWKEYE.HVK_RESERVATION RES
+                            INNER JOIN TEAMHAWKEYE.HVK_PET_RESERVATION PRES
+                            ON RES.RESERVATION_NUMBER = PRES.RES_RESERVATION_NUMBER
+                            INNER JOIN TEAMHAWKEYE.HVK_PET PET
+                            ON PRES.PET_PET_NUMBER = PET.PET_NUMBER
+                            INNER JOIN TEAMHAWKEYE.HVK_PET_RESERVATION_SERVICE RES_SERV
+                            ON PRES.PET_RES_NUMBER = RES_SERV.PR_PET_RES_NUMBER
+                            INNER JOIN TEAMHAWKEYE.HVK_SERVICE SERV
+                            ON RES_SERV.SERV_SERVICE_NUMBER = SERV.SERVICE_NUMBER
+                            WHERE  PET.OWN_OWNER_NUMBER = :OwnerNum
+                            ORDER BY RES.RESERVATION_NUMBER";
             OracleCommand cmd = new OracleCommand(cmdStr, con);
             cmd.Parameters.Add("OwnerNum", ownerNumber);
             OracleDataAdapter da = new OracleDataAdapter(cmd);
@@ -109,7 +109,7 @@ ORDER BY RES.RESERVATION_NUMBER";
              TEAMHAWKEYE.HVK_PET PET ON PRES.PET_PET_NUMBER = PET.PET_NUMBER INNER JOIN
              TEAMHAWKEYE.HVK_OWNER OWN ON PET.OWN_OWNER_NUMBER = OWN.OWNER_NUMBER
              WHERE (RES.RESERVATION_START_DATE <= SYSDATE) AND (RES.RESERVATION_END_DATE > SYSDATE) AND (PRES.RUN_RUN_NUMBER IS NOT NULL)
-ORDER BY RES.RESERVATION_NUMBER";
+            ORDER BY RES.RESERVATION_NUMBER";
 
             OracleCommand cmd = new OracleCommand(cmdStr, con);
             OracleDataAdapter da = new OracleDataAdapter(cmd);
@@ -134,7 +134,7 @@ ORDER BY RES.RESERVATION_NUMBER";
              TEAMHAWKEYE.HVK_OWNER OWN ON PET.OWN_OWNER_NUMBER = OWN.OWNER_NUMBER
              WHERE (RES.RESERVATION_START_DATE <= SYSDATE) AND (RES.RESERVATION_END_DATE > SYSDATE) AND (PRES.RUN_RUN_NUMBER IS NOT NULL)
              AND PET.OWN_OWNER_NUMBER = :OWNER_NUMBER 
-ORDER BY RES.RESERVATION_NUMBER";
+                ORDER BY RES.RESERVATION_NUMBER";
 
             OracleCommand cmd = new OracleCommand(cmdStr, con);
             cmd.Parameters.Add("OWNER_NUMBER", ownerNumber);
@@ -152,11 +152,11 @@ ORDER BY RES.RESERVATION_NUMBER";
             string conString = ConfigurationManager.ConnectionStrings["ConnectionString"].ConnectionString;
             OracleConnection con = new OracleConnection(conString);
             string cmdStr = @"SELECT RES.RESERVATION_NUMBER, RES.RESERVATION_START_DATE, RES.RESERVATION_END_DATE, PET.PET_NUMBER,PRES.RUN_RUN_NUMBER, O.OWNER_NUMBER, PET.OWN_OWNER_NUMBER
-FROM   TEAMHAWKEYE.HVK_PET_RESERVATION PRES INNER JOIN
+                FROM   TEAMHAWKEYE.HVK_PET_RESERVATION PRES INNER JOIN
              TEAMHAWKEYE.HVK_RESERVATION RES ON PRES.RES_RESERVATION_NUMBER = RES.RESERVATION_NUMBER INNER JOIN
              TEAMHAWKEYE.HVK_PET PET ON PRES.PET_PET_NUMBER = PET.PET_NUMBER INNER JOIN
              TEAMHAWKEYE.HVK_OWNER O ON PET.OWN_OWNER_NUMBER = O.OWNER_NUMBER 
-WHERE (RES.RESERVATION_START_DATE >= :DateParameter)";
+                WHERE (RES.RESERVATION_START_DATE >= :DateParameter)";
 
             OracleCommand cmd = new OracleCommand(cmdStr, con);
             cmd.Parameters.Add("DateParameter", reservationDate);
@@ -386,7 +386,7 @@ INTO TEAMHAWKEYE.HVK_PET_RESERVATION
             }
             return result;
         }
-        public int deleteDogFromReservationDB(int reservationNumber, int dogNumber) {
+        public static int deleteDogFromReservationDB(int reservationNumber, int dogNumber) {
             // before using make sure the following scripts are run
             //Delete from hvk_pet_reservation_discount;
             //delete from hvk_pet_food;
@@ -439,30 +439,97 @@ INTO TEAMHAWKEYE.HVK_PET_RESERVATION
 
             return result;
         }
-        public int cancelReservationDB(int resNum) {
-            // test case in the workings
+        public static int cancelReservationDB(int resNum) {
             //Delete from hvk_pet_reservation_discount;
             //delete from hvk_pet_food;
             //delete from hvk_medication;
             //Update hvk_pet_reservation
             //set PR_SHARING_WITH = null;
 
-            //Delete from HVK_RESERVATION_DISCOUNT
-            //where RES_RESERVATION_NUMBER = 100;
+            int result = 0;
+            string conString = ConfigurationManager.ConnectionStrings["ConnectionString"].ConnectionString;
+            OracleConnection con = new OracleConnection(conString);
 
-            //Delete From hvk_pet_reservation_service
-            //where PR_PET_RES_NUMBER = (select pet_res_number
-            //                           from hvk_pet_reservation
-            //                           where RES_RESERVATION_NUMBER = 100
-            //              and rownum = 0);
+            string cmdStr=@"Delete from HVK_RESERVATION_DISCOUNT
+            where RES_RESERVATION_NUMBER = :RESERVATION_NUMBER";
 
-            //Delete from hvk_pet_reservation
-            //where RES_RESERVATION_NUMBER = 100;
+            string cmdStr2= @"Delete From hvk_pet_reservation_service
+            where PR_PET_RES_NUMBER in (select pet_res_number
+                                       from hvk_pet_reservation
+                                       where RES_RESERVATION_NUMBER = :RESERVATION_NUMBER
+                                       )";
 
-            //Delete from HVK_Reservation
-            //where RESERVATION_NUMBER = 100;
+            string cmdStr3= @"Delete from hvk_pet_reservation
+            where RES_RESERVATION_NUMBER = :RESERVATION_NUMBER";
 
-            return 0;
+            string cmdStr4= @"Delete from HVK_Reservation
+            where RESERVATION_NUMBER = :RESERVATION_NUMBER";
+
+            
+            OracleCommand cmd = new OracleCommand(cmdStr, con);
+            cmd.Parameters.Add("RESERVATION_NUMBER", resNum);
+            OracleCommand cmd2 = new OracleCommand(cmdStr2, con);
+            cmd2.Parameters.Add("RESERVATION_NUMBER", resNum);
+            OracleCommand cmd3 = new OracleCommand(cmdStr3, con);
+            cmd3.Parameters.Add("RESERVATION_NUMBER", resNum);
+            OracleCommand cmd4 = new OracleCommand(cmdStr4, con);
+            cmd4.Parameters.Add("RESERVATION_NUMBER", resNum);
+
+            OracleDataAdapter da = new OracleDataAdapter(cmd);
+            da.DeleteCommand = cmd;
+            OracleDataAdapter da2 = new OracleDataAdapter(cmd2);
+            da2.DeleteCommand = cmd2;
+            OracleDataAdapter da3 = new OracleDataAdapter(cmd3);
+            da3.DeleteCommand = cmd3;
+            OracleDataAdapter da4 = new OracleDataAdapter(cmd4);
+            da4.DeleteCommand = cmd4;
+
+            try {
+                con.Open();
+                cmd.ExecuteNonQuery();
+                cmd2.ExecuteNonQuery();
+                cmd3.ExecuteNonQuery();
+                cmd4.ExecuteNonQuery();
+            }
+            catch {
+                result = -1;
+            }
+            finally {
+                con.Close();
+            }
+
+
+            return result;
+        }
+        public static bool isDogInReservation(int petNum, int resNum) {
+            
+            string conString = ConfigurationManager.ConnectionStrings["ConnectionString"].ConnectionString;
+            OracleConnection con = new OracleConnection(conString);
+            string cmdStr= @"select count(*) as countOfDogs
+                                from hvk_pet_reservation pr
+                                inner join hvk_reservation r 
+                                on r.reservation_number = pr.RES_RESERVATION_NUMBER
+                                where pr.PET_PET_NUMBER = :PETNUMBER
+                                and r.RESERVATION_NUMBER = :RESNUMBER";
+            OracleCommand cmd = new OracleCommand(cmdStr, con);
+            cmd.CommandType = CommandType.Text;
+            cmd.BindByName = true;
+            cmd.Parameters.Add("PETNUMBER", petNum);
+            cmd.Parameters.Add("RESNUMBER", resNum);
+
+            OracleDataAdapter da = new OracleDataAdapter(cmd);
+            da.SelectCommand = cmd;
+            DataSet ds = new DataSet("DogInRes");
+            da.Fill(ds, "hvk_DogInRes");
+
+            int dog = Convert.ToInt32(ds.Tables[0].Rows[0]["countOfDogs"].ToString());
+            // the above method returns the count of times the dog with input dog number occurs in the reservation
+            // should be 1 or 0 (0 if the dog is not in the reservation)
+
+            if (dog > 0)
+                return true;
+            else
+                return false;
         }
     }
 }
