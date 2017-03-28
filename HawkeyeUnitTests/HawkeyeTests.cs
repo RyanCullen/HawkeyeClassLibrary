@@ -1,6 +1,8 @@
 ﻿using System;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using HawkeyehvkBLL;
+using System.Collections.Generic;
+
 namespace HawkeyeUnitTests
 {
     [TestClass]
@@ -14,14 +16,15 @@ namespace HawkeyeUnitTests
         {
             Owner control = new Owner();
             Assert.AreEqual(19, control.listTheOwners().Count);
+           
         }
         //check that they are last name then first name(relative to your listowners method)
         [TestMethod]
         public void listowners2()
         {
             Owner control = new Owner();
-            Assert.AreEqual("anita", control.listTheOwners()[0].firstName);
-            Assert.AreEqual("alibi", control.listTheOwners()[0].lastName);
+            Assert.AreEqual("Anita", control.listTheOwners()[0].firstName);
+            Assert.AreEqual("Alibi", control.listTheOwners()[0].lastName);
         }
         //returns type list
         [TestMethod]

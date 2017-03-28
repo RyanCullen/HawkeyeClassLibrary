@@ -125,7 +125,7 @@ namespace HawkeyehvkBLL
             return ownerList;
         }
 
-        public Owner fillBox(DataRow theRow)
+        private Owner fillBox(DataRow theRow)
         {
             Owner own = new Owner();
             try
