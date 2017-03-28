@@ -119,18 +119,12 @@ WHERE  PET.OWN_OWNER_NUMBER = :OwnerNum";
         {
             string conString = ConfigurationManager.ConnectionStrings["ConnectionString"].ConnectionString;
             OracleConnection con = new OracleConnection(conString);
-            string cmdStr = @"SELECT TEAMHAWKEYE.HVK_RESERVATION.RESERVATION_NUMBER,
-  TEAMHAWKEYE.HVK_RESERVATION.RESERVATION_START_DATE,
-  TEAMHAWKEYE.HVK_RESERVATION.RESERVATION_END_DATE,
-  TEAMHAWKEYE.HVK_PET.PET_NUMBER,
-  TEAMHAWKEYE.HVK_RUN.RUN_NUMBER,
-  TEAMHAWKEYE.HVK_OWNER.OWNER_NUMBER
-FROM TEAMHAWKEYE.HVK_OWNER
-INNER JOIN TEAMHAWKEYE.HVK_PET
-ON TEAMHAWKEYE.HVK_OWNER.OWNER_NUMBER = TEAMHAWKEYE.HVK_PET.OWN_OWNER_NUMBER,
-  TEAMHAWKEYE.HVK_RESERVATION,
-  TEAMHAWKEYE.HVK_RUN
-WHERE TEAMHAWKEYE.HVK_RESERVATION.RESERVATION_START_DATE >= :DateParameter";
+            string cmdStr = @"SELECT RES.RESERVATION_NUMBER, RES.RESERVATION_START_DATE, RES.RESERVATION_END_DATE, PET.PET_NUMBER,PRES.RUN_RUN_NUMBER, O.OWNER_NUMBER, PET.OWN_OWNER_NUMBER
+FROM   TEAMHAWKEYE.HVK_PET_RESERVATION PRES INNER JOIN
+             TEAMHAWKEYE.HVK_RESERVATION RES ON PRES.RES_RESERVATION_NUMBER = RES.RESERVATION_NUMBER INNER JOIN
+             TEAMHAWKEYE.HVK_PET PET ON PRES.PET_PET_NUMBER = PET.PET_NUMBER INNER JOIN
+             TEAMHAWKEYE.HVK_OWNER O ON PET.OWN_OWNER_NUMBER = O.OWNER_NUMBER 
+WHERE (RES.RESERVATION_START_DATE >= :DateParameter)";
 
             OracleCommand cmd = new OracleCommand(cmdStr, con);
             cmd.Parameters.Add("DateParameter", reservationDate);
@@ -342,6 +336,84 @@ VALUES        (HVK_PET_RES_SEQ.NEXTVAL, :PetNumber, :resNumber, :runNumber, NULL
                 con.Close(); 
             }
             return result;
+        }
+        public int deleteDogFromReservationDB(int reservationNumber, int dogNumber) {
+            // before using make sure the following scripts are run
+            //Delete from hvk_pet_reservation_discount;
+            //delete from hvk_pet_food;
+            // update sharing with to null
+            int result = 0;
+            string conString = ConfigurationManager.ConnectionStrings["ConnectionString"].ConnectionString;
+            OracleConnection con = new OracleConnection(conString);
+            string cmdStr = @"Delete From hvk_pet_reservation_service
+                            where PR_PET_RES_NUMBER= (select pet_res_number 
+                                                      from hvk_pet_reservation 
+                                                      where RES_RESERVATION_NUMBER = :RESNUM
+                                                      and pet_pet_number = :PETNUM )";
+            string cmdStr2 = @"Delete from hvk_pet_reservation
+                                where RES_RESERVATION_NUMBER = :RESNUM
+                                and pet_pet_number = :PETNUM";
+            string cmdStr3 = @"delete from hvk_reservation where reservation_number in
+                                (select reservation_number from hvk_reservation 
+                                where reservation_number not in (select res_reservation_number 
+                                                                 from hvk_pet_reservation))";
+            OracleCommand cmd = new OracleCommand(cmdStr, con);
+            cmd.Parameters.Add("PETNUM", dogNumber);
+            cmd.Parameters.Add("RESNUM", reservationNumber);
+            OracleCommand cmd2 = new OracleCommand(cmdStr2, con);
+            cmd2.Parameters.Add("PETNUM", dogNumber);
+            cmd2.Parameters.Add("RESNUM", reservationNumber);
+            OracleCommand cmd3 = new OracleCommand(cmdStr3, con);
+
+            OracleDataAdapter da = new OracleDataAdapter(cmd);
+            da.DeleteCommand = cmd;
+            OracleDataAdapter da2 = new OracleDataAdapter(cmd2);
+            da2.DeleteCommand = cmd2;
+            OracleDataAdapter da3 = new OracleDataAdapter(cmd3);
+            da3.DeleteCommand = cmd3;
+
+            try
+            {
+                con.Open();
+                cmd.ExecuteNonQuery();
+                cmd2.ExecuteNonQuery();
+                cmd3.ExecuteNonQuery();
+            }
+            catch
+            {
+                result = -1;
+            }
+            finally
+            {
+                con.Close();
+            }
+
+            return result;
+        }
+        public int cancelReservationDB(int resNum) {
+            // test case in the workings
+            //Delete from hvk_pet_reservation_discount;
+            //delete from hvk_pet_food;
+            //delete from hvk_medication;
+            //Update hvk_pet_reservation
+            //set PR_SHARING_WITH = null;
+
+            //Delete from HVK_RESERVATION_DISCOUNT
+            //where RES_RESERVATION_NUMBER = 100;
+
+            //Delete From hvk_pet_reservation_service
+            //where PR_PET_RES_NUMBER = (select pet_res_number
+            //                           from hvk_pet_reservation
+            //                           where RES_RESERVATION_NUMBER = 100
+            //              and rownum = 0);
+
+            //Delete from hvk_pet_reservation
+            //where RES_RESERVATION_NUMBER = 100;
+
+            //Delete from HVK_Reservation
+            //where RESERVATION_NUMBER = 100;
+
+            return 0;
         }
     }
 }

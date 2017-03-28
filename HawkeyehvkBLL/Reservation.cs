@@ -16,6 +16,7 @@ namespace HawkeyehvkBLL
 
         public DateTime endDate { get; set; }
 
+
         public List<Discount> discountList { get; protected set; }
 
         public List<PetReservation> petReservationList { get; protected set; }
@@ -135,25 +136,39 @@ namespace HawkeyehvkBLL
         public List<Reservation> fillReservation(DataSet ds )
         {
             Reservation res = new Reservation();
-            List<Reservation> resList = new List<Reservation>(); 
+            List<Reservation> resList = new List<Reservation>();
             for (int i = 0; i < ds.Tables[0].Rows.Count; i++) {
 
                 try
                 {
-                    //Retrieve pet info , owner # , reservation detail 
-                    res.reservationNumber = Convert.ToInt32(ds.Tables[0].Rows[i]["RESERVATION_NUMBER"]);
-                    res.startDate = DateTime.Parse(ds.Tables[0].Rows[i]["RESERVATION_START_DATE"].ToString());
-                    res.endDate = DateTime.Parse(ds.Tables[0].Rows[i]["RESERVATION_END_DATE"].ToString());
-                    res.petReservationList.Add(new PetReservation());
-                    res.owner.ownerNumber = Convert.ToInt16(ds.Tables[0].Rows[i]["OWN_OWNER_NUMBER"].ToString());
-                    res.petReservationList[i].pet.petNumber = Convert.ToInt16(ds.Tables[0].Rows[i]["PET_NUMBER"].ToString());
-                   // res.petReservationList[i].run.runNumber = Convert.ToInt16(ds.Tables[0].Rows[i]["RUN_RUN_NUMBER"].ToString());
-                    resList.Add(res); 
+                    if (i != 0 && (Convert.ToInt32(ds.Tables[0].Rows[i]["RESERVATION_NUMBER"]) == Convert.ToInt32(ds.Tables[0].Rows[i - 1]["RESERVATION_NUMBER"]))) {
+                        res.petReservationList.Add(new PetReservation());
+                        res.petReservationList[res.petReservationList.Count - 1].pet.petNumber = Convert.ToInt16(ds.Tables[0].Rows[i]["PET_NUMBER"].ToString());
+                        // res.petReservationList[i].run.runNumber = Convert.ToInt16(ds.Tables[0].Rows[i]["RUN_RUN_NUMBER"].ToString());
+
+                    }
+                    else
+                    {
+
+                        //Retrieve pet info , owner # , reservation detail 
+                        res.reservationNumber = Convert.ToInt32(ds.Tables[0].Rows[i]["RESERVATION_NUMBER"]);
+                        res.startDate = DateTime.Parse(ds.Tables[0].Rows[i]["RESERVATION_START_DATE"].ToString());
+                        res.endDate = DateTime.Parse(ds.Tables[0].Rows[i]["RESERVATION_END_DATE"].ToString());
+                        res.petReservationList.Add(new PetReservation());
+                        res.owner.ownerNumber = Convert.ToInt16(ds.Tables[0].Rows[i]["OWN_OWNER_NUMBER"].ToString());
+                        res.petReservationList[res.petReservationList.Count - 1].pet.petNumber = Convert.ToInt16(ds.Tables[0].Rows[i]["PET_NUMBER"].ToString());
+                        // res.petReservationList[i].run.runNumber = Convert.ToInt16(ds.Tables[0].Rows[i]["RUN_RUN_NUMBER"].ToString());
+                        resList.Add(res);
+                        res = new Reservation();
+
+
+                    }
 
                 }
-                catch
+                catch (Exception e)
                 {
-                    Console.Write("Error");
+                    Console.WriteLine(e.ToString());
+
                 }
 
             }
@@ -171,22 +186,43 @@ namespace HawkeyehvkBLL
             {
 
                 try
+
                 {
-                    //Retrieve pet info , owner # , reservation detail 
-                    res.reservationNumber = Convert.ToInt32(ds.Tables[0].Rows[i]["RESERVATION_NUMBER"]);
-                    res.startDate = DateTime.Parse(ds.Tables[0].Rows[i]["RESERVATION_START_DATE"].ToString());
-                    res.endDate = DateTime.Parse(ds.Tables[0].Rows[i]["RESERVATION_END_DATE"].ToString());
-                    res.petReservationList.Add(new PetReservation());
-                    res.owner.ownerNumber = Convert.ToInt16(ds.Tables[0].Rows[i]["OWN_OWNER_NUMBER"].ToString());
-                    res.petReservationList[i].pet.name = ds.Tables[0].Rows[i]["PET_NAME"].ToString();
-                    res.petReservationList[i].pet.breed = ds.Tables[0].Rows[i]["pet_breed"].ToString();
-                    res.petReservationList[i].pet.size = Convert.ToChar(ds.Tables[0].Rows[i]["dog_size"].ToString());
-                    res.petReservationList[i].pet.isFixed = Convert.ToChar(ds.Tables[i].Rows[i]["pet_fixed"]);
-                    res.petReservationList[i].pet.petNumber = Convert.ToInt16(ds.Tables[0].Rows[i]["PET_NAME"].ToString());
-                    res.petReservationList[i].pet.notes = ds.Tables[0].Rows[i]["SPECIAL_NOTES"].ToString();
-                    res.petReservationList[i].pet.gender = Convert.ToChar(ds.Tables[0].Rows[i]["PET_GENDER"].ToString());
-                    res.petReservationList[i].run.runNumber = Convert.ToInt16(ds.Tables[0].Rows[i]["RUN_RUN_NUMBER"].ToString());
-                    resList.Add(res);
+
+                    if (i != 0 && (Convert.ToInt32(ds.Tables[0].Rows[i]["RESERVATION_NUMBER"]) == Convert.ToInt32(ds.Tables[0].Rows[i - 1]["RESERVATION_NUMBER"])))
+                    {
+                        int tempIndex = res.petReservationList.Count - 1;
+                        res.petReservationList.Add(new PetReservation());
+                        res.petReservationList[tempIndex].pet.name = ds.Tables[0].Rows[i]["PET_NAME"].ToString();
+                        res.petReservationList[tempIndex].pet.breed = ds.Tables[0].Rows[i]["pet_breed"].ToString();
+                        res.petReservationList[tempIndex].pet.size = Convert.ToChar(ds.Tables[0].Rows[i]["dog_size"].ToString());
+                        res.petReservationList[tempIndex].pet.isFixed = Convert.ToChar(ds.Tables[i].Rows[i]["pet_fixed"]);
+                        res.petReservationList[tempIndex].pet.petNumber = Convert.ToInt16(ds.Tables[0].Rows[i]["PET_NAME"].ToString());
+                        res.petReservationList[tempIndex].pet.notes = ds.Tables[0].Rows[i]["SPECIAL_NOTES"].ToString();
+                        res.petReservationList[tempIndex].pet.gender = Convert.ToChar(ds.Tables[0].Rows[i]["PET_GENDER"].ToString());
+                        res.petReservationList[tempIndex].run.runNumber = Convert.ToInt16(ds.Tables[0].Rows[i]["RUN_RUN_NUMBER"].ToString());
+                    }
+                    else
+                    {
+                        //Retrieve pet info , owner # , reservation detail 
+                        res.reservationNumber = Convert.ToInt32(ds.Tables[0].Rows[i]["RESERVATION_NUMBER"]);
+                        res.startDate = DateTime.Parse(ds.Tables[0].Rows[i]["RESERVATION_START_DATE"].ToString());
+                        res.endDate = DateTime.Parse(ds.Tables[0].Rows[i]["RESERVATION_END_DATE"].ToString());
+                        res.petReservationList.Add(new PetReservation());
+                        res.owner.ownerNumber = Convert.ToInt16(ds.Tables[0].Rows[i]["OWN_OWNER_NUMBER"].ToString());
+                        res.petReservationList[i].pet.name = ds.Tables[0].Rows[i]["PET_NAME"].ToString();
+                        res.petReservationList[i].pet.breed = ds.Tables[0].Rows[i]["pet_breed"].ToString();
+                        res.petReservationList[i].pet.size = Convert.ToChar(ds.Tables[0].Rows[i]["dog_size"].ToString());
+                        res.petReservationList[i].pet.isFixed = Convert.ToChar(ds.Tables[i].Rows[i]["pet_fixed"]);
+                        res.petReservationList[i].pet.petNumber = Convert.ToInt16(ds.Tables[0].Rows[i]["PET_NAME"].ToString());
+                        res.petReservationList[i].pet.notes = ds.Tables[0].Rows[i]["SPECIAL_NOTES"].ToString();
+                        res.petReservationList[i].pet.gender = Convert.ToChar(ds.Tables[0].Rows[i]["PET_GENDER"].ToString());
+                        res.petReservationList[i].run.runNumber = Convert.ToInt16(ds.Tables[0].Rows[i]["RUN_RUN_NUMBER"].ToString());
+                        resList.Add(res);
+                        res = new Reservation();
+                    }
+
+                      
 
                 }
                 catch
