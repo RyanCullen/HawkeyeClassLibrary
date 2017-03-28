@@ -40,8 +40,8 @@ namespace HawkeyeUnitTests
         public void listPets1()
         {
            
-            Assert.AreEqual(6, Pet.listPets(2)[0].petNumber);
-            Assert.AreEqual(3, Pet.listPets(2)[1].petNumber);
+            Assert.AreEqual(3, Pet.listPets(2)[0].petNumber);
+            Assert.AreEqual(6, Pet.listPets(2)[1].petNumber);
         }
 
         //Test with owner with 0 pets(Owner 14)
@@ -168,11 +168,12 @@ namespace HawkeyeUnitTests
         }
 
         //Invalid Pet Number
+        //Require Probe
         [TestMethod]
         public void listVaccination3()
         {
             PetVaccination control = new PetVaccination();
-            Assert.AreEqual(null, control.listVaccinations(0000));
+            Assert.AreEqual(0, control.listVaccinations(0000).Count);
         }
 
         //No Vaccination
@@ -184,19 +185,21 @@ namespace HawkeyeUnitTests
         }
 
         //Invalid Pet Number 
+        //Needs Probe***
         [TestMethod]
         public void checkVaccination1()
         {
             PetVaccination control = new PetVaccination();
-            Assert.AreEqual(null, control.checkVaccinations(100, 0000));
+            Assert.AreEqual(0, control.checkVaccinations(100, 0000).Count);
         }
 
         //Invalid Reservation Number 
+        //Needs Probe ***
         [TestMethod]
         public void checkVaccination2()
         {
             PetVaccination control = new PetVaccination();
-            Assert.AreEqual(null, control.checkVaccinations(00000, 1));
+            Assert.AreEqual(0, control.checkVaccinations(00000, 1).Count);
         }
 
 
@@ -205,7 +208,7 @@ namespace HawkeyeUnitTests
         public void checkVaccination3()
         {
             PetVaccination control = new PetVaccination();
-            Assert.AreEqual(0, control.checkVaccinations(108, 3).Count);
+            Assert.AreEqual(0, control.checkVaccinations(3, 108).Count);
         }
 
         //Not Valid Vaccination - return 6 
@@ -213,7 +216,7 @@ namespace HawkeyeUnitTests
         public void checkVaccination4()
         {
             PetVaccination control = new PetVaccination();
-            Assert.AreEqual(6, control.checkVaccinations(100, 1).Count);
+            Assert.AreEqual(6, control.checkVaccinations(1, 100).Count);
         }
 
 
@@ -222,15 +225,15 @@ namespace HawkeyeUnitTests
         public void checkVaccination5()
         {
             PetVaccination control = new PetVaccination();
-            Assert.AreNotEqual(0, control.checkVaccinations(115, 6).Count);
+            Assert.AreNotEqual(0, control.checkVaccinations(6, 115).Count);
         }
 
-        //Pet with expired and unchecked vaccines
+        //Pet with non expired and unchecked vaccines
         [TestMethod]
         public void checkVaccination6()
         {
             PetVaccination control = new PetVaccination();
-            Assert.AreNotEqual(0, control.checkVaccinations(999, 9).Count);
+            Assert.AreEqual(6, control.checkVaccinations(9, 708).Count);
         }
 
 
@@ -239,7 +242,7 @@ namespace HawkeyeUnitTests
         public void checkVaccination7()
         {
             PetVaccination control = new PetVaccination();
-            Assert.AreNotEqual(0, control.checkVaccinations(620, 7).Count);
+            Assert.AreEqual(6, control.checkVaccinations(7, 620).Count);
         }
 
 
