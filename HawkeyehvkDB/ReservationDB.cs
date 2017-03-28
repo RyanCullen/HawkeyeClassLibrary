@@ -277,13 +277,27 @@ WHERE (RES.RESERVATION_START_DATE >= :DateParameter)";
             string conString = ConfigurationManager.ConnectionStrings["ConnectionString"].ConnectionString;
             OracleConnection con = new OracleConnection(conString);
 
-            string cmdSelect = @"SELECT RUN_RUN_NUMBER
-FROM            TEAMHAWKEYE.HVK_PET_RESERVATION
-WHERE        (RESERVATION_NUMBER = :ResNumber)";
+            string cmdSelect = @" SELECT RUN_RUN_NUMBER
+FROM   TEAMHAWKEYE.HVK_PET_RESERVATION
+WHERE RES_RESERVATION_NUMBER = :ResNumber";
 
-            string cmdStr = @"INSERT INTO TEAMHAWKEYE.HVK_PET_RESERVATION
-                         (PET_RES_NUMBER, PET_PET_NUMBER, RES_RESERVATION_NUMBER, RUN_RUN_NUMBER, PR_SHARING_WITH)
-VALUES        (HVK_PET_RES_SEQ.NEXTVAL, :PetNumber, :resNumber, :runNumber, NULL)";
+            string cmdStr = @"INSERT
+INTO TEAMHAWKEYE.HVK_PET_RESERVATION
+  (
+    PET_RES_NUMBER,
+    PET_PET_NUMBER,
+    RES_RESERVATION_NUMBER,
+    RUN_RUN_NUMBER,
+    PR_SHARING_WITH
+  )
+  VALUES
+  (
+    HVK_PET_RES_SEQ.NEXTVAL,
+    :PetNumber,
+    :resNumber,
+    NULL,
+    NULL
+  )";
 
 
 
@@ -300,27 +314,29 @@ VALUES        (HVK_PET_RES_SEQ.NEXTVAL, :PetNumber, :resNumber, :runNumber, NULL
 
 
 
-            try
-            {
+            //try
+            //{
                 con.Open();
-                int runNumber = Convert.ToInt16(cmd.ExecuteScalar());
+            //if(cmd.ExecuteScalar() != null )
+            //    int runNumber = Convert.ToInt16();
                 cmd2.Parameters.Add("PetNumber", petNumber);
                 cmd2.Parameters.Add("resNumber", resNumber);
-                cmd2.Parameters.Add("runNumber", runNumber);
+                //cmd2.Parameters.Add("runNumber", (cmd.ExecuteScalar() is DBNull) ? null : cmd.ExecuteScalar());
+            
 
-                OracleDataAdapter da = new OracleDataAdapter(cmd2);
-                da.InsertCommand = cmd2; 
-                cmd.ExecuteNonQuery();
-            }
-            catch
-            {
-                return -1;
-            }
-            finally
-            {
+            OracleDataAdapter da = new OracleDataAdapter(cmd2);
+                da.InsertCommand = cmd2;
+            cmd.ExecuteNonQuery(); 
+            //}
+            //catch
+            //{
+            //    return -1;
+            //}
+            //finally
+            //{
                 con.Close();
 
-            }
+            //}
 
             return 1;
 

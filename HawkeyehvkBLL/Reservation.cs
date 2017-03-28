@@ -274,8 +274,19 @@ namespace HawkeyehvkBLL
 
         public int addToReservation(int reservationNumber, int petNumber)
         {
+            ReservationDB db = new ReservationDB();
+            //try
+            //{
+                db.addToReservationDB(reservationNumber, petNumber);
+                return 1;
+            //}
+            //catch
+            //{
+            //    //Exception msg goes here 
+            //    return -1; 
+            //}
 
-            return 0;
+
         }
 
         public int cancelReservation(int reservationNumber)

@@ -1021,16 +1021,16 @@ FROM            TEAMHAWKEYE.HVK_RESERVATION RES INNER JOIN
             this._commandCollection[6].Parameters.Add(param);
             this._commandCollection[7] = new global::Oracle.ManagedDataAccess.Client.OracleCommand();
             this._commandCollection[7].Connection = this.Connection;
-            this._commandCollection[7].CommandText = "SELECT        RUN_RUN_NUMBER\r\nFROM            TEAMHAWKEYE.HVK_PET_RESERVATION\r\nWH" +
-                "ERE        (RUN_RUN_NUMBER = :RunNumber)";
+            this._commandCollection[7].CommandText = "SELECT RUN_RUN_NUMBER\r\nFROM   TEAMHAWKEYE.HVK_PET_RESERVATION\r\nWHERE RES_RESERVAT" +
+                "ION_NUMBER = :ResNum";
             this._commandCollection[7].CommandType = global::System.Data.CommandType.Text;
             param = new global::Oracle.ManagedDataAccess.Client.OracleParameter();
-            param.ParameterName = ":RunNumber";
+            param.ParameterName = ":ResNum";
             param.DbType = global::System.Data.DbType.Decimal;
             param.OracleDbTypeEx = global::Oracle.ManagedDataAccess.Client.OracleDbType.Decimal;
             param.Size = 22;
             param.IsNullable = true;
-            param.SourceColumn = "RUN_RUN_NUMBER";
+            param.SourceColumn = "RES_RESERVATION_NUMBER";
             this._commandCollection[7].Parameters.Add(param);
         }
         
@@ -1330,14 +1330,9 @@ FROM            TEAMHAWKEYE.HVK_RESERVATION RES INNER JOIN
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
         [global::System.ComponentModel.Design.HelpKeywordAttribute("vs.data.TableAdapter")]
-        public virtual global::System.Nullable<int> ScalarQuery(global::System.Nullable<decimal> RunNumber) {
+        public virtual object ScalarQuery(decimal ResNum) {
             global::Oracle.ManagedDataAccess.Client.OracleCommand command = this.CommandCollection[7];
-            if ((RunNumber.HasValue == true)) {
-                command.Parameters[0].Value = ((decimal)(RunNumber.Value));
-            }
-            else {
-                command.Parameters[0].Value = global::System.DBNull.Value;
-            }
+            command.Parameters[0].Value = ((decimal)(ResNum));
             global::System.Data.ConnectionState previousConnectionState = command.Connection.State;
             if (((command.Connection.State & global::System.Data.ConnectionState.Open) 
                         != global::System.Data.ConnectionState.Open)) {
@@ -1354,10 +1349,10 @@ FROM            TEAMHAWKEYE.HVK_RESERVATION RES INNER JOIN
             }
             if (((returnValue == null) 
                         || (returnValue.GetType() == typeof(global::System.DBNull)))) {
-                return new global::System.Nullable<int>();
+                return null;
             }
             else {
-                return new global::System.Nullable<int>(((int)(returnValue)));
+                return ((object)(returnValue));
             }
         }
     }
