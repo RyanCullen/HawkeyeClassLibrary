@@ -440,12 +440,6 @@ INTO TEAMHAWKEYE.HVK_PET_RESERVATION
             return result;
         }
         public static int cancelReservationDB(int resNum) {
-            //Delete from hvk_pet_reservation_discount;
-            //delete from hvk_pet_food;
-            //delete from hvk_medication;
-            //Update hvk_pet_reservation
-            //set PR_SHARING_WITH = null;
-
             int result = 0;
             string conString = ConfigurationManager.ConnectionStrings["ConnectionString"].ConnectionString;
             OracleConnection con = new OracleConnection(conString);
@@ -512,20 +506,20 @@ INTO TEAMHAWKEYE.HVK_PET_RESERVATION
                                 where pr.PET_PET_NUMBER = :PETNUMBER
                                 and r.RESERVATION_NUMBER = :RESNUMBER";
             OracleCommand cmd = new OracleCommand(cmdStr, con);
-            cmd.CommandType = CommandType.Text;
-            cmd.BindByName = true;
             cmd.Parameters.Add("PETNUMBER", petNum);
             cmd.Parameters.Add("RESNUMBER", resNum);
-
-            OracleDataAdapter da = new OracleDataAdapter(cmd);
-            da.SelectCommand = cmd;
-            DataSet ds = new DataSet("DogInRes");
-            da.Fill(ds, "hvk_DogInRes");
-            
-            int dog = Convert.ToInt32(ds.Tables["hvk_DogInRes"].Rows[0]["countOfDogs"].ToString());
-            // the above method returns the count of times the dog with input dog number occurs in the reservation
-            // should be 1 or 0 (0 if the dog is not in the reservation)
-
+            int dog;
+            try {
+                con.Open();
+                dog = Convert.ToInt32(cmd.ExecuteScalar());
+                
+            }
+            catch {
+                dog = 0;
+            }
+            finally {
+                con.Close();
+            }
             if (dog > 0)
                 return true;
             else
