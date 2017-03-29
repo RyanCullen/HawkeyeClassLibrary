@@ -67,6 +67,30 @@ GROUP BY OWNER_NUMBER
 
         }
 
+        public int searchReservationDB(int resNum)
+        {
+            string cmdStr = @"SELECT COUNT(*)
+FROM HVK_RESERVATION
+WHERE
+OWNER_NUMBER = :RESERVATION_NUMBER
+GROUP BY RESERVATION_NUMBER
+";
+
+            return searchDB(cmdStr, "RESERVATION_NUMBER", resNum);
+        }
+
+
+        public int searchVaccDB(int vacNum)
+        {
+            string cmdStr = @"SELECT COUNT(*)
+FROM HVK_VACCINATION
+WHERE
+VACCINATION_NUMBER = :VACCINATION_NUMBER
+GROUP BY VACCINATION_NUMBER
+";
+
+            return searchDB(cmdStr, "VACCINATION_NUMBER", vacNum);
+        }
 
 
     }
