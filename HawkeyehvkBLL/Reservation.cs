@@ -318,7 +318,10 @@ namespace HawkeyehvkBLL
                 }
                 else if (!search.validateReservationNumber(reservationNumber))
                 {
-                    return -2;  
+                    return -2;
+                } else if (!search.validateReservationForPet(petNumber))
+                {
+                    return -3;
                 }
                 else
                 {

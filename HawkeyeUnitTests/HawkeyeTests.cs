@@ -108,7 +108,7 @@ namespace HawkeyeUnitTests
         [TestMethod]
         public void listActiveReservations1()
         {
-            Reservation control = new Reservation();
+            Reservation control = new Reservation(); 
             Assert.AreNotEqual(0, control.listActiveReservations().Count);
         }
 
@@ -386,7 +386,7 @@ namespace HawkeyeUnitTests
                 //pet number: 7 
                 //reservation:631 
                 //  Expected: 2 (Error pet has reservation at that time already)
-             //   Assert.AreEqual(2, control.addToReservation(631, 7), "Pet has reservation during those days");
+             Assert.AreEqual(-3, control.addToReservation(631, 7), "Pet has reservation during those days");
 
 
                 // invalid reservation number
@@ -402,7 +402,7 @@ namespace HawkeyeUnitTests
                 // pet number:  6
                 // 
                 //Expected: success (1)
-               // Assert.AreEqual(1, control.addToReservation(108, 6), "Happy Path");
+               //Assert.AreEqual(1, control.addToReservation(, ), "Happy Path");
 
 
                 //pets from different owners
@@ -411,8 +411,8 @@ namespace HawkeyeUnitTests
                 // reservation number: 108
                 // pet number:  1
                 // 
-                //Expected: 4 (dogs not from same owner)
-                //Assert.AreEqual(4, control.addToReservation(108, 1), "pets from different owners");
+                //Expected: -2 (dogs not from same owner)
+                Assert.AreEqual(-2, control.addToReservation(108, 1), "pets from different owners");
 
 
 
