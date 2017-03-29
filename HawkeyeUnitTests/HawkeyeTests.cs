@@ -700,7 +700,7 @@ namespace HawkeyeUnitTests
             // Expected Result: 0
             Assert.AreEqual(0, hvk.deleteDogFromReservation(108, 3), "Solo dog in reservation didn't return 0");
             //This should also delete the entire reservation
-            
+            //hvk.listReservations().ForEach()
 
 
             // Test Method: Sharing pet in reservation
@@ -727,7 +727,8 @@ namespace HawkeyeUnitTests
         }
         [TestMethod]
         public void testCancelReservation() {
-
+            Reservation hvk = new Reservation();
+            Assert.AreEqual(0, hvk.cancelReservation(108), "cancel reservation 108 not succesful.");
         }
 
         /* addToReservation Test Cases  */
