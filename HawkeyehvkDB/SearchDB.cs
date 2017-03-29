@@ -48,6 +48,7 @@ namespace HawkeyehvkDB
                                 WHERE (R.RESERVATION_START_DATE BETWEEN :start AND :end OR R.RESERVATION_END_DATE BETWEEN :start AND :end)
                                 AND PR.PET_PET_NUMBER = :petNum";
             OracleCommand cmd = new OracleCommand(cmdStr, con);
+            cmd.BindByName = true;
             cmd.Parameters.Add("start", startDate);
             cmd.Parameters.Add("end", endDate);
             cmd.Parameters.Add("petNum", petNumber);
@@ -59,8 +60,9 @@ namespace HawkeyehvkDB
                 con.Open();
                 return Convert.ToInt16(cmd.ExecuteScalar());
             }
-            catch
+            catch(Exception e)
             {
+                Console.Write(e);
                 return -1;
             }
             finally

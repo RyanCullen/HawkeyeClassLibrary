@@ -182,7 +182,7 @@ namespace HawkeyehvkDB
                                 (
                                     HVK_RESERVATION_SEQ.NEXTVAL,
                                     :start,
-                                    :end,
+                                    :end
                                 )";
             string cmdAddPetRes = @"INSERT INTO HVK_PET_RESERVATION
                                 (
@@ -197,7 +197,7 @@ namespace HawkeyehvkDB
                                     HVK_RESERVATION_SEQ.CURRVAL
                                 )";
 
-            string cmdAddService = @"INSERT INTO HVK_PET_RESERVATION
+            string cmdAddService = @"INSERT INTO HVK_PET_RESERVATION_SERVICE
                                 (
                                     SERVICE_FREQUENCY,
                                     PR_PET_RES_NUMBER,

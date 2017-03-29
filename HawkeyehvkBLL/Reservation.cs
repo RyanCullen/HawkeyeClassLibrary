@@ -283,22 +283,18 @@ namespace HawkeyehvkBLL
             //return -13 Dog has reservation for all or part of period
             if(check.validateConflictingReservations(petNumber, startDate, endDate) == false)
             {
-                return -14;
+                return -13;
             }
             //return -14 No Run Available
             Run theRun = new Run();
             if (theRun.checkRunAvailability(startDate, endDate, check.getPetSize(petNumber)) == -1)
                 return -14;
             //return -15 Insert Failed
-            try
-            {
+            
                 ReservationDB reservation = new ReservationDB();
-                reservation.addReservation(petNumber, startDate, endDate);
-            }
-            catch
-            {
+            if (reservation.addReservation(petNumber, startDate, endDate) == -1)
                 return -15;
-            }
+          
 
             //return -1 if expired or missing Vaccinations
             PetVaccination petVac = new PetVaccination();
