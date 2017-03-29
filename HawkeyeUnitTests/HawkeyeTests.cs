@@ -84,8 +84,8 @@ namespace HawkeyeUnitTests
         public void listReservations1()
         {
             Reservation control = new Reservation();
-            Assert.AreEqual(631, control.listReservations(4)[0].reservationNumber);
-            Assert.AreEqual(620, control.listReservations(4)[1].reservationNumber);
+            Assert.AreEqual(620, control.listReservations(4)[0].reservationNumber);
+            Assert.AreEqual(631, control.listReservations(4)[1].reservationNumber);
         }
 
         //Owner with 0 (Owner 20)
@@ -105,12 +105,12 @@ namespace HawkeyeUnitTests
         }
 
         //return all active reservation - Expected 3 hardcoded data
-        //[TestMethod]
-        //public void listActiveReservations1()
-        //{
-        //    Reservation control = new Reservation();
-        //    Assert.AreNotEqual(0, control.listActiveReservations().Count);
-        //}
+        [TestMethod]
+        public void listActiveReservations1()
+        {
+            Reservation control = new Reservation();
+            Assert.AreNotEqual(0, control.listActiveReservations().Count);
+        }
 
 
         [TestMethod]
@@ -735,7 +735,9 @@ namespace HawkeyeUnitTests
         // reservation# 603 , owner# 17 , pet in reservation 31 , 32 
         //Input : pet# 30   Expected : 1 row inserted  
 
-        
+
+
+
 
 
 
