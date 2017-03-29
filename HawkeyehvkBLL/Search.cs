@@ -8,7 +8,7 @@ using HawkeyehvkDB;
 
 namespace HawkeyehvkBLL
 {
-    class Search
+    public class Search
     {
         public bool validatePetNumber(int petNum)
         {

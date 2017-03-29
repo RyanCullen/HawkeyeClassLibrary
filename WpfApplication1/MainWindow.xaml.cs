@@ -23,10 +23,11 @@ namespace WpfApplication1
         public MainWindow()
         {
             InitializeComponent();
-            HawkeyehvkBLL.Reservation reservation = new HawkeyehvkBLL.Reservation();
+            HawkeyehvkBLL.Search search = new HawkeyehvkBLL.Search();
             //dataGrid.ItemsSource =  reservation.listReservation(); 
             //dataGrid.ItemsSource = reservation.listReservations(4); 
-            int a  = reservation.addToReservation(603, 30); 
+            bool result = search.validatePetNumber(000); 
+
 
         }
     }
