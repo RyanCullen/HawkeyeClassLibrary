@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 
 namespace HawkeyehvkDB
 {
-    class SearchDB
+    public class SearchDB
     {
         public int searchDB(String cmdStr , String parameterName , int parmNum)
         {

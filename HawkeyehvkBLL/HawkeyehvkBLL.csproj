@@ -54,6 +54,7 @@
     <Compile Include="Reservation.cs" />
     <Compile Include="ReservedService.cs" />
     <Compile Include="Run.cs" />
+    <Compile Include="Search.cs" />
     <Compile Include="Service.cs" />
     <Compile Include="User.cs" />
     <Compile Include="Vaccination.cs" />
