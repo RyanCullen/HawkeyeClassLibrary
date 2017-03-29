@@ -37,7 +37,64 @@ namespace HawkeyehvkDB
 
         }
 
+        public int searchConflictingReservations(int petNumber, DateTime startDate, DateTime endDate)
+        {
+            string conString = ConfigurationManager.ConnectionStrings["ConnectionString"].ConnectionString;
+            OracleConnection con = new OracleConnection(conString);
+            string cmdStr = @"SELECT COUNT(*)
+                                FROM HVK_RESERVATION R
+                                JOIN HVK_PET_RESERVATION PR
+                                ON R.RESERVATION_NUMBER=PR.RES_RESERVATION_NUMBER
+                                WHERE (R.RESERVATION_START_DATE BETWEEN :start AND :end OR R.RESERVATION_END_DATE BETWEEN :start AND :end)
+                                AND PR.PET_PET_NUMBER = :petNum";
+            OracleCommand cmd = new OracleCommand(cmdStr, con);
+            cmd.Parameters.Add("start", startDate);
+            cmd.Parameters.Add("end", endDate);
+            cmd.Parameters.Add("petNum", petNumber);
+            OracleDataAdapter da = new OracleDataAdapter(cmd);
+            da.SelectCommand = cmd;
 
+            try
+            {
+                con.Open();
+                return Convert.ToInt16(cmd.ExecuteScalar());
+            }
+            catch
+            {
+                return -1;
+            }
+            finally
+            {
+                con.Close();
+            }
+
+
+        }
+
+        public char getPetSize(int petNumber)
+        {
+            string conString = ConfigurationManager.ConnectionStrings["ConnectionString"].ConnectionString;
+            OracleConnection con = new OracleConnection(conString);
+            string cmdStr = @"SELECT DOG_SIZE FROM HVK_PET WHERE PET_NUMBER = :petNum";
+            OracleCommand cmd = new OracleCommand(cmdStr, con);
+            cmd.Parameters.Add("petNum", petNumber);
+            OracleDataAdapter da = new OracleDataAdapter(cmd);
+            da.SelectCommand = cmd;
+
+            try
+            {
+                con.Open();
+                return Convert.ToChar(cmd.ExecuteScalar());
+            }
+            catch
+            {
+                return 'U';
+            }
+            finally
+            {
+                con.Close();
+            }
+        }
         public int searchPetDB(int petNumber)
         {
           string cmdStr =   @"SELECT COUNT(*)
