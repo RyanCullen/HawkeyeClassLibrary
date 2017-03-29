@@ -152,5 +152,21 @@ GROUP BY VACCINATION_NUMBER
         }
 
 
+
+
+        public int searchPetResDB(int petRes)
+        {
+            string cmdStr = @"SELECT COUNT(*)
+FROM HVK_PET_RESERVATION
+WHERE
+PET_RES_NUMBER = :PET_RES_NUMBER
+GROUP BY 
+PET_RES_NUMBER
+";
+
+            return searchDB(cmdStr, "PET_RES_NUMBER", petRes);
+        }
+
+
     }
 }
