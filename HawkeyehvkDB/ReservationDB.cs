@@ -501,7 +501,7 @@ INTO TEAMHAWKEYE.HVK_PET_RESERVATION
 
             return result;
         }
-        public static bool isDogInReservation(int petNum, int resNum) {
+        public static bool isDogInReservation(int resNum, int petNum) {
             
             string conString = ConfigurationManager.ConnectionStrings["ConnectionString"].ConnectionString;
             OracleConnection con = new OracleConnection(conString);
@@ -521,8 +521,8 @@ INTO TEAMHAWKEYE.HVK_PET_RESERVATION
             da.SelectCommand = cmd;
             DataSet ds = new DataSet("DogInRes");
             da.Fill(ds, "hvk_DogInRes");
-
-            int dog = Convert.ToInt32(ds.Tables[0].Rows[0]["countOfDogs"].ToString());
+            
+            int dog = Convert.ToInt32(ds.Tables["hvk_DogInRes"].Rows[0]["countOfDogs"].ToString());
             // the above method returns the count of times the dog with input dog number occurs in the reservation
             // should be 1 or 0 (0 if the dog is not in the reservation)
 
