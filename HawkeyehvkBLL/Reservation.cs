@@ -263,7 +263,14 @@ namespace HawkeyehvkBLL
         }
         public int addReservation(int petNumber, DateTime startDate, DateTime endDate)
         {
-
+            //return -1 if expired or missing Vaccinations
+            //return -10 Invalid Pet Number
+            //return -11 Start Date In the past
+            //return -12 Start Date After end date
+            //return -13 Dog has reservation for all or part of period
+            //return -14 No Run Available
+            //return -15 Insert Failed
+            //return 0 for success
 
             return 0;
         }

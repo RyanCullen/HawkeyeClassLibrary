@@ -84,8 +84,8 @@ namespace HawkeyeUnitTests
         public void listReservations1()
         {
             Reservation control = new Reservation();
-            Assert.AreEqual(631, control.listReservations(4)[0].reservationNumber);
-            Assert.AreEqual(620, control.listReservations(4)[1].reservationNumber);
+            Assert.AreEqual(620, control.listReservations(4)[0].reservationNumber);
+            Assert.AreEqual(631, control.listReservations(4)[1].reservationNumber);
         }
 
         //Owner with 0 (Owner 20)
