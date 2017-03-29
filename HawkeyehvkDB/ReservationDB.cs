@@ -399,6 +399,7 @@ INTO TEAMHAWKEYE.HVK_PET_RESERVATION
                                                       from hvk_pet_reservation 
                                                       where RES_RESERVATION_NUMBER = :RESNUM
                                                       and pet_pet_number = :PETNUM )";
+            //string cmdStr = "delete from hvk_pet_food";
             string cmdStr2 = @"Delete from hvk_pet_reservation
                                 where RES_RESERVATION_NUMBER = :RESNUM
                                 and pet_pet_number = :PETNUM";
@@ -407,11 +408,12 @@ INTO TEAMHAWKEYE.HVK_PET_RESERVATION
                                 where reservation_number not in (select res_reservation_number 
                                                                  from hvk_pet_reservation))";
             OracleCommand cmd = new OracleCommand(cmdStr, con);
-            cmd.Parameters.Add("PETNUM", dogNumber);
             cmd.Parameters.Add("RESNUM", reservationNumber);
+            cmd.Parameters.Add("PETNUM", dogNumber);
+            
             OracleCommand cmd2 = new OracleCommand(cmdStr2, con);
-            cmd2.Parameters.Add("PETNUM", dogNumber);
             cmd2.Parameters.Add("RESNUM", reservationNumber);
+            cmd2.Parameters.Add("PETNUM", dogNumber);
             OracleCommand cmd3 = new OracleCommand(cmdStr3, con);
 
             OracleDataAdapter da = new OracleDataAdapter(cmd);
@@ -425,8 +427,13 @@ INTO TEAMHAWKEYE.HVK_PET_RESERVATION
             {
                 con.Open();
                 cmd.ExecuteNonQuery();
+                con.Close();
+                con.Open();
                 cmd2.ExecuteNonQuery();
+                con.Close();
+                con.Open();
                 cmd3.ExecuteNonQuery();
+                con.Close();
             }
             catch
             {
@@ -434,7 +441,7 @@ INTO TEAMHAWKEYE.HVK_PET_RESERVATION
             }
             finally
             {
-                con.Close();
+                con.Close();// commits
             }
 
             return result;
