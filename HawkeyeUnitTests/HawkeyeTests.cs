@@ -305,18 +305,34 @@ namespace HawkeyeUnitTests
                 // Input Parameters: 
                 //Pet number = 40
                 //
-                //Expected: 1 (invalid pet number)
+                //Expected: -10 (invalid pet number)
                 Reservation control = new Reservation();
-                Assert.AreEqual(1, control.addReservation(40, DateTime.Now.AddDays(7), DateTime.Now.AddDays(10)), "invalid pet number test");
+                Assert.AreEqual(-10, control.addReservation(40, DateTime.Now.AddDays(7), DateTime.Now.AddDays(10)), "invalid pet number test");
 
 
                 // Start Date after end date
                 // Input Parameters: Start: 
-                // 01-JAN-17 - End
-                // 04-JAN-17 - Start
-                //Expected: 2 (start date after end date)
-                Assert.AreEqual(2, control.addReservation(1, new DateTime(2017, 5, 14), new DateTime(2017, 5, 13)), " Start Date after end date test");
+                // 14-MAY-17 - End
+                // 13-MAY-17 - Start
+                //Expected: -12 (start date after end date)
+                Assert.AreEqual(-12, control.addReservation(1, new DateTime(2017, 5, 14), new DateTime(2017, 5, 13)), " Start Date after end date test");
 
+
+                // happy case
+                // Input Parameters: 
+                // pet number 35
+                // Start: 4-MAR-17
+                // end: 6-MAR-17
+                // Expected: -1 (success)
+                Assert.AreEqual(-1, control.addReservation(35, new DateTime(2017, 3, 4), new DateTime(2017, 3, 6)), "happy case");
+
+
+                // Start Date after end date
+                // Input Parameters: Start: 
+                // 9-MAR-17 - End
+                // 13-MAY-17 - Start
+                //Expected: -11
+                Assert.AreEqual(-11, control.addReservation(1, new DateTime(2017, 3, 9), new DateTime(2017, 5, 13)), " Start Date after end date test");
 
                 //No Available runs for dog size, this will be tested when we have further understanding
 
@@ -326,8 +342,8 @@ namespace HawkeyeUnitTests
                 // Input Parameters: 
                 // 04-JAN-17 - End
                 // 04-JAN-17 - Start
-                //Expected: 3 (Start date and end date same day)
-                Assert.AreEqual(3, control.addReservation(1, new DateTime(2017, 5, 14), new DateTime(2017, 5, 14)), "Start date == end date test");
+                //Expected: -1 (Start date and end date same day)
+                Assert.AreEqual(-1, control.addReservation(1, new DateTime(2017, 5, 14), new DateTime(2017, 5, 14)), "Start date == end date test");
 
 
                 // Pet has reservation during those days
@@ -335,17 +351,11 @@ namespace HawkeyeUnitTests
                 // pet number: 7 
                 // (existing reservation:631) 
                 // dates: 01-JAN-16 TO 04-JAN-16   
-                //Expected: 4 (pet has reservation at that time already)
-                Assert.AreEqual(4, control.addReservation(7, new DateTime(2016, 1, 1), new DateTime(2016, 1, 4)), "Pet has reservation during those days");
+                //Expected: -14 (pet has reservation at that time already)
+                Assert.AreEqual(-13, control.addReservation(7, new DateTime(2016, 1, 1), new DateTime(2016, 1, 4)), "Pet has reservation during those days");
 
 
-                // happy case
-                // Input Parameters: 
-                // pet number 35
-                // Start: 4-MAR-17
-                // end: 6-MAR-17
-                // Expected: 0 (success)
-                Assert.AreEqual(0, control.addReservation(35, new DateTime(2017, 3, 4), new DateTime(2017, 3, 6)), "happy case");
+              
             }
 
             [TestMethod]

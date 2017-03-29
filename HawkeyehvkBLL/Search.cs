@@ -46,5 +46,12 @@ namespace HawkeyehvkBLL
             SearchDB db = new SearchDB();
             return db.getPetSize(petNumber);
         }
+
+        public bool validatePetResNum(int petResNum)
+        {
+            SearchDB db = new SearchDB();
+            return db.searchPetResDB(petResNum) == 1 ? true : false; ;
+        }
+
     }
 }
