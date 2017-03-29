@@ -67,6 +67,7 @@
     </Compile>
     <Compile Include="ReservationDB.cs" />
     <Compile Include="RunDB.cs" />
+    <Compile Include="SearchDB.cs" />
     <Compile Include="ServiceDB.cs" />
     <Compile Include="VaccinationDB.cs" />
     <Compile Include="VetDB.cs" />

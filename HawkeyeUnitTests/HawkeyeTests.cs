@@ -695,10 +695,10 @@ namespace HawkeyeUnitTests
         {
             Reservation hvk = new Reservation();
             // Test Method: Solo pet in reservation
-            // Input Parameters: reservationNumber - 140
-            //                   petNumber - 27
+            // Input Parameters: reservationNumber - 108
+            //                   petNumber - 3
             // Expected Result: 0
-            Assert.AreEqual(0, hvk.deleteDogFromReservation(140, 27), "Solo dog in reservation didn't return 0");
+            Assert.AreEqual(0, hvk.deleteDogFromReservation(108, 3), "Solo dog in reservation didn't return 0");
             //This should also delete the entire reservation
             
 
@@ -709,6 +709,12 @@ namespace HawkeyeUnitTests
             //                   petNumber - 26
             // Expected Result: 0 (Pet that was being shared with must be set to solo)
             Assert.AreEqual(0, hvk.deleteDogFromReservation(140, 26), "Sharing dog in reservation didn't return 0");
+            
+            // Test Method: Pet not part of the reservation
+            // Input Parameters: reservationNumber - 140
+            //                   petNumber - 1
+            // Expected Result: 3
+            Assert.AreEqual(3, hvk.deleteDogFromReservation(140, 1), "Pet not in reservation didn't return 3");
             // Test Method: Invalid reservation number
             // Input Parameters: reservationNumber - 0
             //                   petNumber - 1
@@ -719,11 +725,6 @@ namespace HawkeyeUnitTests
             //                   petNumber - 0
             // Expected Result: 2
             Assert.AreEqual(2, hvk.deleteDogFromReservation(140, 0), "Invalid pet number didn't return 2");
-            // Test Method: Pet not part of the reservation
-            // Input Parameters: reservationNumber - 140
-            //                   petNumber - 1
-            // Expected Result: 3
-            Assert.AreEqual(3, hvk.deleteDogFromReservation(140, 1), "Pet not in reservation didn't return 3");
         }
         [TestMethod]
         public void testCancelReservation() {

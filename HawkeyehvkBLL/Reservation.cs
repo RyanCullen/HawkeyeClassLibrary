@@ -310,11 +310,12 @@ namespace HawkeyehvkBLL
         {
             // check reservation number
             // check pet number
-            int returned = ReservationDB.deleteDogFromReservationDB(reservationNumber, petNumber);
             // check that dog is in reservation
-            if (ReservationDB.isDogInReservation(reservationNumber, petNumber)) {
+            if (!ReservationDB.isDogInReservation(reservationNumber,petNumber)) {
                 return 3;
             }
+            int returned = ReservationDB.deleteDogFromReservationDB(reservationNumber, petNumber);
+           
             
             return returned;
         }
