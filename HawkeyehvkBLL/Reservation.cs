@@ -263,15 +263,49 @@ namespace HawkeyehvkBLL
         }
         public int addReservation(int petNumber, DateTime startDate, DateTime endDate)
         {
-            //return -1 if expired or missing Vaccinations
+            Search check = new Search();
+           
             //return -10 Invalid Pet Number
+            if(check.validatePetNumber(petNumber) == false)
+            {
+                return -10;
+            }
             //return -11 Start Date In the past
+            if(startDate < DateTime.Now)
+            {
+                return -11;
+            }
             //return -12 Start Date After end date
+            if(startDate > endDate)
+            {
+                return -12;
+            }
             //return -13 Dog has reservation for all or part of period
+            if(check.validateConflictingReservations(petNumber, startDate, endDate) == false)
+            {
+                return -14;
+            }
             //return -14 No Run Available
+            Run theRun = new Run();
+            if (theRun.checkRunAvailability(startDate, endDate, check.getPetSize(petNumber)) == -1)
+                return -14;
             //return -15 Insert Failed
-            //return 0 for success
+            try
+            {
+                ReservationDB reservation = new ReservationDB();
+                reservation.addReservation(petNumber, startDate, endDate);
+            }
+            catch
+            {
+                return -15;
+            }
 
+            //return -1 if expired or missing Vaccinations
+            PetVaccination petVac = new PetVaccination();
+            int count = petVac.checkVaccinations(petNumber, endDate).Count;
+            if (count > 0)
+                return -1;
+            //return 0 for success
             return 0;
         }
 

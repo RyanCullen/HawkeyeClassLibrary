@@ -35,6 +35,16 @@ namespace HawkeyehvkBLL
             SearchDB db = new SearchDB();
             return db.searchVaccDB(vaccNum) == 1 ? true : false;
         }
+         public bool validateConflictingReservations(int petNum, DateTime startDate, DateTime endDate)
+        {
+            SearchDB db = new SearchDB();
+            return db.searchConflictingReservations(petNum, startDate, endDate) == 0 ? true : false;
+        }
 
+        public char getPetSize(int petNumber)
+        {
+            SearchDB db = new SearchDB();
+            return db.getPetSize(petNumber);
+        }
     }
 }
