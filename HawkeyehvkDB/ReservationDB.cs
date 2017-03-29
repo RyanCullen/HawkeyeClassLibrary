@@ -183,7 +183,7 @@ namespace HawkeyehvkDB
                                     HVK_RESERVATION_SEQ.NEXTVAL,
                                     :start,
                                     :end,
-                                )";
+                                )";//should end have this comma?
             string cmdAddPetRes = @"INSERT INTO HVK_PET_RESERVATION
                                 (
                                     PET_RES_NUMBER,
@@ -197,6 +197,7 @@ namespace HawkeyehvkDB
                                     HVK_RESERVATION_SEQ.CURRVAL
                                 )";
 
+            // should below not be inserting into hvk_pet_reservation_service?
             string cmdAddService = @"INSERT INTO HVK_PET_RESERVATION
                                 (
                                     SERVICE_FREQUENCY,
@@ -282,26 +283,26 @@ namespace HawkeyehvkDB
             OracleConnection con = new OracleConnection(conString);
 
             string cmdSelect = @" SELECT RUN_RUN_NUMBER
-FROM   TEAMHAWKEYE.HVK_PET_RESERVATION
-WHERE RES_RESERVATION_NUMBER = :ResNumber";
+                                FROM   TEAMHAWKEYE.HVK_PET_RESERVATION
+                                WHERE RES_RESERVATION_NUMBER = :ResNumber";
 
-            string cmdStr = @"INSERT
-INTO TEAMHAWKEYE.HVK_PET_RESERVATION
-  (
-    PET_RES_NUMBER,
-    PET_PET_NUMBER,
-    RES_RESERVATION_NUMBER,
-    RUN_RUN_NUMBER,
-    PR_SHARING_WITH
-  )
-  VALUES
-  (
-    HVK_PET_RES_SEQ.NEXTVAL,
-    :PET_PET_NUMBER,
-    :RES_RESERVATION_NUMBER,
-    NULL,
-    NULL
-  )";
+                                            string cmdStr = @"INSERT
+                                INTO TEAMHAWKEYE.HVK_PET_RESERVATION
+                                  (
+                                    PET_RES_NUMBER,
+                                    PET_PET_NUMBER,
+                                    RES_RESERVATION_NUMBER,
+                                    RUN_RUN_NUMBER,
+                                    PR_SHARING_WITH
+                                  )
+                                  VALUES
+                                  (
+                                    HVK_PET_RES_SEQ.NEXTVAL,
+                                    :PET_PET_NUMBER,
+                                    :RES_RESERVATION_NUMBER,
+                                    NULL,
+                                    NULL
+                                  )";
 
 
 
@@ -426,17 +427,14 @@ INTO TEAMHAWKEYE.HVK_PET_RESERVATION
             try
             {
                 con.Open();
-                cmd.ExecuteNonQuery();
-                con.Close();
-                con.Open();
+                cmd.ExecuteNonQuery();                
                 cmd2.ExecuteNonQuery();
-                con.Close();
-                con.Open();
                 cmd3.ExecuteNonQuery();
-                con.Close();
+                
             }
             catch
             {
+                
                 result = -1;
             }
             finally

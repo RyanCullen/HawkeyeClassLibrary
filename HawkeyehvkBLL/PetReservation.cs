@@ -1,10 +1,12 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using HawkeyehvkDB;
+using System.Configuration;
+using System.Collections.Generic;
 using System.Data;
+using Oracle.ManagedDataAccess.Client;
+using HawkeyehvkDB;
 
 namespace HawkeyehvkBLL
 {
@@ -126,11 +128,27 @@ namespace HawkeyehvkBLL
         {
             return this.serviceList.Remove(service);
         }
+        public List<PetReservation> listPetRes(int ReservationNumber) {
+            PetReservationDB pres = new PetReservationDB();
 
+            List<PetReservation> list = new List<PetReservation>();
+            foreach (DataRow row in pres.listPetResDB(ReservationNumber).Tables["hvk_pet_reservation"].Rows)
+            {
 
+                PetReservation petRes = new PetReservation();
+                try
+                {
+                    petRes.petResNumber = Convert.ToInt32(row["reservation_number"].ToString());
+                    petRes.pet = Pet.getOnePet(Convert.ToInt32(row["PET_PET_NUMBER"]));
+                }
+                catch (Exception e){
+                    Console.Write(e);
+                }
 
+            }
 
-
+            return list;
+        }
 
 
     }

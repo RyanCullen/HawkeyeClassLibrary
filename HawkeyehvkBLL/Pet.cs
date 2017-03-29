@@ -123,6 +123,17 @@ namespace HawkeyehvkBLL
             }
             return petList;
         }
+        public static Pet getOnePet(int petNumber)
+        {
+            List<Pet> petList = new List<Pet>();
+            PetDB db = new PetDB();
+            foreach (DataRow row in db.getOnePetDB(petNumber).Tables["hvk_pet"].Rows)
+            {
+                Pet pet = fillFromDataRow(row);
+                petList.Add(pet);
+            }
+            return petList[0];
+        }
 
         public static int checkPetsInRes(int resNum)
         {
