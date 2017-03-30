@@ -751,7 +751,7 @@ namespace HawkeyeUnitTests
             Assert.AreEqual(2, hvk.deleteDogFromReservation(140, 0), "Invalid pet number didn't return 2");
 
             // This reservation was created in the opening script to be going on today. It should not work
-            Assert.AreEqual(4, hvk.cancelReservation(500), "cancel reservation that is ongoing cant be cancelled.");
+            Assert.AreEqual(4, hvk.deleteDogFromReservation(500,3), "cancel reservation that is ongoing cant be cancelled.");
         }
         [TestMethod]
         public void testCancelReservation() {

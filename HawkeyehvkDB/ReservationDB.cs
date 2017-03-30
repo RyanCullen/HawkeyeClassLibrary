@@ -285,26 +285,26 @@ namespace HawkeyehvkDB
             OracleConnection con = new OracleConnection(conString);
 
             string cmdSelect = @" SELECT RUN_RUN_NUMBER
-FROM   TEAMHAWKEYE.HVK_PET_RESERVATION
-WHERE RES_RESERVATION_NUMBER = :ResNumber";
+            FROM   TEAMHAWKEYE.HVK_PET_RESERVATION
+            WHERE RES_RESERVATION_NUMBER = :ResNumber";
 
             string cmdStr = @"INSERT
-INTO TEAMHAWKEYE.HVK_PET_RESERVATION
-  (
-    PET_RES_NUMBER,
-    PET_PET_NUMBER,
-    RES_RESERVATION_NUMBER,
-    RUN_RUN_NUMBER,
-    PR_SHARING_WITH
-  )
-  VALUES
-  (
-    HVK_PET_RES_SEQ.NEXTVAL,
-    :PET_PET_NUMBER,
-    :RES_RESERVATION_NUMBER,
-    NULL,
-    NULL
-  )";
+            INTO TEAMHAWKEYE.HVK_PET_RESERVATION
+              (
+                PET_RES_NUMBER,
+                PET_PET_NUMBER,
+                RES_RESERVATION_NUMBER,
+                RUN_RUN_NUMBER,
+                PR_SHARING_WITH
+              )
+              VALUES
+              (
+                HVK_PET_RES_SEQ.NEXTVAL,
+                :PET_PET_NUMBER,
+                :RES_RESERVATION_NUMBER,
+                NULL,
+                NULL
+              )";
 
 
 
@@ -430,13 +430,8 @@ INTO TEAMHAWKEYE.HVK_PET_RESERVATION
             {
                 con.Open();
                 cmd.ExecuteNonQuery();
-                con.Close();
-                con.Open();
                 cmd2.ExecuteNonQuery();
-                con.Close();
-                con.Open();
                 cmd3.ExecuteNonQuery();
-                con.Close();
             }
             catch
             {

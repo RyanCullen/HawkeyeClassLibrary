@@ -339,8 +339,14 @@ namespace HawkeyehvkBLL
 
 
         }
-        private bool isReservationAvtive(int reservationNumber) {
-            return false;
+        private bool isReservationActive(int reservationNumber) {
+            bool returned = false;
+            listActiveReservations().ForEach(delegate (Reservation res) {
+                if (res.reservationNumber == reservationNumber) {
+                   returned= true;
+                }
+            });
+            return returned;
         }
         public int cancelReservation(int reservationNumber)
         {
@@ -350,7 +356,7 @@ namespace HawkeyehvkBLL
             {
                 return 1;
             }
-            else if (isReservationAvtive(reservationNumber))
+            else if (isReservationActive(reservationNumber))
             {
                 return 4;
             }
@@ -362,11 +368,7 @@ namespace HawkeyehvkBLL
         public int deleteDogFromReservation(int reservationNumber, int petNumber)
         {
             Search search = new HawkeyehvkBLL.Search();
-
-
-
-
-
+            
             if (!search.validateReservationNumber(reservationNumber))// check reservation number
             {
                 return 1;
@@ -379,7 +381,7 @@ namespace HawkeyehvkBLL
             {
                 return 3;
             }
-            else if (isReservationAvtive(reservationNumber))
+            else if (isReservationActive(reservationNumber))
             {
                 return 4;
             }
