@@ -537,19 +537,20 @@ namespace HawkeyeUnitTests
         public void RunAvailability()
         {
             Run hvk = new Run();
-            //Run is not available (Return -3)
-            DateTime startDate = new DateTime(2015, 09, 12);
-            DateTime endDate = new DateTime(2014, 1, 31);
-            Assert.AreEqual(-1, hvk.checkRunAvailability(startDate, endDate, 'R'), "A request when start is after end date should return -1.");
+             
+            //Run is not available (Return 0)
+            DateTime startDate = new DateTime(2018, 5, 12);
+            DateTime endDate = new DateTime(2018, 5, 13);
+            Assert.AreEqual(0, hvk.checkRunAvailability(startDate, endDate, 'R'), "There should be no runs availible for this time. IE. 0 returned");
 
             // Test with regular size (Returns number of runs)
-            startDate = new DateTime(2015, 09, 12);
-            endDate = new DateTime(2014, 1, 31);
-            Assert.AreEqual(-1, hvk.checkRunAvailability(startDate, endDate, 'R'), "A request when start is after end date should return -1.");
+            startDate = new DateTime(2016, 09, 12);
+            endDate = new DateTime(2016, 9, 30);
+            Assert.IsTrue(0<hvk.checkRunAvailability(startDate, endDate, 'R'), "During this time there should be multiple runs availible");
             // Test with large size (Returns number of runs)
-            startDate = new DateTime(2015, 09, 12);
-            endDate = new DateTime(2014, 1, 31);
-            Assert.AreEqual(-1, hvk.checkRunAvailability(startDate, endDate, 'R'), "A request when start is after end date should return -1.");
+            startDate = new DateTime(2016, 09, 12);
+            endDate = new DateTime(2016, 9, 30);
+            Assert.IsTrue(0 < hvk.checkRunAvailability(startDate, endDate, 'L'), "During this time there should be multiple runs availible");
             //End date before start date (Return -1)
             startDate = new DateTime(2015, 09, 12);
             endDate = new DateTime(2014, 1, 31);
