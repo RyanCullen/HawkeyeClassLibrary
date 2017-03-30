@@ -50,7 +50,7 @@ namespace HawkeyehvkDB
             da.SelectCommand = cmd;
             DataSet ds = new DataSet("dsReservation");
             da.Fill(ds);
-
+            
             return ds;
         }
 
@@ -75,7 +75,7 @@ namespace HawkeyehvkDB
                               PET.PET_BIRTHDATE,
                               PET.DOG_SIZE,
                               PET.SPECIAL_NOTES,
-                              PET.OWN_OWNER_NUMBER
+                              PET.OWN_OWNER_NUMBER AS OWNER_NUMBER 
                             FROM TEAMHAWKEYE.HVK_RESERVATION RES
                             INNER JOIN TEAMHAWKEYE.HVK_PET_RESERVATION PRES
                             ON RES.RESERVATION_NUMBER = PRES.RES_RESERVATION_NUMBER
@@ -103,7 +103,7 @@ namespace HawkeyehvkDB
             //Display : clerk Home page 
             string conString = ConfigurationManager.ConnectionStrings["ConnectionString"].ConnectionString;
             OracleConnection con = new OracleConnection(conString);
-            string cmdStr = @"SELECT RES.RESERVATION_NUMBER, OWN.OWNER_LAST_NAME, OWN.OWNER_FIRST_NAME, PRES.PET_PET_NUMBER, PET.PET_NAME, PRES.RUN_RUN_NUMBER, RES.RESERVATION_START_DATE, RES.RESERVATION_END_DATE
+            string cmdStr = @"SELECT RES.RESERVATION_NUMBER,OWN.OWNER_NUMBER AS OWNER_NUMBER, OWN.OWNER_LAST_NAME, OWN.OWNER_FIRST_NAME, PRES.PET_PET_NUMBER AS PET_NUMBER, PET.PET_NAME, PRES.RUN_RUN_NUMBER, RES.RESERVATION_START_DATE, RES.RESERVATION_END_DATE
              FROM   TEAMHAWKEYE.HVK_RESERVATION RES INNER JOIN
              TEAMHAWKEYE.HVK_PET_RESERVATION PRES ON RES.RESERVATION_NUMBER = PRES.RES_RESERVATION_NUMBER INNER JOIN
              TEAMHAWKEYE.HVK_PET PET ON PRES.PET_PET_NUMBER = PET.PET_NUMBER INNER JOIN
@@ -127,7 +127,7 @@ namespace HawkeyehvkDB
             //Display : clerk or user Home page 
             string conString = ConfigurationManager.ConnectionStrings["ConnectionString"].ConnectionString;
             OracleConnection con = new OracleConnection(conString);
-            string cmdStr = @"SELECT RES.RESERVATION_NUMBER, OWN.OWNER_LAST_NAME, OWN.OWNER_FIRST_NAME, PRES.PET_PET_NUMBER, PET.PET_NAME, PRES.RUN_RUN_NUMBER, RES.RESERVATION_START_DATE, RES.RESERVATION_END_DATE
+            string cmdStr = @"SELECT RES.RESERVATION_NUMBER,OWN.OWNER_NUMBER, OWN.OWNER_LAST_NAME, OWN.OWNER_FIRST_NAME, PRES.PET_PET_NUMBER AS PET_NUMBER, PET.PET_NAME, PRES.RUN_RUN_NUMBER, RES.RESERVATION_START_DATE, RES.RESERVATION_END_DATE
              FROM   TEAMHAWKEYE.HVK_RESERVATION RES INNER JOIN
              TEAMHAWKEYE.HVK_PET_RESERVATION PRES ON RES.RESERVATION_NUMBER = PRES.RES_RESERVATION_NUMBER INNER JOIN
              TEAMHAWKEYE.HVK_PET PET ON PRES.PET_PET_NUMBER = PET.PET_NUMBER INNER JOIN
@@ -285,26 +285,26 @@ namespace HawkeyehvkDB
             OracleConnection con = new OracleConnection(conString);
 
             string cmdSelect = @" SELECT RUN_RUN_NUMBER
-FROM   TEAMHAWKEYE.HVK_PET_RESERVATION
-WHERE RES_RESERVATION_NUMBER = :ResNumber";
+            FROM   TEAMHAWKEYE.HVK_PET_RESERVATION
+            WHERE RES_RESERVATION_NUMBER = :ResNumber";
 
             string cmdStr = @"INSERT
-INTO TEAMHAWKEYE.HVK_PET_RESERVATION
-  (
-    PET_RES_NUMBER,
-    PET_PET_NUMBER,
-    RES_RESERVATION_NUMBER,
-    RUN_RUN_NUMBER,
-    PR_SHARING_WITH
-  )
-  VALUES
-  (
-    HVK_PET_RES_SEQ.NEXTVAL,
-    :PET_PET_NUMBER,
-    :RES_RESERVATION_NUMBER,
-    NULL,
-    NULL
-  )";
+            INTO TEAMHAWKEYE.HVK_PET_RESERVATION
+              (
+                PET_RES_NUMBER,
+                PET_PET_NUMBER,
+                RES_RESERVATION_NUMBER,
+                RUN_RUN_NUMBER,
+                PR_SHARING_WITH
+              )
+              VALUES
+              (
+                HVK_PET_RES_SEQ.NEXTVAL,
+                :PET_PET_NUMBER,
+                :RES_RESERVATION_NUMBER,
+                NULL,
+                NULL
+              )";
 
 
 
@@ -430,13 +430,8 @@ INTO TEAMHAWKEYE.HVK_PET_RESERVATION
             {
                 con.Open();
                 cmd.ExecuteNonQuery();
-                con.Close();
-                con.Open();
                 cmd2.ExecuteNonQuery();
-                con.Close();
-                con.Open();
                 cmd3.ExecuteNonQuery();
-                con.Close();
             }
             catch
             {

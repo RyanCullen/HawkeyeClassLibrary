@@ -149,19 +149,16 @@ namespace HawkeyehvkBLL
                     }
                     else
                     {
-
                         //Retrieve pet info , owner # , reservation detail 
                         res.reservationNumber = Convert.ToInt32(ds.Tables[0].Rows[i]["RESERVATION_NUMBER"]);
                         res.startDate = DateTime.Parse(ds.Tables[0].Rows[i]["RESERVATION_START_DATE"].ToString());
                         res.endDate = DateTime.Parse(ds.Tables[0].Rows[i]["RESERVATION_END_DATE"].ToString());
                         res.petReservationList.Add(new PetReservation());
-                        res.owner.ownerNumber = Convert.ToInt16(ds.Tables[0].Rows[i]["OWN_OWNER_NUMBER"].ToString());
+                        res.owner.ownerNumber = Convert.ToInt16(ds.Tables[0].Rows[i]["OWNER_NUMBER"].ToString());
                         res.petReservationList[res.petReservationList.Count - 1].pet.petNumber = Convert.ToInt16(ds.Tables[0].Rows[i]["PET_NUMBER"].ToString());
-                        // res.petReservationList[i].run.runNumber = Convert.ToInt16(ds.Tables[0].Rows[i]["RUN_RUN_NUMBER"].ToString());
+                        //res.petReservationList[i].run.runNumber = Convert.ToInt16(ds.Tables[0].Rows[i]["RUN_RUN_NUMBER"].ToString());
                         resList.Add(res);
                         res = new Reservation();
-
-
                     }
 
                 }
@@ -339,8 +336,14 @@ namespace HawkeyehvkBLL
 
 
         }
-        private bool isReservationAvtive(int reservationNumber) {
-            return false;
+        private bool isReservationActive(int reservationNumber) {
+            bool returned = false;
+            listActiveReservations().ForEach(delegate (Reservation res) {
+                if (res.reservationNumber == reservationNumber) {
+                   returned= true;
+                }
+            });
+            return returned;
         }
         public int cancelReservation(int reservationNumber)
         {
@@ -350,7 +353,7 @@ namespace HawkeyehvkBLL
             {
                 return 1;
             }
-            else if (isReservationAvtive(reservationNumber))
+            else if (isReservationActive(reservationNumber))
             {
                 return 4;
             }
@@ -362,11 +365,7 @@ namespace HawkeyehvkBLL
         public int deleteDogFromReservation(int reservationNumber, int petNumber)
         {
             Search search = new HawkeyehvkBLL.Search();
-
-
-
-
-
+            
             if (!search.validateReservationNumber(reservationNumber))// check reservation number
             {
                 return 1;
@@ -379,7 +378,7 @@ namespace HawkeyehvkBLL
             {
                 return 3;
             }
-            else if (isReservationAvtive(reservationNumber))
+            else if (isReservationActive(reservationNumber))
             {
                 return 4;
             }

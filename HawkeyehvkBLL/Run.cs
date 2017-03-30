@@ -50,7 +50,13 @@ namespace HawkeyehvkBLL
             int totalRunsL = rundb.totalLargeRunsDB();
             int totalRunsR = rundb.totalRegularRunsDB();
 
-
+            if (startDate > endDate)
+            {
+                return -1;
+            }
+            else if (startDate==endDate) {
+                return -2;
+            }
 
             if (runSize == 'L') {
                 if ((resc.numRegReservations - totalRunsR) > 0) { // this will determine if the regular size runs have run out. in which case there may be large runs used for smaller dogs

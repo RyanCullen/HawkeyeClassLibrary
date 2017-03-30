@@ -88,12 +88,12 @@ namespace HawkeyeUnitTests
             Assert.AreEqual(631, control.listReservations(4)[1].reservationNumber);
         }
 
-        //Owner with 0 (Owner 20)
+        //Owner with 0 (Owner 5)
         [TestMethod]
         public void listReservations2()
         {
             Reservation control = new Reservation();
-            Assert.AreEqual(0, control.listReservations(20).Count);
+            Assert.AreEqual(0, control.listReservations(5).Count);
         }
 
         //Invalid owner number returns null
@@ -108,7 +108,7 @@ namespace HawkeyeUnitTests
         [TestMethod]
         public void listActiveReservations1()
         {
-            Reservation control = new Reservation(); 
+            Reservation control = new Reservation();
             Assert.AreNotEqual(0, control.listActiveReservations().Count);
         }
 
@@ -122,32 +122,33 @@ namespace HawkeyeUnitTests
         }
 
 
-        /* need to provide an update query just to test */
-        //[TestMethod]
-        //public void listActiveReservations3()
-        //{
-        //    //Owner 15 - Expected : 1 Active Reservation 
-        //    Reservation control = new Reservation();
-        //    Assert.AreNotEqual(0, control.listActiveReservations(15).Count);
-        //}
+        // need to provide an update query just to test
+        [TestMethod]
+        public void listActiveReservations3()
+        {
 
-        //[TestMethod]
-        //public void listActiveReservations4()
-        //{
-        //    //Owner 15 - Expected : More than 1 active reservation 
-        //    Reservation control = new Reservation();
-        //    Assert.AreNotEqual(1, control.listActiveReservations(12).Count);
-        //    Assert.AreNotEqual(0, control.listActiveReservations(12).Count);
+            //owner 1 - expected : 1 active reservation 
+            Reservation control = new Reservation();
+            Assert.AreNotEqual(0, control.listActiveReservations(1).Count);
+        }
 
-        //}
+        [TestMethod]
+        public void listActiveReservations4()
+        {
+            //Owner 2 - Expected : More than 1 active reservation 
+            Reservation control = new Reservation();
+            Assert.AreEqual(2, control.listActiveReservations(2).Count);
+            Assert.AreNotEqual(0, control.listActiveReservations(2).Count);
 
-        //[TestMethod]
-        //public void listActiveReservations5()
-        //{
-        //    //Invalid Owner number expected : null 
-        //    Reservation control = new Reservation();
-        //    Assert.AreEqual(0, control.listActiveReservations(000000));
-        //}
+        }
+
+        [TestMethod]
+        public void listActiveReservations5()
+        {
+            //Invalid Owner number expected : null 
+            Reservation control = new Reservation();
+            Assert.AreEqual(0, control.listActiveReservations(000000).Count);
+        }
 
 
 
@@ -533,173 +534,36 @@ namespace HawkeyeUnitTests
         }
 
         [TestMethod]
-        public void RunAvailability1()
+        public void RunAvailability()
         {
             Run hvk = new Run();
+             
+            //Run is not available (Return 0)
+            DateTime startDate = new DateTime(2018, 5, 12);
+            DateTime endDate = new DateTime(2018, 5, 13);
+            Assert.AreEqual(0, hvk.checkRunAvailability(startDate, endDate, 'R'), "There should be no runs availible for this time. IE. 0 returned");
 
-            //Input:              2015, 09, 12;
-            //                    2017, 1, 31;
-            //Expected : no avaialble run  
-            //Start date equal to Reservation Start Date
-            DateTime startDate = new DateTime(2015, 09, 12);
-            DateTime endDate = new DateTime(2017, 1, 31);
-            Assert.AreEqual(0, hvk.checkRunAvailability(startDate, endDate, 'R'));
-        }
+            // Test with regular size (Returns number of runs)
+            startDate = new DateTime(2016, 09, 12);
+            endDate = new DateTime(2016, 9, 30);
+            Assert.IsTrue(0<hvk.checkRunAvailability(startDate, endDate, 'R'), "During this time there should be multiple runs availible");
+            // Test with large size (Returns number of runs)
+            startDate = new DateTime(2016, 09, 12);
+            endDate = new DateTime(2016, 9, 30);
+            Assert.IsTrue(0 < hvk.checkRunAvailability(startDate, endDate, 'L'), "During this time there should be multiple runs availible");
+            //End date before start date (Return -1)
+            startDate = new DateTime(2015, 09, 12);
+            endDate = new DateTime(2014, 1, 31);
+            Assert.AreEqual(-1, hvk.checkRunAvailability(startDate, endDate, 'R'),"A request when start is after end date should return -1.");
+            //Start date equal to end date (Return -2)
+            startDate = new DateTime(2015, 09, 12);
+            endDate = new DateTime(2015, 09, 12);
+            Assert.AreEqual(-2, hvk.checkRunAvailability(startDate, endDate, 'R'),"A request when start date and end date are equal should return -2");
 
-        [TestMethod]
-        public void RunAvailability2()
-        {
-            Run hvk = new Run();
-            //Input     2015, 09, 18;
-            //          2017, 1, 31;
-            //Expected : 0 Run Available 
-            //Start date greater than Reservation Start Date 
-            //End date equal to Reservation End Date
-            DateTime startDate = new DateTime(2015, 09, 18);
-            DateTime endDate = new DateTime(2017, 1, 31);
-            Assert.AreEqual(0, hvk.checkRunAvailability(startDate, endDate, 'R'));
-            /*
-             * THIS TEST CASE IS FLAWED. there is 1 run that is never used.
-             */ 
-        }
-
-
-        [TestMethod]
-        public void RunAvailability3()
-        {
-            Run hvk = new Run();
-            //Input :             2015, 09, 10;
-            //                    2017, 1, 31;
-            //Expected            0 Run Available 
-            //Start date smaller than Reservation Start Date 
-            //End date equal to Reservation End Date
-            DateTime startDate = new DateTime(2015, 09, 10);
-            DateTime endDate = new DateTime(2017, 1, 31);
-            Assert.AreEqual(0, hvk.checkRunAvailability(startDate, endDate, 'R'));
         }
 
 
 
-        [TestMethod]
-        public void RunAvailability4()
-        {
-            Run hvk = new Run();
-            //Input               (2015, 09, 12);
-            //                    (2017, 04, 15);
-            //Expected            0 Run Available 
-            //Start date equals to Reservation Start Date 
-            //End date greater than  Reservation End Date
-            DateTime startDate = new DateTime(2015, 09, 12);
-            DateTime endDate = new DateTime(2017, 04, 15);
-            Assert.AreEqual(0, hvk.checkRunAvailability(startDate, endDate, 'R'));
-        }
-
-
-
-
-        [TestMethod]
-        public void RunAvailability5()
-        {
-            Run newReservation = new Run();
-            //Input             (2015, 09, 12);
-            //                  (2016, 12, 05);
-            //Expected          0 Run Available 
-            //Start date equals to Reservation Start Date 
-            //End date smaller than Reservation End Date
-            DateTime startDate = new DateTime(2015, 09, 12);
-            DateTime endDate = new DateTime(2016, 12, 05);
-            Assert.AreEqual(0, newReservation.checkRunAvailability(startDate, endDate, 'R'));
-        }
-
-
-        [TestMethod]
-        public void RunAvailability6()
-        {
-            Run newReservation = new Run();
-            //Input              (2015, 09, 18);
-            //                   (2017, 02, 15);
-            //Expected           0 Run Available 
-            //Start date Greater than Reservation Start Date 
-            //End date Greater than Reservation End Date 
-            //Start Date Smaller than Reservation End Date 
-            DateTime startDate = new DateTime(2015, 09, 18);
-            DateTime endDate = new DateTime(2017, 02, 15);
-            Assert.AreEqual(0, newReservation.checkRunAvailability(startDate, endDate, 'R'));
-        }
-
-        [TestMethod]
-        public void RunAvailability7()
-        {
-            Run newReservation = new Run();
-            //Happy Path 
-            //Start date Greater than Reservation Start Date 
-            //End date Greater than Reservation End Date 
-            //Start Date Greater than Reservation End Date 
-            DateTime startDate = new DateTime(2017, 02, 15);
-            DateTime endDate = new DateTime(2017, 02, 20);
-            Assert.AreEqual(1, newReservation.checkRunAvailability(startDate, endDate, 'R'));
-        }
-
-        [TestMethod]
-        public void RunAvailability8()
-        {
-            Run newReservation = new Run();
-            //Input                 (2017, 02, 20);
-            //                      (2017, 01, 31);
-            //Expected              0 Run Available 
-            //Start date Greater than Reservation Start Date 
-            //End date equals to Reservation End Date 
-            //Start Date Greater than Reservation End Date
-            DateTime startDate = new DateTime(2017, 02, 20);
-            DateTime endDate = new DateTime(2017, 01, 31);
-            Assert.AreEqual(0, newReservation.checkRunAvailability(startDate, endDate, 'R'));
-        }
-
-        [TestMethod]
-        public void RunAvailability9()
-        {
-            Run newReservation = new Run();
-            //Input                     (2015, 09, 10);
-            //Expected                  (2017, 02, 15);
-            //Expected                  0 Run Available 
-            //Start date smaller than Reservation Start Date 
-            //End date Greater than Reservation End Date
-            DateTime startDate = new DateTime(2015, 09, 10);
-            DateTime endDate = new DateTime(2017, 02, 15);
-            Assert.AreEqual(0, newReservation.checkRunAvailability(startDate, endDate, 'R'));
-        }
-
-
-        [TestMethod]
-        public void RunAvailability10()
-        {
-            Run newReservation = new Run();
-            //Input                          (2015, 09, 19);
-            //                               (2017, 01, 15);
-            //Expected :                      Run Available 
-            //Start date Greater than Reservation Start Date 
-            //End date Smaller than Reservation End Date
-            //Start date smaller than Reservation End Date 
-            DateTime startDate = new DateTime(2015, 09, 19);
-            DateTime endDate = new DateTime(2017, 01, 15);
-            Assert.AreEqual(1, newReservation.checkRunAvailability(startDate, endDate, 'R'));
-        }
-
-        [TestMethod]
-        public void RunAvailability11()
-        {
-            Run newReservation = new Run();
-            //Input                            (2015, 09, 10);
-            //                                 (2017, 01, 25);
-            //Expected :                        0 Run Available 
-            //Start date Smaller than Reservation Start Date 
-            //End date Smaller than Reservation End Date
-            //Start date smaller than Reservation End Date  
-            DateTime startDate = new DateTime(2015, 09, 10);
-            DateTime endDate = new DateTime(2017, 01, 25);
-            Assert.AreEqual(0, newReservation.checkRunAvailability(startDate, endDate, 'R'));
-        }
-        
         [TestMethod]
         public void testDeleteDogFromReservation()
         {
@@ -750,7 +614,7 @@ namespace HawkeyeUnitTests
             Assert.AreEqual(2, hvk.deleteDogFromReservation(140, 0), "Invalid pet number didn't return 2");
 
             // This reservation was created in the opening script to be going on today. It should not work
-            Assert.AreEqual(4, hvk.cancelReservation(500), "cancel reservation that is ongoing cant be cancelled.");
+            Assert.AreEqual(4, hvk.deleteDogFromReservation(500,3), "cancel reservation that is ongoing cant be cancelled.");
         }
         [TestMethod]
         public void testCancelReservation() {
@@ -778,22 +642,13 @@ namespace HawkeyeUnitTests
 
             // This reservation was created in the opening script to be going on today. It should not work
             Assert.AreEqual(4, hvk.cancelReservation(500), "cancel reservation that is ongoing cant be cancelled.");
+
         }
 
         /* addToReservation Test Cases  */
         // reservation# 603 , owner# 17 , pet in reservation 31 , 32 
         //Input : pet# 30   Expected : 1 row inserted  
-
-
-
-
-
-
-
     }
-
-
-
 }
 
 
