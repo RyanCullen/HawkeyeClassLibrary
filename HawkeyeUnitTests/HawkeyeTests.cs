@@ -108,7 +108,7 @@ namespace HawkeyeUnitTests
         [TestMethod]
         public void listActiveReservations1()
         {
-            Reservation control = new Reservation();
+            Reservation control = new Reservation(); 
             Assert.AreNotEqual(0, control.listActiveReservations().Count);
         }
 
@@ -386,7 +386,7 @@ namespace HawkeyeUnitTests
                 //pet number: 7 
                 //reservation:631 
                 //  Expected: 2 (Error pet has reservation at that time already)
-             //   Assert.AreEqual(2, control.addToReservation(631, 7), "Pet has reservation during those days");
+             Assert.AreEqual(-3, control.addToReservation(631, 7), "Pet has reservation during those days");
 
 
                 // invalid reservation number
@@ -402,7 +402,7 @@ namespace HawkeyeUnitTests
                 // pet number:  6
                 // 
                 //Expected: success (1)
-               // Assert.AreEqual(1, control.addToReservation(108, 6), "Happy Path");
+               //Assert.AreEqual(1, control.addToReservation(, ), "Happy Path");
 
 
                 //pets from different owners
@@ -411,8 +411,8 @@ namespace HawkeyeUnitTests
                 // reservation number: 108
                 // pet number:  1
                 // 
-                //Expected: 4 (dogs not from same owner)
-                //Assert.AreEqual(4, control.addToReservation(108, 1), "pets from different owners");
+                //Expected: -2 (dogs not from same owner)
+                Assert.AreEqual(-2, control.addToReservation(108, 1), "pets from different owners");
 
 
 
@@ -709,9 +709,23 @@ namespace HawkeyeUnitTests
             //                   petNumber - 3
             // Expected Result: 0
             Assert.AreEqual(0, hvk.deleteDogFromReservation(108, 3), "Solo dog in reservation didn't return 0");
-            //This should also delete the entire reservation
-            //hvk.listReservations().ForEach()
+            //This should also delete the entire reservation since there was only one pet reservation
+            hvk.listReservations().ForEach(delegate(Reservation res) {
+                if (res.reservationNumber == 108) {
+                    Assert.Fail("The reservation 108 was not deleted.");
+                  }
+            });
+            // not test to ensure: HVK_RESERVATION_DISCOUNT, hvk_pet_reservation_service entries were deleted because 
+            // they would have stopped the deletion of the pet reservation to begin with.
 
+            //Check to make sure that the pet reservation is gone
+            PetReservation presBLL = new PetReservation();
+            presBLL.listPetRes(108).ForEach(delegate (PetReservation pr)
+            {
+                if (pr.pet.petNumber == 3) {
+                    Assert.Fail("Any pet reservation with Reservation number 108 and pet number 3 should not be there at this point.");
+                }
+            });
 
             // Test Method: Sharing pet in reservation
             // Input Parameters: reservationNumber - 140
@@ -734,11 +748,36 @@ namespace HawkeyeUnitTests
             //                   petNumber - 0
             // Expected Result: 2
             Assert.AreEqual(2, hvk.deleteDogFromReservation(140, 0), "Invalid pet number didn't return 2");
+
+            // This reservation was created in the opening script to be going on today. It should not work
+            Assert.AreEqual(4, hvk.cancelReservation(500), "cancel reservation that is ongoing cant be cancelled.");
         }
         [TestMethod]
         public void testCancelReservation() {
             Reservation hvk = new Reservation();
-            Assert.AreEqual(0, hvk.cancelReservation(108), "cancel reservation 108 not succesful.");
+
+            //Reservation with one pet - Reservation 615
+            //check pet_res's are gone
+            Assert.AreEqual(0, hvk.cancelReservation(615), "cancel reservation 615 not succesfull.");
+            PetReservation presBLL = new PetReservation();
+            if (0 < presBLL.listPetRes(615).Count) {
+                Assert.Fail("Deleting the reservation should also delete all pet reservations.");
+            }
+
+            // Reservation with multple pets
+            // Reservation number 100
+            Assert.AreEqual(0, hvk.cancelReservation(100), "cancel reservation 100 not succesfull.");
+            if (0 < presBLL.listPetRes(100).Count)
+            {
+                Assert.Fail("Deleting the reservation should also delete all pet reservations.");
+            }
+
+            //invalid reservation Number
+            //reservation number 5
+            Assert.AreEqual(1, hvk.cancelReservation(5), "cancel reservation with invalid reservation number was not successfull.");
+
+            // This reservation was created in the opening script to be going on today. It should not work
+            Assert.AreEqual(4, hvk.cancelReservation(500), "cancel reservation that is ongoing cant be cancelled.");
         }
 
         /* addToReservation Test Cases  */

@@ -315,16 +315,18 @@ namespace HawkeyehvkBLL
                 if (!search.validatePetNumber(petNumber))
                 {
                     return -1;
-                }
-                else if (!search.validateReservationNumber(reservationNumber))
+                } else if (!search.validateReservationNumber(reservationNumber))
                 {
-                    return -2;  
+                    return -2;
                 }
-                else
+                else if (!search.validateReservationForPet(petNumber))
                 {
-                    db.addToReservationDB(reservationNumber, petNumber);
+                    return -3;
+                }
+
+                db.addToReservationDB(reservationNumber, petNumber);
                     return 1;
-                }
+             
 
 
 
@@ -337,15 +339,55 @@ namespace HawkeyehvkBLL
 
 
         }
-
+        private bool isReservationAvtive(int reservationNumber) {
+            return false;
+        }
         public int cancelReservation(int reservationNumber)
         {
+            Search search = new HawkeyehvkBLL.Search();
             // check reservation number
-            int returned = ReservationDB.cancelReservationDB(reservationNumber);
-            
-            return returned;
+            if (!search.validateReservationNumber(reservationNumber))// check reservation number
+            {
+                return 1;
+            }
+            else if (isReservationAvtive(reservationNumber))
+            {
+                return 4;
+            }
+            else
+            {
+                return ReservationDB.cancelReservationDB(reservationNumber);
+            }
         }
+        public int deleteDogFromReservation(int reservationNumber, int petNumber)
+        {
+            Search search = new HawkeyehvkBLL.Search();
 
+
+
+
+
+            if (!search.validateReservationNumber(reservationNumber))// check reservation number
+            {
+                return 1;
+            }
+            else if (!search.validatePetNumber(petNumber))// check pet number
+            {
+                return 2;
+            }
+            else if (!ReservationDB.isDogInReservation(reservationNumber, petNumber))// check that dog is in reservation
+            {
+                return 3;
+            }
+            else if (isReservationAvtive(reservationNumber))
+            {
+                return 4;
+            }
+            else
+            {
+                return ReservationDB.deleteDogFromReservationDB(reservationNumber, petNumber);
+            }
+        }
         public int changeReservation(int reservationNumber, DateTime startDate, DateTime endDate)
         {
             Search search = new HawkeyehvkBLL.Search();
@@ -357,31 +399,7 @@ namespace HawkeyehvkBLL
             return 0;
         }
 
-        public int deleteDogFromReservation(int reservationNumber, int petNumber)
-        {
-            Search search = new HawkeyehvkBLL.Search();
-            
 
-            
-
-            
-            //if (!search.validateReservationNumber(reservationNumber))// check reservation number
-            //{
-            //    return 1;
-            //}
-            //else if (!search.validatePetNumber(petNumber))// check pet number
-            //{
-            //    return 2;
-            //}
-            //else if (!ReservationDB.isDogInReservation(reservationNumber, petNumber))// check that dog is in reservation
-            //{
-            //    return 3;
-            //}
-            //else
-            //{
-                return ReservationDB.deleteDogFromReservationDB(reservationNumber, petNumber);
-            //}
-        }
 
         public int checkVaccinations(int petNumber, DateTime byDate)
         {
