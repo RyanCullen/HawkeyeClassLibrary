@@ -298,11 +298,11 @@ namespace HawkeyehvkBLL
 
             //return -1 if expired or missing Vaccinations
             PetVaccination petVac = new PetVaccination();
-            int count = petVac.checkVaccinations(petNumber, endDate).Count;
-            if (count > 0)
+            int count = petVac.checkVaccinations(petNumber, endDate);
+            if (count == -1)
                 return -1;
-            //return 0 for success
-            return 0;
+            else
+                return 0;
         }
 
         public int addToReservation(int reservationNumber, int petNumber)

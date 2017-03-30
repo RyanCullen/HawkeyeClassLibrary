@@ -324,7 +324,7 @@ namespace HawkeyeUnitTests
                 // Start: 4-MAR-17
                 // end: 6-MAR-17
                 // Expected: -1 (success)
-                Assert.AreEqual(-1, control.addReservation(35, new DateTime(2017, 4, 1), new DateTime(2017, 4, 2)), "happy case");
+                Assert.AreEqual(-1, control.addReservation(35, new DateTime(2017, 4, 25), new DateTime(2017, 4, 26)), "happy case");
 
 
                 // Start Date In the Past
@@ -342,8 +342,8 @@ namespace HawkeyeUnitTests
                 // Input Parameters: 
                 // 04-JAN-17 - End
                 // 04-JAN-17 - Start
-                //Expected: -1 (Start date and end date same day)
-                Assert.AreEqual(-1, control.addReservation(1, new DateTime(2017, 5, 14), new DateTime(2017, 5, 16)), "Start date == end date test");
+                //Expected: 0 (Success)
+                Assert.AreEqual(0, control.addReservation(3, new DateTime(2017, 5, 24), new DateTime(2017, 5, 26)), "Start date == end date test");
 
 
                 // Pet has reservation during those days
@@ -474,22 +474,22 @@ namespace HawkeyeUnitTests
             //date: 16/01/2016
             //Expected: 1
             //Invalid Pet Number
-            Assert.AreEqual(1, hvk.checkVaccinations(999, new DateTime(16, 01, 16)), "Invalid Pet Number Not returning 1");
+            Assert.AreEqual(-10, hvk.checkVaccinations(999, new DateTime(16, 01, 16)), "Invalid Pet Number Not returning 1");
 
             //Input Parameters:
             //Pet Number: 14
             //date: 17/05/05
             //Expected: 2
             //Happy Path With 1 missing Vaccination
-            Assert.AreEqual(2, hvk.checkVaccinations(14, new DateTime(17, 05, 05)), "Missing 1 Vaccination Not returning 2");
+            Assert.AreEqual(-1, hvk.checkVaccinations(14, new DateTime(17, 05, 05)), "Missing 1 Vaccination Not returning -1");
 
 
             //Input Parameters:
-            //Pet Number: 7
+            //Pet Number: 3
             //date: 17-02-20
-            //Expected: 2
-            //Happy Path With Multiple missing Vaccinations
-            Assert.AreEqual(2, hvk.checkVaccinations(7, new DateTime(17, 02, 20)), "Missing Multiple Vaccinations not returning 2");
+            //Expected: 0
+            //Happy Path Valid Vaccinations
+            Assert.AreEqual(0, hvk.checkVaccinations(3, new DateTime(17, 02, 20)), "Not Returning Valid Vaccinations");
         }
 
 
