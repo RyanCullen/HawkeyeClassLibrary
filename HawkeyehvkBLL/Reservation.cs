@@ -149,7 +149,6 @@ namespace HawkeyehvkBLL
                     }
                     else
                     {
-
                         //Retrieve pet info , owner # , reservation detail 
                         res.reservationNumber = Convert.ToInt32(ds.Tables[0].Rows[i]["RESERVATION_NUMBER"]);
                         res.startDate = DateTime.Parse(ds.Tables[0].Rows[i]["RESERVATION_START_DATE"].ToString());
@@ -157,11 +156,9 @@ namespace HawkeyehvkBLL
                         res.petReservationList.Add(new PetReservation());
                         res.owner.ownerNumber = Convert.ToInt16(ds.Tables[0].Rows[i]["OWNER_NUMBER"].ToString());
                         res.petReservationList[res.petReservationList.Count - 1].pet.petNumber = Convert.ToInt16(ds.Tables[0].Rows[i]["PET_NUMBER"].ToString());
-                        // res.petReservationList[i].run.runNumber = Convert.ToInt16(ds.Tables[0].Rows[i]["RUN_RUN_NUMBER"].ToString());
+                        //res.petReservationList[i].run.runNumber = Convert.ToInt16(ds.Tables[0].Rows[i]["RUN_RUN_NUMBER"].ToString());
                         resList.Add(res);
                         res = new Reservation();
-
-
                     }
 
                 }

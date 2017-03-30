@@ -88,12 +88,12 @@ namespace HawkeyeUnitTests
             Assert.AreEqual(631, control.listReservations(4)[1].reservationNumber);
         }
 
-        //Owner with 0 (Owner 20)
+        //Owner with 0 (Owner 5)
         [TestMethod]
         public void listReservations2()
         {
             Reservation control = new Reservation();
-            Assert.AreEqual(0, control.listReservations(20).Count);
+            Assert.AreEqual(0, control.listReservations(5).Count);
         }
 
         //Invalid owner number returns null
@@ -642,6 +642,7 @@ namespace HawkeyeUnitTests
 
             // This reservation was created in the opening script to be going on today. It should not work
             Assert.AreEqual(4, hvk.cancelReservation(500), "cancel reservation that is ongoing cant be cancelled.");
+
         }
 
         /* addToReservation Test Cases  */
