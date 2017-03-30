@@ -181,8 +181,8 @@ namespace HawkeyehvkDB
                                 VALUES
                                 (
                                     HVK_RESERVATION_SEQ.NEXTVAL,
-                                    :start,
-                                    :end
+                                    :dateStart,
+                                    :dateEnd
                                 )";
             string cmdAddPetRes = @"INSERT INTO HVK_PET_RESERVATION
                                 (
@@ -211,11 +211,13 @@ namespace HawkeyehvkDB
                                 )";
 
             OracleCommand cmd = new OracleCommand(cmdStr, con);
-            cmd.Parameters.Add("start", startDate);
-            cmd.Parameters.Add("end", endDate);
+            cmd.BindByName = true;
+            cmd.Parameters.Add("dateStart", startDate);
+            cmd.Parameters.Add("dateEnd", endDate);
 
             OracleCommand cmd2 = new OracleCommand(cmdAddPetRes, con);
-            cmd2.Parameters.Add("petNum", cmdAddPetRes);
+            //cmd2.BindByName = true;
+            cmd2.Parameters.Add("petNum", petNum);
             OracleCommand cmd3 = new OracleCommand(cmdAddService, con);
             
             OracleDataAdapter da = new OracleDataAdapter(cmd);
@@ -232,8 +234,9 @@ namespace HawkeyehvkDB
                 cmd2.ExecuteNonQuery();
                 cmd3.ExecuteNonQuery();
             }
-            catch
+            catch(Exception e)
             {
+                Console.Write(e);
                 result = -1;
             }
             finally

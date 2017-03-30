@@ -45,12 +45,12 @@ namespace HawkeyehvkDB
                                 FROM HVK_RESERVATION R
                                 JOIN HVK_PET_RESERVATION PR
                                 ON R.RESERVATION_NUMBER=PR.RES_RESERVATION_NUMBER
-                                WHERE (R.RESERVATION_START_DATE BETWEEN :start AND :end OR R.RESERVATION_END_DATE BETWEEN :start AND :end)
+                                WHERE (R.RESERVATION_START_DATE BETWEEN :dateStart AND :dateEnd OR R.RESERVATION_END_DATE BETWEEN :dateStart AND :dateEnd)
                                 AND PR.PET_PET_NUMBER = :petNum";
             OracleCommand cmd = new OracleCommand(cmdStr, con);
             cmd.BindByName = true;
-            cmd.Parameters.Add("start", startDate);
-            cmd.Parameters.Add("end", endDate);
+            cmd.Parameters.Add("dateStart", startDate);
+            cmd.Parameters.Add("dateEnd", endDate);
             cmd.Parameters.Add("petNum", petNumber);
             OracleDataAdapter da = new OracleDataAdapter(cmd);
             da.SelectCommand = cmd;
@@ -100,11 +100,10 @@ namespace HawkeyehvkDB
         public int searchPetDB(int petNumber)
         {
           string cmdStr =   @"SELECT COUNT(*)
-FROM HVK_PET
-WHERE
-PET_NUMBER = :PET_NUMBER
-GROUP BY PET_NUMBER
-";
+                                FROM HVK_PET
+                                WHERE
+                                PET_NUMBER = :PET_NUMBER
+                                GROUP BY PET_NUMBER";
 
             return searchDB(cmdStr, "PET_NUMBER", petNumber); 
 

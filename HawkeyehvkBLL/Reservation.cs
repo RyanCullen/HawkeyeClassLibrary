@@ -286,9 +286,9 @@ namespace HawkeyehvkBLL
                 return -13;
             }
             //return -14 No Run Available
-            Run theRun = new Run();
-            if (theRun.checkRunAvailability(startDate, endDate, check.getPetSize(petNumber)) == -1)
-                return -14;
+            //Run theRun = new Run();
+            //if (theRun.checkRunAvailability(startDate, endDate, check.getPetSize(petNumber)) == -1)
+            //    return -14;
             //return -15 Insert Failed
             
                 ReservationDB reservation = new ReservationDB();
