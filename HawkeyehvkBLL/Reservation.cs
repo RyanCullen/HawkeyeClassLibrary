@@ -234,6 +234,10 @@ namespace HawkeyehvkBLL
         }
         public List<Run> listAvailableRuns(DateTime start, DateTime end)
         {
+            if (start>end) {
+                return 0;
+            }
+
             List<Run> runs = new List<Run>();
             ReservationDB db = new ReservationDB();
             foreach (DataRow row in db.listAvailableRunsDB(start, end).Tables["hvk_runsAvail"].Rows)
