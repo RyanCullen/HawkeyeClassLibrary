@@ -88,12 +88,12 @@ namespace HawkeyeUnitTests
             Assert.AreEqual(631, control.listReservations(4)[1].reservationNumber);
         }
 
-        //Owner with 0 (Owner 20)
+        //Owner with 0 (Owner 5)
         [TestMethod]
         public void listReservations2()
         {
             Reservation control = new Reservation();
-            Assert.AreEqual(0, control.listReservations(20).Count);
+            Assert.AreEqual(0, control.listReservations(5).Count);
         }
 
         //Invalid owner number returns null
