@@ -534,173 +534,35 @@ namespace HawkeyeUnitTests
         }
 
         [TestMethod]
-        public void RunAvailability1()
+        public void RunAvailability()
         {
             Run hvk = new Run();
-
-            //Input:              2015, 09, 12;
-            //                    2017, 1, 31;
-            //Expected : no avaialble run  
-            //Start date equal to Reservation Start Date
+            //Run is not available (Return -3)
             DateTime startDate = new DateTime(2015, 09, 12);
-            DateTime endDate = new DateTime(2017, 1, 31);
-            Assert.AreEqual(0, hvk.checkRunAvailability(startDate, endDate, 'R'));
-        }
+            DateTime endDate = new DateTime(2014, 1, 31);
+            Assert.AreEqual(-1, hvk.checkRunAvailability(startDate, endDate, 'R'), "A request when start is after end date should return -1.");
 
-        [TestMethod]
-        public void RunAvailability2()
-        {
-            Run hvk = new Run();
-            //Input     2015, 09, 18;
-            //          2017, 1, 31;
-            //Expected : 0 Run Available 
-            //Start date greater than Reservation Start Date 
-            //End date equal to Reservation End Date
-            DateTime startDate = new DateTime(2015, 09, 18);
-            DateTime endDate = new DateTime(2017, 1, 31);
-            Assert.AreEqual(0, hvk.checkRunAvailability(startDate, endDate, 'R'));
-            /*
-             * THIS TEST CASE IS FLAWED. there is 1 run that is never used.
-             */ 
-        }
+            // Test with regular size (Returns number of runs)
+            startDate = new DateTime(2015, 09, 12);
+            endDate = new DateTime(2014, 1, 31);
+            Assert.AreEqual(-1, hvk.checkRunAvailability(startDate, endDate, 'R'), "A request when start is after end date should return -1.");
+            // Test with large size (Returns number of runs)
+            startDate = new DateTime(2015, 09, 12);
+            endDate = new DateTime(2014, 1, 31);
+            Assert.AreEqual(-1, hvk.checkRunAvailability(startDate, endDate, 'R'), "A request when start is after end date should return -1.");
+            //End date before start date (Return -1)
+            startDate = new DateTime(2015, 09, 12);
+            endDate = new DateTime(2014, 1, 31);
+            Assert.AreEqual(-1, hvk.checkRunAvailability(startDate, endDate, 'R'),"A request when start is after end date should return -1.");
+            //Start date equal to end date (Return -2)
+            startDate = new DateTime(2015, 09, 12);
+            endDate = new DateTime(2015, 09, 12);
+            Assert.AreEqual(-2, hvk.checkRunAvailability(startDate, endDate, 'R'),"A request when start date and end date are equal should return -2");
 
-
-        [TestMethod]
-        public void RunAvailability3()
-        {
-            Run hvk = new Run();
-            //Input :             2015, 09, 10;
-            //                    2017, 1, 31;
-            //Expected            0 Run Available 
-            //Start date smaller than Reservation Start Date 
-            //End date equal to Reservation End Date
-            DateTime startDate = new DateTime(2015, 09, 10);
-            DateTime endDate = new DateTime(2017, 1, 31);
-            Assert.AreEqual(0, hvk.checkRunAvailability(startDate, endDate, 'R'));
         }
 
 
 
-        [TestMethod]
-        public void RunAvailability4()
-        {
-            Run hvk = new Run();
-            //Input               (2015, 09, 12);
-            //                    (2017, 04, 15);
-            //Expected            0 Run Available 
-            //Start date equals to Reservation Start Date 
-            //End date greater than  Reservation End Date
-            DateTime startDate = new DateTime(2015, 09, 12);
-            DateTime endDate = new DateTime(2017, 04, 15);
-            Assert.AreEqual(0, hvk.checkRunAvailability(startDate, endDate, 'R'));
-        }
-
-
-
-
-        [TestMethod]
-        public void RunAvailability5()
-        {
-            Run newReservation = new Run();
-            //Input             (2015, 09, 12);
-            //                  (2016, 12, 05);
-            //Expected          0 Run Available 
-            //Start date equals to Reservation Start Date 
-            //End date smaller than Reservation End Date
-            DateTime startDate = new DateTime(2015, 09, 12);
-            DateTime endDate = new DateTime(2016, 12, 05);
-            Assert.AreEqual(0, newReservation.checkRunAvailability(startDate, endDate, 'R'));
-        }
-
-
-        [TestMethod]
-        public void RunAvailability6()
-        {
-            Run newReservation = new Run();
-            //Input              (2015, 09, 18);
-            //                   (2017, 02, 15);
-            //Expected           0 Run Available 
-            //Start date Greater than Reservation Start Date 
-            //End date Greater than Reservation End Date 
-            //Start Date Smaller than Reservation End Date 
-            DateTime startDate = new DateTime(2015, 09, 18);
-            DateTime endDate = new DateTime(2017, 02, 15);
-            Assert.AreEqual(0, newReservation.checkRunAvailability(startDate, endDate, 'R'));
-        }
-
-        [TestMethod]
-        public void RunAvailability7()
-        {
-            Run newReservation = new Run();
-            //Happy Path 
-            //Start date Greater than Reservation Start Date 
-            //End date Greater than Reservation End Date 
-            //Start Date Greater than Reservation End Date 
-            DateTime startDate = new DateTime(2017, 02, 15);
-            DateTime endDate = new DateTime(2017, 02, 20);
-            Assert.AreEqual(1, newReservation.checkRunAvailability(startDate, endDate, 'R'));
-        }
-
-        [TestMethod]
-        public void RunAvailability8()
-        {
-            Run newReservation = new Run();
-            //Input                 (2017, 02, 20);
-            //                      (2017, 01, 31);
-            //Expected              0 Run Available 
-            //Start date Greater than Reservation Start Date 
-            //End date equals to Reservation End Date 
-            //Start Date Greater than Reservation End Date
-            DateTime startDate = new DateTime(2017, 02, 20);
-            DateTime endDate = new DateTime(2017, 01, 31);
-            Assert.AreEqual(0, newReservation.checkRunAvailability(startDate, endDate, 'R'));
-        }
-
-        [TestMethod]
-        public void RunAvailability9()
-        {
-            Run newReservation = new Run();
-            //Input                     (2015, 09, 10);
-            //Expected                  (2017, 02, 15);
-            //Expected                  0 Run Available 
-            //Start date smaller than Reservation Start Date 
-            //End date Greater than Reservation End Date
-            DateTime startDate = new DateTime(2015, 09, 10);
-            DateTime endDate = new DateTime(2017, 02, 15);
-            Assert.AreEqual(0, newReservation.checkRunAvailability(startDate, endDate, 'R'));
-        }
-
-
-        [TestMethod]
-        public void RunAvailability10()
-        {
-            Run newReservation = new Run();
-            //Input                          (2015, 09, 19);
-            //                               (2017, 01, 15);
-            //Expected :                      Run Available 
-            //Start date Greater than Reservation Start Date 
-            //End date Smaller than Reservation End Date
-            //Start date smaller than Reservation End Date 
-            DateTime startDate = new DateTime(2015, 09, 19);
-            DateTime endDate = new DateTime(2017, 01, 15);
-            Assert.AreEqual(1, newReservation.checkRunAvailability(startDate, endDate, 'R'));
-        }
-
-        [TestMethod]
-        public void RunAvailability11()
-        {
-            Run newReservation = new Run();
-            //Input                            (2015, 09, 10);
-            //                                 (2017, 01, 25);
-            //Expected :                        0 Run Available 
-            //Start date Smaller than Reservation Start Date 
-            //End date Smaller than Reservation End Date
-            //Start date smaller than Reservation End Date  
-            DateTime startDate = new DateTime(2015, 09, 10);
-            DateTime endDate = new DateTime(2017, 01, 25);
-            Assert.AreEqual(0, newReservation.checkRunAvailability(startDate, endDate, 'R'));
-        }
-        
         [TestMethod]
         public void testDeleteDogFromReservation()
         {
@@ -784,17 +646,7 @@ namespace HawkeyeUnitTests
         /* addToReservation Test Cases  */
         // reservation# 603 , owner# 17 , pet in reservation 31 , 32 
         //Input : pet# 30   Expected : 1 row inserted  
-
-
-
-
-
-
-
     }
-
-
-
 }
 
 
