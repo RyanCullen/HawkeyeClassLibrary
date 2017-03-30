@@ -335,9 +335,15 @@ namespace HawkeyeUnitTests
                 //Expected: -11
                 Assert.AreEqual(-11, control.addReservation(1, new DateTime(2017, 3, 9), new DateTime(2017, 5, 13)), " Start Date after end date test");
 
-                //No Available runs for dog size, this will be tested when we have further understanding
 
-                //No Available runs on date, this will be tested when we have further understanding
+                // Start date == end date
+                // Input Parameters: 
+                // 12-MAY-18 - End
+                // 13-MAY-18 - Start
+                //Expected: 0 (Success)
+                //No Available runs for dog size, this will be tested when we have further understanding
+                Assert.AreEqual(-14, control.addReservation(1, new DateTime(2018, 5, 12), new DateTime(2018, 5, 13)), "Runs available when they're full");
+         
 
                 // Start date == end date
                 // Input Parameters: 
@@ -484,6 +490,12 @@ namespace HawkeyeUnitTests
             //Happy Path With 1 missing Vaccination
             Assert.AreEqual(-1, hvk.checkVaccinations(14, new DateTime(17, 05, 05)), "Missing 1 Vaccination Not returning -1");
 
+            //Input Parameters
+            //Pet Number: 34
+            //date: 17/05/05
+            //Expected: -1
+            //Happy Path Pet with no Vaccinations
+            Assert.AreEqual(-1, hvk.checkVaccinations(34, new DateTime(17, 05, 05)), "No Vaccination Not returning full list of vaccinations");
 
             //Input Parameters:
             //Pet Number: 3
