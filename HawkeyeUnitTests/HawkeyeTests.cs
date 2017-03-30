@@ -779,6 +779,7 @@ namespace HawkeyeUnitTests
 
             // This reservation was created in the opening script to be going on today. It should not work
             Assert.AreEqual(4, hvk.cancelReservation(500), "cancel reservation that is ongoing cant be cancelled.");
+
         }
 
         /* addToReservation Test Cases  */
