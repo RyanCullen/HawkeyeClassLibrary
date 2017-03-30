@@ -26,7 +26,12 @@ namespace WpfApplication1
             HawkeyehvkBLL.Search search = new HawkeyehvkBLL.Search();
             //dataGrid.ItemsSource =  reservation.listReservation(); 
             //dataGrid.ItemsSource = reservation.listReservations(4); 
-            bool result = search.validateReservationForPet(10);
+            List<int> petNumbers = new List<int>();
+            petNumbers.Add(1);
+            petNumbers.Add(2);
+
+            HawkeyehvkBLL.Reservation reservation = new Reservation();
+            reservation.addReservation(1, new DateTime(2022,3,13) , new DateTime(2022, 3, 25));
 
 
         }
