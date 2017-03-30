@@ -108,7 +108,7 @@ namespace HawkeyeUnitTests
         [TestMethod]
         public void listActiveReservations1()
         {
-            Reservation control = new Reservation(); 
+            Reservation control = new Reservation();
             Assert.AreNotEqual(0, control.listActiveReservations().Count);
         }
 
@@ -122,14 +122,15 @@ namespace HawkeyeUnitTests
         }
 
 
-        /* need to provide an update query just to test */
-        //[TestMethod]
-        //public void listActiveReservations3()
-        //{
-        //    //Owner 15 - Expected : 1 Active Reservation 
-        //    Reservation control = new Reservation();
-        //    Assert.AreNotEqual(0, control.listActiveReservations(15).Count);
-        //}
+        // need to provide an update query just to test
+        [TestMethod]
+        public void listactivereservations3()
+        {
+
+            //owner 15 - expected : 1 active reservation 
+            Reservation control = new Reservation();
+            Assert.AreNotEqual(0, control.listActiveReservations(15).Count);
+        }
 
         //[TestMethod]
         //public void listActiveReservations4()
