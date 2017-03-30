@@ -137,7 +137,7 @@ namespace HawkeyeUnitTests
         {
             //Owner 2 - Expected : More than 1 active reservation 
             Reservation control = new Reservation();
-            Assert.AreEqual(2, control.listActiveReservations(2).Count);
+            Assert.AreEqual(3, control.listActiveReservations(2).Count);
             Assert.AreNotEqual(0, control.listActiveReservations(2).Count);
 
         }
@@ -279,8 +279,9 @@ namespace HawkeyeUnitTests
         [TestMethod]
         public void upcomingReservation4()
         {
+            //amir is here
             Reservation control = new Reservation();
-            Assert.AreEqual(1, control.listUpcomingReservations(new DateTime(2017, 8, 20)).Count);
+            Assert.AreEqual(2, control.listUpcomingReservations(new DateTime(2017, 8, 20)).Count);
         }
 
 
