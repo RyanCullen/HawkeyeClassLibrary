@@ -137,7 +137,7 @@ namespace HawkeyeUnitTests
         {
             //Owner 2 - Expected : More than 1 active reservation 
             Reservation control = new Reservation();
-            Assert.AreEqual(2, control.listActiveReservations(2).Count);
+            Assert.AreEqual(3, control.listActiveReservations(2).Count);
             Assert.AreNotEqual(0, control.listActiveReservations(2).Count);
 
         }
@@ -279,8 +279,9 @@ namespace HawkeyeUnitTests
         [TestMethod]
         public void upcomingReservation4()
         {
+            //amir is here
             Reservation control = new Reservation();
-            Assert.AreEqual(1, control.listUpcomingReservations(new DateTime(2017, 8, 20)).Count);
+            Assert.AreEqual(2, control.listUpcomingReservations(new DateTime(2017, 8, 20)).Count);
         }
 
 
@@ -567,11 +568,21 @@ namespace HawkeyeUnitTests
             startDate = new DateTime(2015, 09, 12);
             endDate = new DateTime(2014, 1, 31);
             Assert.AreEqual(-1, hvk.checkRunAvailability(startDate, endDate, 'R'),"A request when start is after end date should return -1.");
-            //Start date equal to end date (Return -2)
-            startDate = new DateTime(2015, 09, 12);
-            endDate = new DateTime(2015, 09, 12);
-            Assert.AreEqual(-2, hvk.checkRunAvailability(startDate, endDate, 'R'),"A request when start date and end date are equal should return -2");
 
+            //test case
+            // more regular pets than there are regular runs causing for regular sized pets to be in large runs.
+            // the remaining runs are occupied by large dogs. Check run availibility for large dog should return 0 runs.
+            
+
+            //test case 
+            // test that our method works logically.
+            // since our method takes the most busy day in the range of dates and checks that everything works there 
+            // we want to test if the bussiest day has space for a large dog but the seccond bussiest day doesnt.
+            // to force this the bussiest day has 7 reservations with large runs availible
+            // the seccond most busy has 6 reservations but all large
+
+            //Reservation deletor = new Reservation();
+            //deletor.cancelReservation(501);
         }
 
 
