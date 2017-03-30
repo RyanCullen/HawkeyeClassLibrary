@@ -556,11 +556,7 @@ namespace HawkeyeUnitTests
             startDate = new DateTime(2015, 09, 12);
             endDate = new DateTime(2014, 1, 31);
             Assert.AreEqual(-1, hvk.checkRunAvailability(startDate, endDate, 'R'),"A request when start is after end date should return -1.");
-            //Start date equal to end date (Return -2)
-            startDate = new DateTime(2015, 09, 12);
-            endDate = new DateTime(2015, 09, 12);
-            Assert.AreEqual(-2, hvk.checkRunAvailability(startDate, endDate, 'R'),"A request when start date and end date are equal should return -2");
-
+           
         }
 
 
