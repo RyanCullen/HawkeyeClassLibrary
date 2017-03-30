@@ -555,7 +555,21 @@ namespace HawkeyeUnitTests
             startDate = new DateTime(2015, 09, 12);
             endDate = new DateTime(2014, 1, 31);
             Assert.AreEqual(-1, hvk.checkRunAvailability(startDate, endDate, 'R'),"A request when start is after end date should return -1.");
-           
+
+            //test case
+            // more regular pets than there are regular runs causing for regular sized pets to be in large runs.
+            // the remaining runs are occupied by large dogs. Check run availibility for large dog should return 0 runs.
+            
+
+            //test case 
+            // test that our method works logically.
+            // since our method takes the most busy day in the range of dates and checks that everything works there 
+            // we want to test if the bussiest day has space for a large dog but the seccond bussiest day doesnt.
+            // to force this the bussiest day has 7 reservations with large runs availible
+            // the seccond most busy has 6 reservations but all large
+
+            //Reservation deletor = new Reservation();
+            //deletor.cancelReservation(501);
         }
 
 
