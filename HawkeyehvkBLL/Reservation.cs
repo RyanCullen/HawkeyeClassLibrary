@@ -135,19 +135,61 @@ namespace HawkeyehvkBLL
         public static int updateReservation(int resNum, DateTime startDate, DateTime endDate, int petNumber, int runNumber)
         {
             ReservationDB db = new ReservationDB();
-            Search search = new Search();
+            Search check = new Search();
 
-            if (search.validateReservationNumber(resNum))
+            if (check.validateReservationNumber(resNum))
             {
-                if (db.updateReservation(resNum, startDate, endDate, petNumber, runNumber) == 1)
+
+                //    if (db.updateReservation(resNum, startDate, endDate, petNumber, runNumber) == 1)
+                //        return 1;
+                //    else
+                //        return -1;
+                //}
+
+
+
+                if (check.validatePetNumber(petNumber) == false)
+                {
+                    return -10;
+                }
+                //return -11 Start Date In the past
+                if (startDate < DateTime.Now)
+                {
+                    return -11;
+                }
+                //return -12 Start Date After end date
+                if (startDate > endDate)
+                {
+                    return -12;
+                }
+                //return -13 Dog has reservation for all or part of period
+                if (check.validateConflictingReservations(petNumber, startDate, endDate) == false)
+                {
+                    return -13;
+                }
+                //return -14 No Run Available
+
+                if (Run.checkRunAvailability(startDate, endDate, check.getPetSize(petNumber)) <= 0)
+                    return -14;
+                //return -15 Insert Failed
+                if (Reservation.updateReservation(resNum, startDate, endDate, petNumber, runNumber) == 1)
                     return 1;
                 else
+                    return -15;
+
+
+                //return -1 if expired or missing Vaccinations
+                int count = PetVaccination.checkVaccinations(petNumber, endDate);
+                if (count == -1)
                     return -1;
+                else
+                    return 0;
+
+            }else
+                    return -2; 
+
+
             }
-            else
-                return -2; 
-           
-        }
 
 
         public static List<Reservation> fillReservation(DataSet ds )
