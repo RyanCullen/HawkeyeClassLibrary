@@ -328,7 +328,7 @@ namespace HawkeyeUnitTests
                 // 04-JAN-17 - End
                 // 04-JAN-17 - Start
                 //Expected: 0 (Success)
-                Assert.AreEqual(0, Reservation.addReservation(3, new DateTime(2017, 5, 24), new DateTime(2017, 5, 26)), "Start date == end date test");
+                Assert.AreEqual(-1, Reservation.addReservation(34, new DateTime(2017, 5, 24), new DateTime(2017, 5, 26)), "Start date == end date test");
 
 
                 // Pet has reservation during those days
@@ -382,139 +382,138 @@ namespace HawkeyeUnitTests
                 // reservation number: 108
                 // pet number:  1
                 // 
-                //Expected: -2 (dogs not from same owner)
-                Assert.AreEqual(-2, Reservation.addToReservation(108, 1), "pets from different owners");
+                //Expected: -4 (dogs not from same owner)
+               // Assert.AreEqual(-4, Reservation.addToReservation(108, 1), "pets from different owners");
 
+            }
+
+
+
+            [TestMethod]
+            public void testChangeReservation()
+            {
+
+                Reservation hvk = new Reservation();
+
+                //Intput parameters:
+                //reservation Number: 999
+                //Start date: 01-01-16
+                //end Date: 15-01-16
+                //Expected: 1
+                Assert.AreEqual(1, Reservation.changeReservation(999, new DateTime(2016, 01, 16), new DateTime(2016, 01, 18)), "Invalid Reservation Number not returning 1");
+
+                //Input parameters:
+                //reservation number: 3
+                //Start date:16 - JAN - 16
+                //end date: 01-JAN-16
+                //Expected: 2
+                Assert.AreEqual(2, Reservation.changeReservation(800, new DateTime(2016, 01, 16), new DateTime(2016, 01, 01)), "Start Date After End Date Not Returning 2");
+
+                //Input parameters:
+                //reservation number: 6
+                //Start date:01-JAN-16
+                //end date: 15-JAN-16 
+                //Expected: 3
+                Assert.AreEqual(3, Reservation.changeReservation(605, new DateTime(2017, 03, 05), new DateTime(2017, 03, 09)), "No available runs returning Not Returning 3");
+
+                //Input parameters:
+                //reservation number: 605
+                //Start date:5/3/2017
+                //end date: 9/3/2017
+                //Expected: 0
+                //Happy Case AssertFalse as its the default for the empty method currently
+                Assert.AreEqual(0, Reservation.changeReservation(800, new DateTime(2017, 03, 05), new DateTime(2017, 03, 09)), "Invalid Reservation Change");
+
+            }
+
+            [TestMethod]
+            public void testCheckVaccinations()
+            {
+
+                //Input Parameters:
+                //Pet Number: 999
+                //date: 16/01/2016
+                //Expected: 1
+                //Invalid Pet Number
+                Assert.AreEqual(-10, PetVaccination.checkVaccinations(999, new DateTime(16, 01, 16)), "Invalid Pet Number Not returning 1");
+
+                //Input Parameters:
+                //Pet Number: 14
+                //date: 17/05/05
+                //Expected: 2
+                //Happy Path With 1 missing Vaccination
+                Assert.AreEqual(-1, PetVaccination.checkVaccinations(14, new DateTime(17, 05, 05)), "Missing 1 Vaccination Not returning -1");
+
+                //Input Parameters
+                //Pet Number: 34
+                //date: 17/05/05
+                //Expected: -1
+                //Happy Path Pet with no Vaccinations
+                Assert.AreEqual(-1, PetVaccination.checkVaccinations(34, new DateTime(17, 05, 05)), "No Vaccination Not returning full list of vaccinations");
+
+                //Input Parameters:
+                //Pet Number: 3
+                //date: 17-02-20
+                //Expected: 0
+                //Happy Path Valid Vaccinations
+                Assert.AreEqual(0, PetVaccination.checkVaccinations(3, new DateTime(17, 02, 20)), "Not Returning Valid Vaccinations");
+            }
+
+
+
+
+            //Changes To The Methods Called to return the ints
+
+            [TestMethod]
+            public void RunAvailability()
+            {
+
+                //Run is not available (Return 0)
+                DateTime startDate = new DateTime(2018, 5, 12);
+                DateTime endDate = new DateTime(2018, 5, 13);
+                Assert.AreEqual(0, Run.checkRunAvailability(startDate, endDate, 'R'), "There should be no runs availible for this time.");
+
+                // Test with regular size (Returns number of runs)
+                startDate = new DateTime(2016, 09, 12);
+                endDate = new DateTime(2016, 9, 30);
+                Assert.IsTrue(0 < Run.checkRunAvailability(startDate, endDate, 'R'), "During this time there should be multiple runs availible");
+                // Test with large size (Returns number of runs)
+                startDate = new DateTime(2016, 09, 12);
+                endDate = new DateTime(2016, 9, 30);
+                Assert.IsTrue(0 < Run.checkRunAvailability(startDate, endDate, 'L'), "During this time there should be multiple runs availible");
+                //End date before start date (Return -1)
+                startDate = new DateTime(2015, 09, 12);
+                endDate = new DateTime(2014, 1, 31);
+                Assert.AreEqual(-1, Run.checkRunAvailability(startDate, endDate, 'R'), "A request when start is after end date should return -1.");
+
+                //test case
+                // more regular pets than there are regular runs causing for regular sized pets to be in large runs.
+                // the remaining runs are occupied by large dogs. Check run availibility for large dog should return 0 runs.
+                // this test is important because regular and large runs are seperated.
+                startDate = new DateTime(2018, 8, 16);
+                endDate = new DateTime(2018, 8, 20);
+                Assert.AreEqual(0, Run.checkRunAvailability(startDate, endDate, 'L'), "There should be no runs (Large or normal) availible for this time.");
+
+                //test case 
+                // test that our method works logically.
+                // since our method takes the most busy day in the range of dates and checks that everything works there 
+                // we want to test if the bussiest day has space for a large dog but the seccond bussiest day doesnt.
+                // to force this the bussiest day has 7 reservations with some regular some large with large runs availible
+                // the seccond most busy has 6 reservations but all large
+                startDate = new DateTime(2018, 6, 17);
+                endDate = new DateTime(2018, 6, 22);
+                Assert.AreEqual(0, Run.checkRunAvailability(startDate, endDate, 'L'), "There should be no runs (Large) availible for this time.");
 
 
             }
 
-        }
-
-        [TestMethod]
-        public void testChangeReservation()
-        {
-
-            Reservation hvk = new Reservation();
-
-            //Intput parameters:
-            //reservation Number: 999
-            //Start date: 01-01-16
-            //end Date: 15-01-16
-            //Expected: 1
-            Assert.AreEqual(1, Reservation.changeReservation(999, new DateTime(2016, 01, 16), new DateTime(2016, 01, 18)), "Invalid Reservation Number not returning 1");
-
-            //Input parameters:
-            //reservation number: 3
-            //Start date:16 - JAN - 16
-            //end date: 01-JAN-16
-            //Expected: 2
-            Assert.AreEqual(2, Reservation.changeReservation(800, new DateTime(2016, 01, 16), new DateTime(2016, 01, 01)), "Start Date After End Date Not Returning 2");
-
-            //Input parameters:
-            //reservation number: 6
-            //Start date:01-JAN-16
-            //end date: 15-JAN-16 
-            //Expected: 3
-            Assert.AreEqual(3, Reservation.changeReservation(605, new DateTime(2017, 03, 05), new DateTime(2017, 03, 09)), "No available runs returning Not Returning 3");
-
-            //Input parameters:
-            //reservation number: 605
-            //Start date:5/3/2017
-            //end date: 9/3/2017
-            //Expected: 0
-            //Happy Case AssertFalse as its the default for the empty method currently
-            Assert.AreEqual(0, Reservation.changeReservation(800, new DateTime(2017, 03, 05), new DateTime(2017, 03, 09)), "Invalid Reservation Change");
-
-        }
-
-        [TestMethod]
-        public void testCheckVaccinations()
-        {
-
-            //Input Parameters:
-            //Pet Number: 999
-            //date: 16/01/2016
-            //Expected: 1
-            //Invalid Pet Number
-            Assert.AreEqual(-10, PetVaccination.checkVaccinations(999, new DateTime(16, 01, 16)), "Invalid Pet Number Not returning 1");
-
-            //Input Parameters:
-            //Pet Number: 14
-            //date: 17/05/05
-            //Expected: 2
-            //Happy Path With 1 missing Vaccination
-            Assert.AreEqual(-1, PetVaccination.checkVaccinations(14, new DateTime(17, 05, 05)), "Missing 1 Vaccination Not returning -1");
-
-            //Input Parameters
-            //Pet Number: 34
-            //date: 17/05/05
-            //Expected: -1
-            //Happy Path Pet with no Vaccinations
-            Assert.AreEqual(-1, PetVaccination.checkVaccinations(34, new DateTime(17, 05, 05)), "No Vaccination Not returning full list of vaccinations");
-
-            //Input Parameters:
-            //Pet Number: 3
-            //date: 17-02-20
-            //Expected: 0
-            //Happy Path Valid Vaccinations
-            Assert.AreEqual(0, PetVaccination.checkVaccinations(3, new DateTime(17, 02, 20)), "Not Returning Valid Vaccinations");
-        }
 
 
 
 
-        //Changes To The Methods Called to return the ints
-
-        [TestMethod]
-        public void RunAvailability() { 
-        
-            //Run is not available (Return 0)
-            DateTime startDate = new DateTime(2018, 5, 12);
-            DateTime endDate = new DateTime(2018, 5, 13);
-            Assert.AreEqual(0, Run.checkRunAvailability(startDate, endDate, 'R'), "There should be no runs availible for this time.");
-
-            // Test with regular size (Returns number of runs)
-            startDate = new DateTime(2016, 09, 12);
-            endDate = new DateTime(2016, 9, 30);
-            Assert.IsTrue(0 < Run.checkRunAvailability(startDate, endDate, 'R'), "During this time there should be multiple runs availible");
-            // Test with large size (Returns number of runs)
-            startDate = new DateTime(2016, 09, 12);
-            endDate = new DateTime(2016, 9, 30);
-            Assert.IsTrue(0 < Run.checkRunAvailability(startDate, endDate, 'L'), "During this time there should be multiple runs availible");
-            //End date before start date (Return -1)
-            startDate = new DateTime(2015, 09, 12);
-            endDate = new DateTime(2014, 1, 31);
-            Assert.AreEqual(-1, Run.checkRunAvailability(startDate, endDate, 'R'), "A request when start is after end date should return -1.");
-
-            //test case
-            // more regular pets than there are regular runs causing for regular sized pets to be in large runs.
-            // the remaining runs are occupied by large dogs. Check run availibility for large dog should return 0 runs.
-            // this test is important because regular and large runs are seperated.
-            startDate = new DateTime(2018, 8, 16);
-            endDate = new DateTime(2018, 8, 20);
-            Assert.AreEqual(0, Run.checkRunAvailability(startDate, endDate, 'L'), "There should be no runs (Large or normal) availible for this time.");
-
-            //test case 
-            // test that our method works logically.
-            // since our method takes the most busy day in the range of dates and checks that everything works there 
-            // we want to test if the bussiest day has space for a large dog but the seccond bussiest day doesnt.
-            // to force this the bussiest day has 7 reservations with some regular some large with large runs availible
-            // the seccond most busy has 6 reservations but all large
-            startDate = new DateTime(2018, 6, 17);
-            endDate = new DateTime(2018, 6, 22);
-            Assert.AreEqual(0, Run.checkRunAvailability(startDate, endDate, 'L'), "There should be no runs (Large) availible for this time.");
-
-            
-        }
-
-
-
-
-
-        /* addToReservation Test Cases  */
-        // reservation# 603 , owner# 17 , pet in reservation 31 , 32 
-        //Input : pet# 30   Expected : 1 row inserted  
+            /* addToReservation Test Cases  */
+            // reservation# 603 , owner# 17 , pet in reservation 31 , 32 
+            //Input : pet# 30   Expected : 1 row inserted  
 
         [TestMethod]
         public void testAddOwner()
@@ -524,153 +523,156 @@ namespace HawkeyeUnitTests
             //First Name: Brian || Last Name: Griffin || Street: 31 Spooner Street || City: Quahog || Province: QC || Postal: K9Y1Y2 || Phone: 1234567890 || Email: a@b.ca || Emergency Stuff : ""
             Owner.addOwner("Brian", "Griffin", "31 Spooner Street", "Quahog", "QC", "K9Y1Y2", "1234567890", "a@b.ca", "", "", "");
 
-            //Getting the Owner Changes On sequence Value. On Fresh DB should return 250(start of seq.NEXTVAL)
-            Assert.AreEqual("Brian", Owner.getOwner(250).firstName, "Not Returning first Name Brian");
-            Assert.AreEqual("Griffin", Owner.getOwner(250).lastName, "Not Returning Last Name Griffin");
+                //Getting the Owner Changes On sequence Value. On Fresh DB should return 250(start of seq.NEXTVAL)
+                Assert.AreEqual("Brian", Owner.getOwner(250).firstName, "Not Returning first Name Brian");
+                Assert.AreEqual("Griffin", Owner.getOwner(250).lastName, "Not Returning Last Name Griffin");
 
 
-        }
-        [TestMethod]
-        public void testUpdateOwner()
-        {
-            //This Method Directly Relies on the testAddOwner Insert <<Please Leave this test right aftert testAddOwner>>
-
-            Owner.updateOwner(250, "Alex", "Stewart", "My Street", "Quahog", "QC", "K9Y1Y2", "1234567890", "a@b.ca", "", "", "");
-            Owner testOwner = Owner.getOwner(250);
-            Assert.AreEqual("Alex", testOwner.firstName, "Not Returning first Name Alex");
-            Assert.AreEqual("Stewart", testOwner.lastName, "Not Returning Last Name Stewart");
-            Assert.AreEqual("My Street", testOwner.address.street, "Not Returning My Street");
-
-        }
-
-
-        [TestMethod]
-        public void testAddReservationDiscount()
-        {
-            //Testing with the reservation number of 800
-
-            //Success
-            Assert.AreEqual(0, Discount.addReservationDiscount(2, 800), "Add Did not Succeed");
-
-            //Fail Invalid Reservation Number
-            Assert.AreEqual(-19, Discount.addReservationDiscount(2, 999), "Invalid Reservation Number Succeeded");
-
-            //Test The Insert
-            Assert.AreEqual(2, Discount.listReservationDiscounts(800)[0].discountNumber, "Did not return reservation discount of discNum 2");
-        }
-        
-
-        
-
-        [TestMethod]
-        public void testDeleteReservationDiscount()
-        {
-            //Testing The Insert From testAddReservation
-
-            //Fail Invalid Reservation Number
-            Assert.AreEqual(-19, Discount.deleteReservationDiscount(2, 999), "Invalid Reservation Number Succeeded");
-
-            //Success
-            Assert.AreEqual(0, Discount.deleteReservationDiscount(2, 800), "Delete Did not Succeed");
-
-            //Test The Deletion
-            Assert.AreEqual(0, Discount.listReservationDiscounts(800).Count, "Returned an unexpected List of Reservaion Discount for ResNum 800");
-        }
-        [TestMethod]
-        public void testDeleteDogFromReservation()
-        {
-            Reservation hvk = new Reservation();
-            // Test Method: Solo pet in reservation
-            // Input Parameters: reservationNumber - 108
-            //                   petNumber - 3
-            // Expected Result: 0
-            Assert.AreEqual(0, Reservation.deleteDogFromReservation(108, 3), "Solo dog in reservation didn't return 0");
-            //This should also delete the entire reservation since there was only one pet reservation
-            Reservation.listReservations().ForEach(delegate (Reservation res)
+            }
+            [TestMethod]
+            public void testUpdateOwner()
             {
-                if (res.reservationNumber == 108)
+                //This Method Directly Relies on the testAddOwner Insert <<Please Leave this test right aftert testAddOwner>>
+
+                Owner.updateOwner(250, "Alex", "Stewart", "My Street", "Quahog", "QC", "K9Y1Y2", "1234567890", "a@b.ca", "", "", "");
+                Owner testOwner = Owner.getOwner(250);
+                Assert.AreEqual("Alex", testOwner.firstName, "Not Returning first Name Alex");
+                Assert.AreEqual("Stewart", testOwner.lastName, "Not Returning Last Name Stewart");
+                Assert.AreEqual("My Street", testOwner.address.street, "Not Returning My Street");
+
+            }
+
+
+            [TestMethod]
+            public void testAddReservationDiscount()
+            {
+                //Testing with the reservation number of 800
+
+                //Success
+                Assert.AreEqual(0, Discount.addReservationDiscount(2, 800), "Add Did not Succeed");
+
+                //Fail Invalid Reservation Number
+                Assert.AreEqual(-19, Discount.addReservationDiscount(2, 999), "Invalid Reservation Number Succeeded");
+
+                //Test The Insert
+                Assert.AreEqual(2, Discount.listReservationDiscounts(800)[0].discountNumber, "Did not return reservation discount of discNum 2");
+            }
+
+
+
+
+            [TestMethod]
+            public void testDeleteReservationDiscount()
+            {
+                //Testing The Insert From testAddReservation
+
+                //Fail Invalid Reservation Number
+                Assert.AreEqual(-19, Discount.deleteReservationDiscount(2, 999), "Invalid Reservation Number Succeeded");
+
+                //Success
+                Assert.AreEqual(0, Discount.deleteReservationDiscount(2, 800), "Delete Did not Succeed");
+
+                //Test The Deletion
+                Assert.AreEqual(0, Discount.listReservationDiscounts(800).Count, "Returned an unexpected List of Reservaion Discount for ResNum 800");
+            }
+            [TestMethod]
+            public void testDeleteDogFromReservation()
+            {
+                Reservation hvk = new Reservation();
+                // Test Method: Solo pet in reservation
+                // Input Parameters: reservationNumber - 108
+                //                   petNumber - 3
+                // Expected Result: 0
+                Assert.AreEqual(0, Reservation.deleteDogFromReservation(108, 3), "Solo dog in reservation didn't return 0");
+                //This should also delete the entire reservation since there was only one pet reservation
+                Reservation.listReservations().ForEach(delegate (Reservation res)
                 {
-                    Assert.Fail("The reservation 108 was not deleted.");
-                }
-            });
-            // not test to ensure: HVK_RESERVATION_DISCOUNT, hvk_pet_reservation_service entries were deleted because 
-            // they would have stopped the deletion of the pet reservation to begin with.
+                    if (res.reservationNumber == 108)
+                    {
+                        Assert.Fail("The reservation 108 was not deleted.");
+                    }
+                });
+                // not test to ensure: HVK_RESERVATION_DISCOUNT, hvk_pet_reservation_service entries were deleted because 
+                // they would have stopped the deletion of the pet reservation to begin with.
 
-            //Check to make sure that the pet reservation is gone
-            PetReservation.listPetRes(108).ForEach(delegate (PetReservation pr)
-            {
-                if (pr.pet.petNumber == 3)
+                //Check to make sure that the pet reservation is gone
+                PetReservation.listPetRes(108).ForEach(delegate (PetReservation pr)
                 {
-                    Assert.Fail("Any pet reservation with Reservation number 108 and pet number 3 should not be there at this point.");
+                    if (pr.pet.petNumber == 3)
+                    {
+                        Assert.Fail("Any pet reservation with Reservation number 108 and pet number 3 should not be there at this point.");
+                    }
+                });
+
+                // Test Method: Sharing pet in reservation
+                // Input Parameters: reservationNumber - 140
+                //                   petNumber - 26
+                // Expected Result: 0 (Pet that was being shared with must be set to solo)
+                Assert.AreEqual(0, Reservation.deleteDogFromReservation(140, 26), "Sharing dog in reservation didn't return 0");
+
+                // Test Method: Pet not part of the reservation
+                // Input Parameters: reservationNumber - 140
+                //                   petNumber - 1
+                // Expected Result: 3
+                Assert.AreEqual(3, Reservation.deleteDogFromReservation(140, 1), "Pet not in reservation didn't return 3");
+                // Test Method: Invalid reservation number
+                // Input Parameters: reservationNumber - 0
+                //                   petNumber - 1
+                // Expected Result: 1
+                Assert.AreEqual(1, Reservation.deleteDogFromReservation(0, 1), "Invalid reservation number didn't return 1");
+                // Test Method: Invalid pet number
+                // Input Parameters: reservationNumber - 140
+                //                   petNumber - 0
+                // Expected Result: 2
+                Assert.AreEqual(2, Reservation.deleteDogFromReservation(140, 0), "Invalid pet number didn't return 2");
+
+                // This reservation was created in the opening script to be going on today. It should not work since an ongoing reservation cannot be modified
+                Assert.AreEqual(4, Reservation.deleteDogFromReservation(500, 3), "cancel reservation that is ongoing cant be cancelled.");
+
+                // Removing dog from reservation causing for them to lose discount
+                // reservation 636 has 3 pet reservations. removing one pet should remove the entry in pet Reservation
+                Assert.AreEqual(0, Reservation.deleteDogFromReservation(636, 6), "Removing a dog from a reservation with 3 pets should be successful.");
+
+
+                // reservation goes from 3 to 2 dogs and therefor the discount should be deleted.
+                if (Discount.listReservationDiscounts(636).Count > 0)
+                {
+                    Assert.Fail("After the deletion the reservation's discount should have been removved since it now has 2 pets.");
                 }
-            });
-
-            // Test Method: Sharing pet in reservation
-            // Input Parameters: reservationNumber - 140
-            //                   petNumber - 26
-            // Expected Result: 0 (Pet that was being shared with must be set to solo)
-            Assert.AreEqual(0, Reservation.deleteDogFromReservation(140, 26), "Sharing dog in reservation didn't return 0");
-
-            // Test Method: Pet not part of the reservation
-            // Input Parameters: reservationNumber - 140
-            //                   petNumber - 1
-            // Expected Result: 3
-            Assert.AreEqual(3, Reservation.deleteDogFromReservation(140, 1), "Pet not in reservation didn't return 3");
-            // Test Method: Invalid reservation number
-            // Input Parameters: reservationNumber - 0
-            //                   petNumber - 1
-            // Expected Result: 1
-            Assert.AreEqual(1, Reservation.deleteDogFromReservation(0, 1), "Invalid reservation number didn't return 1");
-            // Test Method: Invalid pet number
-            // Input Parameters: reservationNumber - 140
-            //                   petNumber - 0
-            // Expected Result: 2
-            Assert.AreEqual(2, Reservation.deleteDogFromReservation(140, 0), "Invalid pet number didn't return 2");
-
-            // This reservation was created in the opening script to be going on today. It should not work since an ongoing reservation cannot be modified
-            Assert.AreEqual(4, Reservation.deleteDogFromReservation(500, 3), "cancel reservation that is ongoing cant be cancelled.");
-
-            // Removing dog from reservation causing for them to lose discount
-            // reservation 636 has 3 pet reservations. reservation goes from 3 to 2 dogs and therefor the discount should be deleted.
-            Assert.AreEqual(0, Reservation.deleteDogFromReservation(636, 6), "Removing a dog from a reservation with 3 pets should be successful.");
-            if (Discount.listReservationDiscounts(636).Count > 0)
-            {
-                Assert.Fail("After the deletion the reservation's discount should have been removved since it now has 2 pets.");
             }
-        }
-        [TestMethod]
-        public void testCancelReservation()
-        {
-
-            //Reservation with one pet - Reservation 615
-            //check pet_res's are gone
-            Assert.AreEqual(0, Reservation.cancelReservation(615), "cancel reservation 615 not succesfull.");
-            if (0 < PetReservation.listPetRes(615).Count)
+            [TestMethod]
+            public void testCancelReservation()
             {
-                Assert.Fail("Deleting the reservation should also delete all pet reservations.");
-            }
 
-            // Reservation with multple pets
-            // Reservation number 100
-            Assert.AreEqual(0, Reservation.cancelReservation(100), "cancel reservation 100 not succesfull.");
-            if (0 < PetReservation.listPetRes(100).Count)
-            {
-                Assert.Fail("Deleting the reservation should also delete all pet reservations.");
-            }
+                //Reservation with one pet - Reservation 615
+                //check pet_res's are gone
+                Assert.AreEqual(0, Reservation.cancelReservation(615), "cancel reservation 615 not succesfull.");
+                if (0 < PetReservation.listPetRes(615).Count)
+                {
+                    Assert.Fail("Deleting the reservation should also delete all pet reservations.");
+                }
 
-            //invalid reservation Number
-            //reservation number 5
-            Assert.AreEqual(1, Reservation.cancelReservation(5), "cancel reservation with invalid reservation number was not successfull.");
+                // Reservation with multple pets
+                // Reservation number 100
+                Assert.AreEqual(0, Reservation.cancelReservation(100), "cancel reservation 100 not succesfull.");
+                if (0 < PetReservation.listPetRes(100).Count)
+                {
+                    Assert.Fail("Deleting the reservation should also delete all pet reservations.");
+                }
 
-            // This reservation was created in the opening script to be going on today. It should not work
-            Assert.AreEqual(4, Reservation.cancelReservation(500), "cancel reservation that is ongoing cant be cancelled.");
+                //invalid reservation Number
+                //reservation number 5
+                Assert.AreEqual(1, Reservation.cancelReservation(5), "cancel reservation with invalid reservation number was not successfull.");
+
+                // This reservation was created in the opening script to be going on today. It should not work
+                Assert.AreEqual(4, Reservation.cancelReservation(500), "cancel reservation that is ongoing cant be cancelled.");
 
 
         }
 
-        /* addToReservation Test Cases  */
-        // reservation# 603 , owner# 17 , pet in reservation 31 , 32 
-        //Input : pet# 30   Expected : 1 row inserted  
+            /* addToReservation Test Cases  */
+            // reservation# 603 , owner# 17 , pet in reservation 31 , 32 
+            //Input : pet# 30   Expected : 1 row inserted  
 
         [TestMethod]
         public void testDBMethods()
