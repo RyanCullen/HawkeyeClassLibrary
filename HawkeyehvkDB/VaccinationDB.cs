@@ -155,5 +155,113 @@ namespace HawkeyehvkDB
             da.Fill(ds, "hvk_vaccination");
             return ds;
         }
+        public static int addPetVaccinationDB(DateTime expiryDate, int vacNumber, int petNumber) {
+            int result = 0;
+            string conString = ConfigurationManager.ConnectionStrings["ConnectionString"].ConnectionString;
+            OracleConnection con = new OracleConnection(conString);
+            string cmdStr = @"Insert into HVK_PET_VACCINATION 
+                            (VACCINATION_EXPIRY_DATE,VACC_VACCINATION_NUMBER,PET_PET_NUMBER) 
+                            values (:EXPDATE,:VACNUMBER,:PETNUMBER)";
+           
+
+            OracleCommand cmd = new OracleCommand(cmdStr, con);
+            cmd.BindByName = true;
+            cmd.Parameters.Add("EXPDATE", expiryDate);
+            cmd.Parameters.Add("VACNUMBER", vacNumber);
+            cmd.Parameters.Add("PETNUMBER", petNumber);
+
+            OracleDataAdapter da = new OracleDataAdapter(cmd);
+            da.InsertCommand = cmd;
+           
+
+            try {
+                con.Open();
+                cmd.ExecuteNonQuery();
+                
+            }
+            catch (Exception e) {
+                Console.Write(e);
+                result = -1;
+            }
+            finally {
+                con.Close();
+            }
+
+            return result;
+        }
+        public static int updatePetVaccinationExpiryDB(DateTime expiryDate, int vacNumber, int petNumber) {
+            int result = 0;
+            string conString = ConfigurationManager.ConnectionStrings["ConnectionString"].ConnectionString;
+            OracleConnection con = new OracleConnection(conString);
+            string cmdStr = @"update hvk_pet_vaccination
+                                set VACCINATION_EXPIRY_DATE = :EXPDATE)
+                                where PET_PET_NUMBER = :PETNUMBER
+                                and VACC_VACCINATION_NUMBER = :VACNUMBER";
+
+
+            OracleCommand cmd = new OracleCommand(cmdStr, con);
+            cmd.BindByName = true;
+            cmd.Parameters.Add("EXPDATE", expiryDate);
+            cmd.Parameters.Add("PETNUMBER", petNumber);
+            cmd.Parameters.Add("VACNUMBER", vacNumber);
+            
+
+            OracleDataAdapter da = new OracleDataAdapter(cmd);
+            da.UpdateCommand = cmd;
+
+
+            try {
+                con.Open();
+                cmd.ExecuteNonQuery();
+
+            }
+            catch (Exception e) {
+                Console.Write(e);
+                result = -1;
+            }
+            finally {
+                con.Close();
+            }
+
+            return result;
+        }
+        public static int updatePetVaccinationCheckedDB(char isChecked, int vacNumber, int petNumber) {
+            int result = 0;
+            if (isChecked!='Y'||isChecked!='N') {
+                return -2;
+            }
+            string conString = ConfigurationManager.ConnectionStrings["ConnectionString"].ConnectionString;
+            OracleConnection con = new OracleConnection(conString);
+            string cmdStr = @"update hvk_pet_vaccination
+                                set VACCINATION_CHECKED_STATUS = :CHECKED
+                                where PET_PET_NUMBER = :PETNUMBER
+                                and VACC_VACCINATION_NUMBER = :VACNUMBER";
+
+
+            OracleCommand cmd = new OracleCommand(cmdStr, con);
+            cmd.BindByName = true;
+            cmd.Parameters.Add("CHECKED", isChecked);
+            cmd.Parameters.Add("PETNUMBER", petNumber);
+            cmd.Parameters.Add("VACNUMBER", vacNumber);
+
+            OracleDataAdapter da = new OracleDataAdapter(cmd);
+            da.UpdateCommand = cmd;
+
+
+            try {
+                con.Open();
+                cmd.ExecuteNonQuery();
+
+            }
+            catch (Exception e) {
+                Console.Write(e);
+                result = -1;
+            }
+            finally {
+                con.Close();
+            }
+
+            return result;
+        }
     }
 }

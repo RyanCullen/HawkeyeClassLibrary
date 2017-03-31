@@ -41,7 +41,12 @@ namespace HawkeyehvkBLL
             RunDB db = new RunDB();
             return new ReservationCounts(db.getReservationCountsDB(start, end).Tables[0].Rows[0]);
         }
-        public static int checkRunAvailability(DateTime startDate, DateTime endDate, char runSize) {
+        public int checkRunAvailability(DateTime startDate, DateTime endDate, char runSize) {
+            if (startDate > endDate)
+            {
+                return -1;
+            }
+           
             int count = -1;
 
             Run run = new Run();
@@ -50,13 +55,7 @@ namespace HawkeyehvkBLL
             int totalRunsL = rundb.totalLargeRunsDB();
             int totalRunsR = rundb.totalRegularRunsDB();
 
-            if (startDate > endDate)
-            {
-                return -1;
-            }
-            else if (startDate==endDate) {
-                return -2;
-            }
+            
 
             if (runSize == 'L') {
                 if ((resc.numRegReservations - totalRunsR) > 0) { // this will determine if the regular size runs have run out. in which case there may be large runs used for smaller dogs

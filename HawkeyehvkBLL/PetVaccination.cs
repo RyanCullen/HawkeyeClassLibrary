@@ -50,7 +50,7 @@ namespace HawkeyehvkBLL
             {
 
             }
-            else if(look.validateReservationNumber(resNum)){
+            else if(!look.validateReservationNumber(resNum)){
 
             }
             else

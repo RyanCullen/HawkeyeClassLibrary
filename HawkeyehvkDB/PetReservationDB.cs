@@ -12,7 +12,7 @@ namespace HawkeyehvkDB
     public class PetReservationDB
     {
         public DataSet listPetResDB(int ReservationNumber)
-        {
+        {// used for testing
             string conString = ConfigurationManager.ConnectionStrings["ConnectionString"].ConnectionString;
             OracleConnection con = new OracleConnection(conString);
             string cmdStr = "select PET_RES_NUMBER, PET_PET_NUMBER from hvk_pet_reservation where res_reservation_number = :RESERVATIONNUMBER ";
