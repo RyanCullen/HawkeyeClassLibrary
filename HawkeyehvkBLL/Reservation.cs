@@ -90,7 +90,7 @@ namespace HawkeyehvkBLL
         }
 
 
-        public List<Reservation> listReservations()
+        public static List<Reservation> listReservations()
         {
             ReservationDB db = new ReservationDB();
             DataSet ds = db.listResevationsDB();
@@ -98,7 +98,7 @@ namespace HawkeyehvkBLL
             return fillReservation(ds);
         }
 
-        public List<Reservation> listReservations(int ownerNumber)
+        public static List<Reservation> listReservations(int ownerNumber)
         {
             ReservationDB db = new ReservationDB();
             DataSet ds = db.listResevationsDB(ownerNumber);
@@ -106,7 +106,7 @@ namespace HawkeyehvkBLL
             return fillReservation(ds);
         }
 
-        public List<Reservation> listActiveReservations()
+        public static List<Reservation> listActiveReservations()
         {
             ReservationDB db = new ReservationDB();
             DataSet ds = db.listActiveReservationsDB(); 
@@ -115,7 +115,7 @@ namespace HawkeyehvkBLL
         }
 
 
-        public List<Reservation> listActiveReservations(int ownerNumber)
+        public static List<Reservation> listActiveReservations(int ownerNumber)
         {
             ReservationDB db = new ReservationDB();
             DataSet ds = db.listActiveReservationsDB(ownerNumber);
@@ -123,7 +123,7 @@ namespace HawkeyehvkBLL
             return fillReservation(ds);
         }
 
-        public List<Reservation> listUpcomingReservations(DateTime reservationDate)
+        public static List<Reservation> listUpcomingReservations(DateTime reservationDate)
         {
             ReservationDB db = new ReservationDB();
             DataSet ds = db.listUpcomingReservationsDB(reservationDate);
@@ -133,7 +133,7 @@ namespace HawkeyehvkBLL
 
 
 
-        public List<Reservation> fillReservation(DataSet ds )
+        public static List<Reservation> fillReservation(DataSet ds )
         {
             Reservation res = new Reservation();
             List<Reservation> resList = new List<Reservation>();
@@ -175,7 +175,7 @@ namespace HawkeyehvkBLL
         }
 
 
-        public List<Reservation> fillReservationDetail(DataSet ds)
+        public static List<Reservation> fillReservationDetail(DataSet ds)
         {
             Reservation res = new Reservation();
             List<Reservation> resList = new List<Reservation>();
@@ -232,7 +232,7 @@ namespace HawkeyehvkBLL
 
 
         }
-        public List<Run> listAvailableRuns(DateTime start, DateTime end)
+        public static List<Run> listAvailableRuns(DateTime start, DateTime end)
         {
             List<Run> runs = new List<Run>();
             ReservationDB db = new ReservationDB();
@@ -244,7 +244,7 @@ namespace HawkeyehvkBLL
         }
         
 
-        private Run convertToRun(DataRow row)
+        private static Run convertToRun(DataRow row)
         {
             Run run = new HawkeyehvkBLL.Run();
             run.runNumber = Convert.ToInt32(row[0]);
@@ -258,7 +258,7 @@ namespace HawkeyehvkBLL
             }
             return run;
         }
-        public int addReservation(int petNumber, DateTime startDate, DateTime endDate)
+        public static int addReservation(int petNumber, DateTime startDate, DateTime endDate)
         {
             Search check = new Search();
            
@@ -294,15 +294,14 @@ namespace HawkeyehvkBLL
           
 
             //return -1 if expired or missing Vaccinations
-            PetVaccination petVac = new PetVaccination();
-            int count = petVac.checkVaccinations(petNumber, endDate);
+            int count = PetVaccination.checkVaccinations(petNumber, endDate);
             if (count == -1)
                 return -1;
             else
                 return 0;
         }
 
-        public int addToReservation(int reservationNumber, int petNumber)
+        public static int addToReservation(int reservationNumber, int petNumber)
         {
             ReservationDB db = new ReservationDB();
             Search search = new Search();
@@ -336,7 +335,7 @@ namespace HawkeyehvkBLL
 
 
         }
-        private bool isReservationActive(int reservationNumber) {
+        private static bool isReservationActive(int reservationNumber) {
             bool returned = false;
             listActiveReservations().ForEach(delegate (Reservation res) {
                 if (res.reservationNumber == reservationNumber) {
@@ -345,7 +344,7 @@ namespace HawkeyehvkBLL
             });
             return returned;
         }
-        public int cancelReservation(int reservationNumber)
+        public static int cancelReservation(int reservationNumber)
         {
             Search search = new HawkeyehvkBLL.Search();
             // check reservation number
@@ -362,7 +361,7 @@ namespace HawkeyehvkBLL
                 return ReservationDB.cancelReservationDB(reservationNumber);
             }
         }
-        public int deleteDogFromReservation(int reservationNumber, int petNumber)
+        public static int deleteDogFromReservation(int reservationNumber, int petNumber)
         {
             Search search = new HawkeyehvkBLL.Search();
             
@@ -387,7 +386,7 @@ namespace HawkeyehvkBLL
                 return ReservationDB.deleteDogFromReservationDB(reservationNumber, petNumber);
             }
         }
-        public int changeReservation(int reservationNumber, DateTime startDate, DateTime endDate)
+        public static int changeReservation(int reservationNumber, DateTime startDate, DateTime endDate)
         {
             Search search = new HawkeyehvkBLL.Search();
             if (!search.validateReservationNumber(reservationNumber))// check reservation number
@@ -422,7 +421,7 @@ namespace HawkeyehvkBLL
 
 
 
-        public int checkVaccinations(int petNumber, DateTime byDate)
+        public static int checkVaccinations(int petNumber, DateTime byDate)
         {
             // check pet number
             return 0;

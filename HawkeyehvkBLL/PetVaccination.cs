@@ -42,7 +42,7 @@ namespace HawkeyehvkBLL
             return true;
         }
 
-        public List<PetVaccination> checkVaccinations(int petNum, int resNum)
+        public static List<PetVaccination> checkVaccinations(int petNum, int resNum)
         {
             Search look = new Search();
             List<PetVaccination> petVaccList = new List<PetVaccination>();
@@ -69,7 +69,7 @@ namespace HawkeyehvkBLL
             
         }
 
-        public int checkVaccinations(int petNum, DateTime byDate)
+        public static int checkVaccinations(int petNum, DateTime byDate)
         {
             Search look = new Search();
 
@@ -92,7 +92,7 @@ namespace HawkeyehvkBLL
             }
         }
 
-        public List<PetVaccination> listVaccinations(int petNum)
+        public static List<PetVaccination> listVaccinations(int petNum)
         {
             VaccinationDB vaccDB = new VaccinationDB();
             List<PetVaccination> vaccList = new List<PetVaccination>();
@@ -103,7 +103,7 @@ namespace HawkeyehvkBLL
             return vaccList;
         }
 
-        public PetVaccination fillVaccination(DataRow row)
+        public static PetVaccination fillVaccination(DataRow row)
         {
             PetVaccination petVacc = new PetVaccination();
 
