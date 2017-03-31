@@ -55,7 +55,7 @@ namespace HawkeyehvkBLL
             }
            
             int count = -1;
-            if (runSize == 'L') {
+            if (Char.ToUpper(runSize) == 'L') {
                 count = Run.getNumAvailableLargeRuns(startDate, endDate);
             }
             else {

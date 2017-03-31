@@ -283,7 +283,7 @@ namespace HawkeyeUnitTests
         {
             //amir is here
             Reservation control = new Reservation();
-            Assert.AreEqual(2, control.listUpcomingReservations(new DateTime(2017, 8, 20)).Count);
+            Assert.AreEqual(5, control.listUpcomingReservations(new DateTime(2017, 8, 20)).Count);
         }
 
 
