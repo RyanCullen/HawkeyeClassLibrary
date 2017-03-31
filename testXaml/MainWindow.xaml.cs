@@ -27,19 +27,10 @@ namespace testXaml
             InitializeComponent();
             //Set Parameters
             Reservation re = new Reservation();
-            //lblNum.Content = "Between march 3rd and 4th 2017 there are : "+re.checkRunAvailability(new DateTime(2017,3,3), new DateTime(2017,3,4), 'L')+" Large Runs Available.";
-            // PetVaccination petVac = new PetVaccination();
-            //lblNum.Content = petVac.checkVaccinations(1, 100)[0].isValidated;
-            //Make Object And Call Method
-            //Set datagrid or label to returned data
-            Reservation control = new Reservation();
-            //lblNum.Content = control.addReservation(35, new DateTime(2017, 3, 30), new DateTime(2017, 3, 31));
-            //PetVaccination petVac = new PetVaccination();
-            //datagrid.ItemsSource = petVac.checkVaccinations(9, DateTime.Now); 
-           
-            lblNum.Content = lblNum.Content + PetVaccination.addPetVaccination(DateTime.Now.AddMonths(40),3,20).ToString();
-            lblNum.Content = lblNum.Content + PetVaccination.updatePetVaccinationChecked('Y', 2, 20).ToString();
-            lblNum.Content = lblNum.Content + PetVaccination.updatePetVaccinationExpiry(DateTime.Now.AddMonths(4), 1, 20).ToString();
+            /* addToReservation Test Cases  */
+            // reservation# 603 , owner# 17 , pet in reservation 31 , 32 
+            //Input : pet# 30   Expected : 1 row inserted  
+            int  i = Reservation.addToReservation(603,30);
                
             
 

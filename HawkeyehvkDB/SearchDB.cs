@@ -11,9 +11,9 @@ namespace HawkeyehvkDB
 {
     public class SearchDB
     {
-        public int searchDB(String cmdStr , String parameterName , int parmNum)
+        public int searchDB(String cmdStr, String parameterName, int parmNum)
         {
-            
+
             string conString = ConfigurationManager.ConnectionStrings["ConnectionString"].ConnectionString;
             OracleConnection con = new OracleConnection(conString);
             OracleCommand cmd = new OracleCommand(cmdStr, con);
@@ -23,12 +23,12 @@ namespace HawkeyehvkDB
 
             try
             {
-               con.Open();
-               return Convert.ToInt16(cmd.ExecuteScalar());
+                con.Open();
+                return Convert.ToInt16(cmd.ExecuteScalar());
             }
             catch
             {
-                return -1; 
+                return -1;
             }
             finally
             {
@@ -60,7 +60,7 @@ namespace HawkeyehvkDB
                 con.Open();
                 return Convert.ToInt16(cmd.ExecuteScalar());
             }
-            catch(Exception e)
+            catch (Exception e)
             {
                 Console.Write(e);
                 return -1;
@@ -99,13 +99,13 @@ namespace HawkeyehvkDB
         }
         public int searchPetDB(int petNumber)
         {
-          string cmdStr =   @"SELECT COUNT(*)
+            string cmdStr = @"SELECT COUNT(*)
                                 FROM HVK_PET
                                 WHERE
                                 PET_NUMBER = :PET_NUMBER
                                 GROUP BY PET_NUMBER";
 
-            return searchDB(cmdStr, "PET_NUMBER", petNumber); 
+            return searchDB(cmdStr, "PET_NUMBER", petNumber);
 
         }
 
@@ -168,7 +168,7 @@ PET_RES_NUMBER
 
 
         //check if pet has already a reservation in the range of date passed in 
-        public int searchReservationForPet(int petNum , int resNum)
+        public int searchReservationForPet(int petNum, int resNum)
         {
 
             string conString = ConfigurationManager.ConnectionStrings["ConnectionString"].ConnectionString;
@@ -184,11 +184,11 @@ WHERE RES.RESERVATION_NUMBER = :resNum";
 
             DataSet ds = new DataSet("AvailableRuns");
             da.Fill(ds);
-       
-                DateTime start = Convert.ToDateTime(ds.Tables[0].Rows[0]["RESERVATION_START_DATE"].ToString()).Date;
-                DateTime end = Convert.ToDateTime((ds.Tables[0].Rows[0]["RESERVATION_END_DATE"].ToString())).Date;
-                if (searchConflictingReservations(petNum, start, end) > 0)
-                    return -1;
+
+            DateTime start = Convert.ToDateTime(ds.Tables[0].Rows[0]["RESERVATION_START_DATE"].ToString()).Date;
+            DateTime end = Convert.ToDateTime((ds.Tables[0].Rows[0]["RESERVATION_END_DATE"].ToString())).Date;
+            if (searchConflictingReservations(petNum, start, end) > 0)
+                return -1;
 
             return 1;
 
@@ -262,3 +262,4 @@ AND ROWNUM = 1";
 
         }
     }
+}
