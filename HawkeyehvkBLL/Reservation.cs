@@ -132,6 +132,23 @@ namespace HawkeyehvkBLL
         }
 
 
+        public static int updateReservation(int resNum, DateTime startDate, DateTime endDate, int petNumber, int runNumber)
+        {
+            ReservationDB db = new ReservationDB();
+            Search search = new Search();
+
+            if (search.validateReservationNumber(resNum))
+            {
+                if (db.updateReservation(resNum, startDate, endDate, petNumber, runNumber) == 1)
+                    return 1;
+                else
+                    return -1;
+            }
+            else
+                return -2; 
+           
+        }
+
 
         public static List<Reservation> fillReservation(DataSet ds )
         {
