@@ -76,7 +76,8 @@ namespace HawkeyehvkBLL
             }
             else
             {
-                Discount.addReservationDiscount(discType, resNum);
+                DiscountDB db = new DiscountDB();
+                db.addReservationDiscountDB(discType, resNum);
                 return 0;
             }
         }
@@ -90,7 +91,8 @@ namespace HawkeyehvkBLL
             }
             else
             {
-                Discount.deleteReservationDiscount(discType, resNum);
+                DiscountDB db = new DiscountDB();
+                db.deleteReservationDiscountDB(discType, resNum);
                 return 0;
             }
         }
