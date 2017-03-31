@@ -64,6 +64,89 @@ namespace HawkeyehvkDB
             return ds;
         }
 
+        public int addPetDB(string petName, char gender, char isFixed, string breed, DateTime birthday, char size, string notes) {
+            string conString = ConfigurationManager.ConnectionStrings["ConnectionString"].ConnectionString;
+            OracleConnection con = new OracleConnection(conString);
+            string cmdStr = @"INSERT INTO HVK_PET VALUES
+                                (
+                                    HVK_PET_SEQ.NEXTVAL,
+                                    :petName,
+                                    :gender,
+                                    :isFixed,
+                                    :breed,
+                                    :birthday,
+                                    :size,
+                                    :notes
+                                )";
+            OracleCommand cmd = new OracleCommand(cmdStr, con);
+            cmd.Parameters.Add("petName", petName);
+            cmd.Parameters.Add("gender", gender);
+            cmd.Parameters.Add("isFixed", isFixed);
+            cmd.Parameters.Add("breed", breed);
+            cmd.Parameters.Add("birthday", birthday);
+            cmd.Parameters.Add("size", size);
+            cmd.Parameters.Add("notes", notes);
+            try {
+                con.Open();
+                cmd.ExecuteNonQuery();
+                return 0;
+            } catch {
+                return -1;
+            } finally {
+                con.Close();
+            }
+        }
+
+        public int updatePetDB(int petNum, string petName, char gender, char isFixed, string breed, DateTime birthday, char size, string notes) {
+            string conString = ConfigurationManager.ConnectionStrings["ConnectionString"].ConnectionString;
+            OracleConnection con = new OracleConnection(conString);
+            string cmdStr = @"UPDATE HVK_PET SET
+                                PET_NAME = :petName,
+                                PET_GENDER = :gender,
+                                PET_FIXED = :isFixed,
+                                PET_BREED = :breed,
+                                PET_BIRTHDAY = :birthday,
+                                DOG_SIZE = :size,
+                                SPECIAL_NOTES = :notes
+                                WHERE PET_NUMBER = :petNum";
+            OracleCommand cmd = new OracleCommand(cmdStr, con);
+            cmd.Parameters.Add("petName", petName);
+            cmd.Parameters.Add("gender", gender);
+            cmd.Parameters.Add("isFixed", isFixed);
+            cmd.Parameters.Add("breed", breed);
+            cmd.Parameters.Add("birthday", birthday);
+            cmd.Parameters.Add("size", size);
+            cmd.Parameters.Add("notes", notes);
+            cmd.Parameters.Add("petNum", petNum);
+            try {
+                con.Open();
+                cmd.ExecuteNonQuery();
+                return 0;
+            } catch {
+                return -1;
+            } finally {
+                con.Close();
+            }
+        }
+
+        public int deletePetDB(int petNum) {
+            string conString = ConfigurationManager.ConnectionStrings["ConnectionString"].ConnectionString;
+            OracleConnection con = new OracleConnection(conString);
+            string cmdStr = @"DELETE FROM HVK_PET
+                                WHERE PET_NUMBER = :petNum";
+            OracleCommand cmd = new OracleCommand(cmdStr, con);
+            cmd.Parameters.Add("petNum", petNum);
+            try {
+                con.Open();
+                cmd.ExecuteNonQuery();
+                return 0;
+            } catch {
+                return -1;
+            } finally {
+                con.Close();
+            }
+        }
+
         public int checkPetsInReservation(int resNum)
         {
             int returnNum = 0;

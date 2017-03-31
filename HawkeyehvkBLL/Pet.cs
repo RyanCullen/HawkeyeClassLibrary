@@ -150,5 +150,29 @@ namespace HawkeyehvkBLL
             }
             return petList;
         }
+
+        public static int addPet(string petName, char gender, char isFixed, string breed, DateTime birthday, char size, string notes) {
+            PetDB db = new PetDB();
+            if (db.addPetDB(petName, gender, isFixed, breed, birthday, size, notes) != 0) {
+                return 1;
+            }
+            return 0;
+        }
+
+        public static int updatePet(int petNum, string petName, char gender, char isFixed, string breed, DateTime birthday, char size, string notes) {
+            PetDB db = new PetDB();
+            if (db.updatePetDB(petNum, petName, gender, isFixed, breed, birthday, size, notes) != 0) {
+                return 1;
+            }
+            return 0;
+        }
+
+        public static int deletePet(int petNum) {
+            PetDB db = new PetDB();
+            if (db.deletePetDB(petNum) != 0) {
+                return 1;
+            }
+            return 0;
+        }
     }
 }
