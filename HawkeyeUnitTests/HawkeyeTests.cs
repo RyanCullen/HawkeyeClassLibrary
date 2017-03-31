@@ -554,7 +554,7 @@ namespace HawkeyeUnitTests
             //Run is not available (Return 0)
             DateTime startDate = new DateTime(2018, 5, 12);
             DateTime endDate = new DateTime(2018, 5, 13);
-            Assert.AreEqual(0, hvk.checkRunAvailability(startDate, endDate, 'R'), "There should be no runs availible for this time. IE. 0 returned");
+            Assert.AreEqual(0, hvk.checkRunAvailability(startDate, endDate, 'R'), "There should be no runs availible for this time.");
 
             // Test with regular size (Returns number of runs)
             startDate = new DateTime(2016, 09, 12);
@@ -572,17 +572,26 @@ namespace HawkeyeUnitTests
             //test case
             // more regular pets than there are regular runs causing for regular sized pets to be in large runs.
             // the remaining runs are occupied by large dogs. Check run availibility for large dog should return 0 runs.
-            
+            // this test is important because regular and large runs are seperated.
+            startDate = new DateTime(2018, 8, 16);
+            endDate = new DateTime(2018, 8, 20);
+            Assert.AreEqual(0, hvk.checkRunAvailability(startDate, endDate, 'L'), "There should be no runs (Large or normal) availible for this time.");
 
             //test case 
             // test that our method works logically.
             // since our method takes the most busy day in the range of dates and checks that everything works there 
             // we want to test if the bussiest day has space for a large dog but the seccond bussiest day doesnt.
-            // to force this the bussiest day has 7 reservations with large runs availible
+            // to force this the bussiest day has 7 reservations with some regular some large with large runs availible
             // the seccond most busy has 6 reservations but all large
+            startDate = new DateTime(2018, 6, 17);
+            endDate = new DateTime(2018, 6, 22);
+            Assert.AreEqual(0, hvk.checkRunAvailability(startDate, endDate, 'L'), "There should be no runs (Large) availible for this time.");
 
             //Reservation deletor = new Reservation();
             //deletor.cancelReservation(501);
+            //deletor.cancelReservation(1701);
+            //deletor.cancelReservation(1666);
+            //deletor.cancelReservation(1501);
         }
 
 
@@ -636,8 +645,16 @@ namespace HawkeyeUnitTests
             // Expected Result: 2
             Assert.AreEqual(2, hvk.deleteDogFromReservation(140, 0), "Invalid pet number didn't return 2");
 
-            // This reservation was created in the opening script to be going on today. It should not work
+            // This reservation was created in the opening script to be going on today. It should not work since an ongoing reservation cannot be modified
             Assert.AreEqual(4, hvk.deleteDogFromReservation(500,3), "cancel reservation that is ongoing cant be cancelled.");
+
+            // Removing dog from reservation causing for them to lose discount
+            // reservation 636 has 3 pet reservations. removing one pet should remove the entry in pet Reservation
+            Assert.AreEqual(0, hvk.deleteDogFromReservation(636, 6), "Removing a dog from a reservation with 3 pets should be successful.");
+
+            //if (Discount.listReservationDiscounts(636).Count > 0) {
+            //    Assert.Fail("After the deletion the reservation's discount should have been removved since it now has 2 pets.");
+            //}
         }
         [TestMethod]
         public void testCancelReservation() {
@@ -671,7 +688,15 @@ namespace HawkeyeUnitTests
         /* addToReservation Test Cases  */
         // reservation# 603 , owner# 17 , pet in reservation 31 , 32 
         //Input : pet# 30   Expected : 1 row inserted  
-    }
+
+        [TestMethod]
+        public void testDBMethods() {
+            /*
+             * Here i will do one test on each of the DB methods to ensure they have returned 
+                */
+        }
+
+        }
 }
 
 
