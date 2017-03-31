@@ -45,7 +45,7 @@ namespace HawkeyehvkDB
                                 FROM HVK_RESERVATION R
                                 JOIN HVK_PET_RESERVATION PR
                                 ON R.RESERVATION_NUMBER=PR.RES_RESERVATION_NUMBER
-                                WHERE (R.RESERVATION_START_DATE BETWEEN :dateStart AND :dateEnd OR R.RESERVATION_END_DATE BETWEEN :dateStart AND :dateEnd)
+                                WHERE (R.RESERVATION_START_DATE BETWEEN :dateStart AND :dateEnd OR R.RESERVATION_END_DATE BETWEEN :dateStart AND :dateEnd OR R.RESERVATION_START_DATE < :dateStart  AND R.RESERVATION_END_DATE > :dateEnd)
                                 AND PR.PET_PET_NUMBER = :petNum";
             OracleCommand cmd = new OracleCommand(cmdStr, con);
             cmd.BindByName = true;
