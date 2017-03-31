@@ -533,37 +533,33 @@ namespace HawkeyeUnitTests
              * Here i will do one test on each of the DB methods to ensure they have returned 
                 */
         }
-
         [TestMethod]
         public void testAddOwner()
         {
             //This Test after being run will make listOwners fail as the list is increasing
-            Owner own = new Owner();
             //Input
             //First Name: Brian || Last Name: Griffin || Street: 31 Spooner Street || City: Quahog || Province: QC || Postal: K9Y1Y2 || Phone: 1234567890 || Email: a@b.ca || Emergency Stuff : ""
-            own.addOwner("Brian", "Griffin", "31 Spooner Street", "Quahog", "QC", "K9Y1Y2", "1234567890", "a@b.ca", "", "", "");
+            Owner.addOwner("Brian", "Griffin", "31 Spooner Street", "Quahog", "QC", "K9Y1Y2", "1234567890", "a@b.ca", "", "", "");
 
             //Getting the Owner Changes On sequence Value. On Fresh DB should return 250(start of seq.NEXTVAL)
-            Assert.AreEqual("Brian", own.getOwner(250).firstName, "Not Returning first Name Brian");
-            Assert.AreEqual("Griffin", own.getOwner(250).lastName, "Not Returning Last Name Griffin");
+            Assert.AreEqual("Brian", Owner.getOwner(250).firstName, "Not Returning first Name Brian");
+            Assert.AreEqual("Griffin", Owner.getOwner(250).lastName, "Not Returning Last Name Griffin");
 
 
         }
-
-
         [TestMethod]
         public void testUpdateOwner()
         {
             //This Method Directly Relies on the testAddOwner Insert <<Please Leave this test right aftert testAddOwner>>
 
-            Owner own = new Owner();
-            own.updateOwner(250, "Alex", "Stewart", "My Street", "Quahog", "QC", "K9Y1Y2", "1234567890", "a@b.ca", "", "", "");
-            Owner testOwner = own.getOwner(250);
+            Owner.updateOwner(250, "Alex", "Stewart", "My Street", "Quahog", "QC", "K9Y1Y2", "1234567890", "a@b.ca", "", "", "");
+            Owner testOwner = Owner.getOwner(250);
             Assert.AreEqual("Alex", testOwner.firstName, "Not Returning first Name Alex");
             Assert.AreEqual("Stewart", testOwner.lastName, "Not Returning Last Name Stewart");
             Assert.AreEqual("My Street", testOwner.address.street, "Not Returning My Street");
 
         }
+
 
         [TestMethod]
         public void testAddReservationDiscount()
@@ -579,6 +575,9 @@ namespace HawkeyeUnitTests
             //Test The Insert
             Assert.AreEqual(2, Discount.listReservationDiscounts(800)[0].discountNumber, "Did not return reservation discount of discNum 2");
         }
+        
+
+        
 
         [TestMethod]
         public void testDeleteReservationDiscount()
@@ -687,87 +686,37 @@ namespace HawkeyeUnitTests
             Assert.AreEqual(4, Reservation.cancelReservation(500), "cancel reservation that is ongoing cant be cancelled.");
 
             // delete added reservations to not corrupt data in database
-            Reservation deletor = new Reservation();
-            deletor.cancelReservation(501);
-            deletor.cancelReservation(1701);
-            deletor.cancelReservation(1666);
-            deletor.cancelReservation(1501);
-            deletor.cancelReservation(2005);
-            deletor.cancelReservation(2004);
-            deletor.cancelReservation(2003);
-            deletor.cancelReservation(2002);
-            deletor.cancelReservation(2001);
-            deletor.cancelReservation(2000);
+            
+            Reservation.cancelReservation(501);
+            Reservation.cancelReservation(1701);
+            Reservation.cancelReservation(1666);
+            Reservation.cancelReservation(1501);
+            Reservation.cancelReservation(2005);
+            Reservation.cancelReservation(2004);
+            Reservation.cancelReservation(2003);
+            Reservation.cancelReservation(2002);
+            Reservation.cancelReservation(2001);
+            Reservation.cancelReservation(2000);
         }
 
         /* addToReservation Test Cases  */
         // reservation# 603 , owner# 17 , pet in reservation 31 , 32 
         //Input : pet# 30   Expected : 1 row inserted  
 
-        [TestMethod]
-        public void testDBMethods()
-        {
+       // [TestMethod]
+        //public void testDBMethods()
+        //{
             /*
              * Here i will do one test on each of the DB methods to ensure they have returned 
                 */
-        }
+       // }
 
-        [TestMethod]
-        public void testAddOwner()
-        {
-            //This Test after being run will make listOwners fail as the list is increasing
-            //Input
-            //First Name: Brian || Last Name: Griffin || Street: 31 Spooner Street || City: Quahog || Province: QC || Postal: K9Y1Y2 || Phone: 1234567890 || Email: a@b.ca || Emergency Stuff : ""
-            Owner.addOwner("Brian", "Griffin", "31 Spooner Street", "Quahog", "QC", "K9Y1Y2", "1234567890", "a@b.ca", "", "", "");
-
-            //Getting the Owner Changes On sequence Value. On Fresh DB should return 250(start of seq.NEXTVAL)
-            Assert.AreEqual("Brian", Owner.getOwner(250).firstName, "Not Returning first Name Brian");
-            Assert.AreEqual("Griffin", Owner.getOwner(250).lastName, "Not Returning Last Name Griffin");
+        
 
 
-        }
+        
 
-
-        [TestMethod]
-        public void testUpdateOwner()
-        {
-            //This Method Directly Relies on the testAddOwner Insert <<Please Leave this test right aftert testAddOwner>>
-
-            Owner.updateOwner(250, "Alex", "Stewart", "My Street", "Quahog", "QC", "K9Y1Y2", "1234567890", "a@b.ca", "", "", "");
-            Owner testOwner = Owner.getOwner(250);
-            Assert.AreEqual("Alex", testOwner.firstName, "Not Returning first Name Alex");
-            Assert.AreEqual("Stewart", testOwner.lastName, "Not Returning Last Name Stewart");
-            Assert.AreEqual("My Street", testOwner.address.street, "Not Returning My Street");
-
-        }
-
-        [TestMethod]
-        public void testAddReservationDiscount()
-        {
-            //Testing with the reservation number of 800
-
-            //Success
-            Assert.AreEqual(0, Discount.addReservationDiscount(2, 800), "Add Did not Succeed");
-
-            //Fail Invalid Reservation Number
-            Assert.AreEqual(-19, Discount.addReservationDiscount(2, 999), "Invalid Reservation Number Succeeded");
-
-            //Test The Insert
-            Assert.AreEqual(2, Discount.listReservationDiscounts(800)[0].discountNumber, "Did not return reservation discount of discNum 2");
-        }
-
-        [TestMethod]
-        public void testDeleteReservationDiscount()
-        {
-            //Testing The Insert From testAddReservation
-
-            //Fail Invalid Reservation Number
-            Assert.AreEqual(-19, Discount.deleteReservationDiscount(2, 999), "Invalid Reservation Number Succeeded");
-
-            //Success
-            Assert.AreEqual(0, Discount.deleteReservationDiscount(2, 800), "Delete Did not Succeed");
-
-        }
+        
     }
 }
 
