@@ -42,7 +42,7 @@ namespace HawkeyehvkBLL
             return true;
         }
 
-        public List<PetVaccination> checkVaccinations(int petNum, int resNum)
+        public static List<PetVaccination> checkVaccinations(int petNum, int resNum)
         {
             Search look = new Search();
             List<PetVaccination> petVaccList = new List<PetVaccination>();
@@ -69,7 +69,7 @@ namespace HawkeyehvkBLL
             
         }
 
-        public int checkVaccinations(int petNum, DateTime byDate)
+        public static int checkVaccinations(int petNum, DateTime byDate)
         {
             Search look = new Search();
 
@@ -92,7 +92,7 @@ namespace HawkeyehvkBLL
             }
         }
 
-        public List<PetVaccination> listVaccinations(int petNum)
+        public static List<PetVaccination> listVaccinations(int petNum)
         {
             VaccinationDB vaccDB = new VaccinationDB();
             List<PetVaccination> vaccList = new List<PetVaccination>();
@@ -103,7 +103,7 @@ namespace HawkeyehvkBLL
             return vaccList;
         }
 
-        public PetVaccination fillVaccination(DataRow row)
+        public static PetVaccination fillVaccination(DataRow row)
         {
             PetVaccination petVacc = new PetVaccination();
 
@@ -117,6 +117,57 @@ namespace HawkeyehvkBLL
             //petVacc.isValidated = Convert.ToChar(row["VACCINATION_CHECKED_STATUS"].ToString());
             return petVacc;
 
+        }
+        public static int updatePetVaccinationChecked(char isChecked, int vacNumber, int petNumber)
+        {
+            Search search = new Search();
+            if (!search.validatePetNumber(petNumber))
+            {
+                return -2;
+            }
+            if (!search.validateVaccNumber(vacNumber))
+            {
+                return -3;
+            }
+
+            return VaccinationDB.updatePetVaccinationCheckedDB(isChecked, vacNumber, petNumber);
+        }
+        public static int updatePetVaccinationExpiry(DateTime expiryDate, int vacNumber, int petNumber)
+        {
+            Search search = new Search();
+            if (!search.validatePetNumber(petNumber))
+            {
+                return -2;
+            }
+            if (!search.validateVaccNumber(vacNumber))
+            {
+                return -3;
+            }
+            return VaccinationDB.updatePetVaccinationExpiryDB(expiryDate, vacNumber, petNumber);
+        }
+        public static int addPetVaccination(DateTime expiryDate, int vacNumber, int petNumber)
+        {
+            
+            Search search = new Search();
+            if (!search.validatePetNumber(petNumber))
+            {
+                return -2;
+            }
+            else if (!search.validateVaccNumber(vacNumber))
+            {
+                return -3;
+            }
+            bool hasVacc = false;
+            listVaccinations(petNumber).ForEach(delegate (PetVaccination vac) {
+                if (vac.vaccination.vaccinationNumber == vacNumber)
+                {
+                    hasVacc = true;
+                }
+            });
+            if (hasVacc) { // if the pet already has the vaccination just update it.
+                updatePetVaccinationExpiry(expiryDate,vacNumber,petNumber);
+            }
+            return VaccinationDB.addPetVaccinationDB(expiryDate, vacNumber, petNumber);
         }
     }
 }

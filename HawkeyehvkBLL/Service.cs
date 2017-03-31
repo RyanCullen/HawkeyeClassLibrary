@@ -35,7 +35,7 @@ namespace HawkeyehvkBLL
             this.mediumRate = medium;
             this.largeRate = large;
         }
-        public List<ReservedService> listServices(long petResNum)
+        public static List<ReservedService> listServices(long petResNum)
         {
             List<ReservedService> services = new List<ReservedService>();
             //dsNaman.EmployeeDataTable table = db.getEmployeesByDeptNameDB(deptName);

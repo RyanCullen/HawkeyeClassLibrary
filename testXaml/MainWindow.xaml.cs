@@ -33,13 +33,15 @@ namespace testXaml
             //Make Object And Call Method
             //Set datagrid or label to returned data
             Reservation control = new Reservation();
-            lblNum.Content = control.addReservation(35, new DateTime(2017, 3, 30), new DateTime(2017, 3, 31));
+            //lblNum.Content = control.addReservation(35, new DateTime(2017, 3, 30), new DateTime(2017, 3, 31));
             //PetVaccination petVac = new PetVaccination();
             //datagrid.ItemsSource = petVac.checkVaccinations(9, DateTime.Now); 
-            Vaccination.addPetVaccination(DateTime.Now.AddMonths(40),3,20);
-            if (Vaccination.updatePetVaccinationChecked('Y', 2, 20) != 0 || Vaccination.updatePetVaccinationExpiry(DateTime.Now.AddMonths(40), 1, 20) != 0) {
-                lblNum.Content = "Failure";
-            }
+           
+            lblNum.Content = lblNum.Content + Vaccination.addPetVaccination(DateTime.Now.AddMonths(40),3,20).ToString();
+            lblNum.Content = lblNum.Content + Vaccination.updatePetVaccinationChecked('Y', 2, 20).ToString();
+            lblNum.Content = lblNum.Content + Vaccination.updatePetVaccinationExpiry(DateTime.Now.AddMonths(4), 1, 20).ToString();
+               
+            
 
         }
     }

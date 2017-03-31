@@ -100,7 +100,7 @@ namespace HawkeyehvkBLL
             return this.reservationList.Remove(res);
         }
 
-        public List<Owner> listTheOwners()
+        public static List<Owner> listTheOwners()
         {
             OwnerDB ownDB= new OwnerDB();
         
@@ -112,7 +112,7 @@ namespace HawkeyehvkBLL
             }
             return ownerList;
         }
-        public Owner getOwner(int ownerNum)
+        public static Owner getOwner(int ownerNum)
         {
             OwnerDB ownDB = new OwnerDB();
 
@@ -121,7 +121,7 @@ namespace HawkeyehvkBLL
            
         }
 
-        private Owner fillBox(DataRow theRow)
+        private static Owner fillBox(DataRow theRow)
         {
             Owner own = new Owner();
             try
@@ -146,13 +146,13 @@ namespace HawkeyehvkBLL
             return own;
         }
         
-        public void addOwner(string fName, string lName, string _street, string _city, string _province, string _postalCode, string _phone, string _email, string _emerFName, string _emerLName, string _emerPhone)
+        public static void addOwner(string fName, string lName, string _street, string _city, string _province, string _postalCode, string _phone, string _email, string _emerFName, string _emerLName, string _emerPhone)
         {
             OwnerDB ownDB = new OwnerDB();
             ownDB.addOwnerDB(fName, lName, _street, _city, _province, _postalCode, _phone, _email, _emerFName, _emerLName, _emerPhone);
         }
 
-        public void updateOwner(int ownNum, string fName, string lName, string _street, string _city, string _province, string _postalCode, string _phone, string _email, string _emerFName, string _emerLName, string _emerPhone)
+        public static void updateOwner(int ownNum, string fName, string lName, string _street, string _city, string _province, string _postalCode, string _phone, string _email, string _emerFName, string _emerLName, string _emerPhone)
         {
             OwnerDB ownDB = new OwnerDB();
             ownDB.updateOwnerDB(ownNum, fName, lName, _street, _city, _province, _postalCode, _phone, _email, _emerFName, _emerLName, _emerPhone);

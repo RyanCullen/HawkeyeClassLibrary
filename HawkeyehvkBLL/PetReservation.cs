@@ -128,7 +128,7 @@ namespace HawkeyehvkBLL
         {
             return this.serviceList.Remove(service);
         }
-        public List<PetReservation> listPetRes(int ReservationNumber) {
+        public static List<PetReservation> listPetRes(int ReservationNumber) {
             PetReservationDB pres = new PetReservationDB();
 
             List<PetReservation> list = new List<PetReservation>();

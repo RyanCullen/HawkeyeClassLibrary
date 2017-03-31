@@ -38,15 +38,7 @@ namespace HawkeyehvkBLL
             DataSet vals = vaccDB.getVaccinationDB(vacNum);
             return vals;
         }
-        public static int updatePetVaccinationChecked(char isChecked, int vacNumber, int petNumber) {
-            return VaccinationDB.updatePetVaccinationCheckedDB(isChecked,vacNumber,petNumber);
-        }
-        public static int updatePetVaccinationExpiry(DateTime expiryDate, int vacNumber, int petNumber) {
-            return VaccinationDB.updatePetVaccinationExpiryDB(expiryDate,vacNumber,petNumber);
-        }
-        public static int addPetVaccination(DateTime expiryDate, int vacNumber, int petNumber) {
-            return VaccinationDB.addPetVaccinationDB(expiryDate,vacNumber,petNumber);
-        }
+
 
     }
 }
