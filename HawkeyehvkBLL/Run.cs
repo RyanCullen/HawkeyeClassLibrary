@@ -39,7 +39,8 @@ namespace HawkeyehvkBLL
         }
         public ReservationCounts getReservationCounts(DateTime start, DateTime end) {
             RunDB db = new RunDB();
-            return new ReservationCounts(db.getReservationCountsDB(start, end).Tables[0].Rows[0]);
+            DataRow row = db.getReservationCountsDB(start, end).Tables[0].Rows[0];
+            return new ReservationCounts(row);
         }
         public static int checkRunAvailability(DateTime startDate, DateTime endDate, char runSize) {
             if (startDate > endDate)

@@ -439,21 +439,21 @@ namespace HawkeyeUnitTests
             //Start date: 01-01-16
             //end Date: 15-01-16
             //Expected: 1
-            Assert.AreEqual(1, hvk.changeReservation(999, new DateTime(16, 01, 16), new DateTime(16, 01, 18)), "Invalid Reservation Number not returning 1");
+            Assert.AreEqual(1, hvk.changeReservation(999, new DateTime(2016, 01, 16), new DateTime(2016, 01, 18)), "Invalid Reservation Number not returning 1");
 
             //Input parameters:
             //reservation number: 3
             //Start date:16 - JAN - 16
             //end date: 01-JAN-16
             //Expected: 2
-            Assert.AreEqual(2, hvk.changeReservation(3, new DateTime(16, 01, 16), new DateTime(16, 01, 01)), "Start Date After End Date Not Returning 2");
+            Assert.AreEqual(2, hvk.changeReservation(800, new DateTime(2016, 01, 16), new DateTime(2016, 01, 01)), "Start Date After End Date Not Returning 2");
 
             //Input parameters:
             //reservation number: 6
             //Start date:01-JAN-16
-            //end date: 15-JAN-16
+            //end date: 15-JAN-16 
             //Expected: 3
-            Assert.AreEqual(3, hvk.changeReservation(6, new DateTime(16, 01, 19), new DateTime(16, 01, 22)), "No available runs returning Not Returning 3");
+            Assert.AreEqual(3, hvk.changeReservation(605, new DateTime(2017, 03, 05), new DateTime(2017, 03, 09)), "No available runs returning Not Returning 3");
 
             //Input parameters:
             //reservation number: 605
@@ -461,7 +461,7 @@ namespace HawkeyeUnitTests
             //end date: 9/3/2017
             //Expected: 0
             //Happy Case AssertFalse as its the default for the empty method currently
-            Assert.AreEqual(0, hvk.changeReservation(605, new DateTime(17, 03, 05), new DateTime(17, 03, 09)), "Invalid Reservation Change");
+            Assert.AreEqual(0, hvk.changeReservation(800, new DateTime(2017, 03, 05), new DateTime(2017, 03, 09)), "Invalid Reservation Change");
 
         }
 
