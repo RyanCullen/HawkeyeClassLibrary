@@ -41,5 +41,15 @@ namespace HawkeyehvkBLL
             }
             return 0;
         }
+
+        public void listReservedService(int petResNum)
+        {
+
+        }
+
+        private ReservedService fillReservedService(DataRow row)
+        {
+
+        }
     }
 }
