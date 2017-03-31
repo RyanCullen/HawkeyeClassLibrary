@@ -367,12 +367,13 @@ namespace HawkeyehvkBLL
                 {
                     return -2;
                 }
+                else if (Search.validateOwnerForPet(reservationNumber, petNumber) < 0)
+                    return -4;
                 else if (!search.validateReservationForPet(petNumber, reservationNumber))
                 {
                     return -3;
                 }
-                else if (Search.validateOwnerForPet(reservationNumber, petNumber) < 0)
-                    return -4; 
+               
 
                 // add discount if we are adding a third pet reservation
                 int count = PetReservation.listPetRes(reservationNumber).Count;

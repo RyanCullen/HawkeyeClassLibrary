@@ -347,7 +347,7 @@ namespace HawkeyeUnitTests
                 // pet number:  1
                 // 
                 //Expected: -4 (dogs not from same owner)
-                // Assert.AreEqual(-4, Reservation.addToReservation(108, 1), "pets from different owners");
+                 Assert.AreEqual(-4, Reservation.addToReservation(108, 1), "pets from different owners");
 
             }
 
@@ -618,9 +618,7 @@ namespace HawkeyeUnitTests
 
             }
 
-            /* addToReservation Test Cases  */
-            // reservation# 603 , owner# 17 , pet in reservation 31 , 32 
-            //Input : pet# 30   Expected : 1 row inserted  
+      
 
             [TestMethod]
             public void testDBMethods() {
