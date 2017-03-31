@@ -74,6 +74,14 @@ namespace HawkeyehvkBLL
             return count;
         }
 
+        public static int updateRunStatus(int runNum, char status) {
+            RunDB db = new RunDB();
+            if (db.updateRunStatusDB(runNum, status) != 0) {
+                return 1;
+            }
+            return 0;
+        }
+
         public class ReservationCounts {
             public int numRegReservations { get; private set; }
 

@@ -105,5 +105,25 @@ namespace HawkeyehvkDB
             da.Fill(ds, "hvk_numRunsReserved");
             return ds;
         }
+
+        public int updateRunStatusDB(int runNum, char status) {
+            string conString = ConfigurationManager.ConnectionStrings["ConnectionString"].ConnectionString;
+            OracleConnection con = new OracleConnection(conString);
+            string cmdStr = @"UPDATE HVK_RUN SET
+                                RUN_STATUS = :status
+                                WHERE RUN_NUMBER = :runNum";
+            OracleCommand cmd = new OracleCommand(cmdStr, con);
+            cmd.Parameters.Add("status", status);
+            cmd.Parameters.Add("runNum", runNum);
+            try {
+                con.Open();
+                cmd.ExecuteNonQuery();
+                return 0;
+            } catch {
+                return -1;
+            } finally {
+                con.Close();
+            }
+        }
     }
 }
