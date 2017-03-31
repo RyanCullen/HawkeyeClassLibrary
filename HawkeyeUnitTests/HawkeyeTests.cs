@@ -16,7 +16,7 @@ namespace HawkeyeUnitTests
         {
             Owner control = new Owner();
             Assert.AreEqual(19, control.listTheOwners().Count);
-           
+
         }
         //check that they are last name then first name(relative to your listowners method)
         [TestMethod]
@@ -30,7 +30,9 @@ namespace HawkeyeUnitTests
         [TestMethod]
         public void listowners3()
         {
-            // Assert.AreEqual(typeof(system.collections.generic.list<rc_hvk.owner>), control.listowners().gettype()); 
+            Owner control = new Owner();
+            Assert.AreEqual("Chester", control.getOwner(19).firstName, "Not  Returning First Name Chester");
+            Assert.AreEqual("Drawers", control.getOwner(19).lastName, "Not  Returning Last Name Drawers");
         }
 
 
@@ -39,7 +41,7 @@ namespace HawkeyeUnitTests
         [TestMethod]
         public void listPets1()
         {
-           
+
             Assert.AreEqual(3, Pet.listPets(2)[0].petNumber);
             Assert.AreEqual(6, Pet.listPets(2)[1].petNumber);
         }
@@ -48,7 +50,7 @@ namespace HawkeyeUnitTests
         [TestMethod]
         public void listPets2()
         {
-            
+
             Assert.AreEqual(0, Pet.listPets(14).Count);
         }
 
@@ -56,7 +58,7 @@ namespace HawkeyeUnitTests
         [TestMethod]
         public void listPets3()
         {
-            
+
             Assert.AreEqual(1, Pet.listPets(18).Count);
             Assert.AreEqual(33, Pet.listPets(18)[0].petNumber);
         }
@@ -65,7 +67,7 @@ namespace HawkeyeUnitTests
         [TestMethod]
         public void listPets4()
         {
-            
+
             Assert.AreEqual(10, Pet.listPets(7)[0].petNumber);
             Assert.AreEqual(11, Pet.listPets(7)[1].petNumber);
             Assert.AreEqual(12, Pet.listPets(7)[2].petNumber);
@@ -75,7 +77,7 @@ namespace HawkeyeUnitTests
         [TestMethod]
         public void listPets5()
         {
-            
+
             Assert.AreEqual(0, Pet.listPets(000).Count);
         }
 
@@ -297,7 +299,7 @@ namespace HawkeyeUnitTests
         [TestClass]
         public class reservationModificationTests
         {
-           
+
 
             [TestMethod]
             public void addReservationTest()
@@ -344,7 +346,7 @@ namespace HawkeyeUnitTests
                 //Expected: 0 (Success)
                 //No Available runs for dog size, this will be tested when we have further understanding
                 Assert.AreEqual(-14, control.addReservation(1, new DateTime(2018, 5, 12), new DateTime(2018, 5, 13)), "Runs available when they're full");
-         
+
 
                 // Start date == end date
                 // Input Parameters: 
@@ -363,7 +365,7 @@ namespace HawkeyeUnitTests
                 Assert.AreEqual(-13, control.addReservation(7, new DateTime(2017, 5, 12), new DateTime(2017, 5, 14)), "Pet has reservation during those days");
 
 
-              
+
             }
 
             [TestMethod]
@@ -394,7 +396,7 @@ namespace HawkeyeUnitTests
                 //pet number: 7 
                 //reservation:631 
                 //  Expected: 2 (Error pet has reservation at that time already)
-             Assert.AreEqual(-3, control.addToReservation(631, 7), "Pet has reservation during those days");
+                Assert.AreEqual(-3, control.addToReservation(631, 7), "Pet has reservation during those days");
 
 
                 // invalid reservation number
@@ -410,7 +412,7 @@ namespace HawkeyeUnitTests
                 // pet number:  6
                 // 
                 //Expected: success (1)
-               //Assert.AreEqual(1, control.addToReservation(, ), "Happy Path");
+                //Assert.AreEqual(1, control.addToReservation(, ), "Happy Path");
 
 
                 //pets from different owners
@@ -469,7 +471,7 @@ namespace HawkeyeUnitTests
         public void testCheckVaccinations()
         {
             PetVaccination hvk = new PetVaccination();
-           
+
             //Input Parameters:
             //Pet Number: 999
             //date: 16/01/2016
@@ -543,7 +545,7 @@ namespace HawkeyeUnitTests
         public void RunAvailability()
         {
             Run hvk = new Run();
-             
+
             //Run is not available (Return 0)
             DateTime startDate = new DateTime(2018, 5, 12);
             DateTime endDate = new DateTime(2018, 5, 13);
@@ -552,7 +554,7 @@ namespace HawkeyeUnitTests
             // Test with regular size (Returns number of runs)
             startDate = new DateTime(2016, 09, 12);
             endDate = new DateTime(2016, 9, 30);
-            Assert.IsTrue(0< Run.checkRunAvailability(startDate, endDate, 'R'), "During this time there should be multiple runs availible");
+            Assert.IsTrue(0 < Run.checkRunAvailability(startDate, endDate, 'R'), "During this time there should be multiple runs availible");
             // Test with large size (Returns number of runs)
             startDate = new DateTime(2016, 09, 12);
             endDate = new DateTime(2016, 9, 30);
@@ -560,7 +562,7 @@ namespace HawkeyeUnitTests
             //End date before start date (Return -1)
             startDate = new DateTime(2015, 09, 12);
             endDate = new DateTime(2014, 1, 31);
-            Assert.AreEqual(-1, Run.checkRunAvailability(startDate, endDate, 'R'),"A request when start is after end date should return -1.");
+            Assert.AreEqual(-1, Run.checkRunAvailability(startDate, endDate, 'R'), "A request when start is after end date should return -1.");
 
             //test case
             // more regular pets than there are regular runs causing for regular sized pets to be in large runs.
@@ -599,10 +601,12 @@ namespace HawkeyeUnitTests
             // Expected Result: 0
             Assert.AreEqual(0, hvk.deleteDogFromReservation(108, 3), "Solo dog in reservation didn't return 0");
             //This should also delete the entire reservation since there was only one pet reservation
-            hvk.listReservations().ForEach(delegate(Reservation res) {
-                if (res.reservationNumber == 108) {
+            hvk.listReservations().ForEach(delegate (Reservation res)
+            {
+                if (res.reservationNumber == 108)
+                {
                     Assert.Fail("The reservation 108 was not deleted.");
-                  }
+                }
             });
             // not test to ensure: HVK_RESERVATION_DISCOUNT, hvk_pet_reservation_service entries were deleted because 
             // they would have stopped the deletion of the pet reservation to begin with.
@@ -611,7 +615,8 @@ namespace HawkeyeUnitTests
             PetReservation presBLL = new PetReservation();
             presBLL.listPetRes(108).ForEach(delegate (PetReservation pr)
             {
-                if (pr.pet.petNumber == 3) {
+                if (pr.pet.petNumber == 3)
+                {
                     Assert.Fail("Any pet reservation with Reservation number 108 and pet number 3 should not be there at this point.");
                 }
             });
@@ -621,7 +626,7 @@ namespace HawkeyeUnitTests
             //                   petNumber - 26
             // Expected Result: 0 (Pet that was being shared with must be set to solo)
             Assert.AreEqual(0, hvk.deleteDogFromReservation(140, 26), "Sharing dog in reservation didn't return 0");
-            
+
             // Test Method: Pet not part of the reservation
             // Input Parameters: reservationNumber - 140
             //                   petNumber - 1
@@ -639,7 +644,7 @@ namespace HawkeyeUnitTests
             Assert.AreEqual(2, hvk.deleteDogFromReservation(140, 0), "Invalid pet number didn't return 2");
 
             // This reservation was created in the opening script to be going on today. It should not work since an ongoing reservation cannot be modified
-            Assert.AreEqual(4, hvk.deleteDogFromReservation(500,3), "cancel reservation that is ongoing cant be cancelled.");
+            Assert.AreEqual(4, hvk.deleteDogFromReservation(500, 3), "cancel reservation that is ongoing cant be cancelled.");
 
             // Removing dog from reservation causing for them to lose discount
             // reservation 636 has 3 pet reservations. removing one pet should remove the entry in pet Reservation
@@ -650,14 +655,16 @@ namespace HawkeyeUnitTests
             //}
         }
         [TestMethod]
-        public void testCancelReservation() {
+        public void testCancelReservation()
+        {
             Reservation hvk = new Reservation();
 
             //Reservation with one pet - Reservation 615
             //check pet_res's are gone
             Assert.AreEqual(0, hvk.cancelReservation(615), "cancel reservation 615 not succesfull.");
             PetReservation presBLL = new PetReservation();
-            if (0 < presBLL.listPetRes(615).Count) {
+            if (0 < presBLL.listPetRes(615).Count)
+            {
                 Assert.Fail("Deleting the reservation should also delete all pet reservations.");
             }
 
@@ -683,13 +690,74 @@ namespace HawkeyeUnitTests
         //Input : pet# 30   Expected : 1 row inserted  
 
         [TestMethod]
-        public void testDBMethods() {
+        public void testDBMethods()
+        {
             /*
              * Here i will do one test on each of the DB methods to ensure they have returned 
                 */
         }
 
+        [TestMethod]
+        public void testAddOwner()
+        {
+            //This Test after being run will make listOwners fail as the list is increasing
+            Owner own = new Owner();
+            //Input
+            //First Name: Brian || Last Name: Griffin || Street: 31 Spooner Street || City: Quahog || Province: QC || Postal: K9Y1Y2 || Phone: 1234567890 || Email: a@b.ca || Emergency Stuff : ""
+            own.addOwner("Brian", "Griffin", "31 Spooner Street", "Quahog", "QC", "K9Y1Y2", "1234567890", "a@b.ca", "", "", "");
+
+            //Getting the Owner Changes On sequence Value. On Fresh DB should return 250(start of seq.NEXTVAL)
+            Assert.AreEqual("Brian", own.getOwner(250).firstName, "Not Returning first Name Brian");
+            Assert.AreEqual("Griffin", own.getOwner(250).lastName, "Not Returning Last Name Griffin");
+
+
         }
+
+
+        [TestMethod]
+        public void testUpdateOwner()
+        {
+            //This Method Directly Relies on the testAddOwner Insert <<Please Leave this test right aftert testAddOwner>>
+
+            Owner own = new Owner();
+            own.updateOwner(250, "Alex", "Stewart", "My Street", "Quahog", "QC", "K9Y1Y2", "1234567890", "a@b.ca", "", "", "");
+            Owner testOwner = own.getOwner(250);
+            Assert.AreEqual("Alex", testOwner.firstName, "Not Returning first Name Alex");
+            Assert.AreEqual("Stewart", testOwner.lastName, "Not Returning Last Name Stewart");
+            Assert.AreEqual("My Street", testOwner.address.street, "Not Returning My Street");
+
+        }
+
+        [TestMethod]
+        public void testAddReservationDiscount()
+        {
+            //Testing with the reservation number of 800
+
+            //Success
+            Assert.AreEqual(0, Discount.addReservationDiscount(2, 800), "Add Did not Succeed");
+
+            //Fail Invalid Reservation Number
+            Assert.AreEqual(-19, Discount.addReservationDiscount(2, 999), "Invalid Reservation Number Succeeded");
+
+            //Test The Insert
+            Assert.AreEqual(2, Discount.listReservationDiscounts(800)[0].discountNumber, "Did not return reservation discount of discNum 2");
+        }
+
+        [TestMethod]
+        public void testDeleteReservationDiscount()
+        {
+            //Testing The Insert From testAddReservation
+
+            //Fail Invalid Reservation Number
+            Assert.AreEqual(-19, Discount.deleteReservationDiscount(2, 999), "Invalid Reservation Number Succeeded");
+
+            //Success
+            Assert.AreEqual(0, Discount.deleteReservationDiscount(2, 800), "Delete Did not Succeed");
+
+            //Test The Deletion
+            Assert.AreEqual(0, Discount.listReservationDiscounts(800).Count, "Returned an unexpected List of Reservaion Discount for ResNum 800");
+        }
+    }
 }
 
 

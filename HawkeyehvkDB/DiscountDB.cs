@@ -46,5 +46,57 @@ namespace HawkeyehvkDB
             da.Fill(ds, "hvk_pet_res_discount");
             return ds;
         }
+
+        public void addReservationDiscountDB(int discType, int resNum)
+        {
+            string conString = ConfigurationManager.ConnectionStrings["ConnectionString"].ConnectionString;
+            OracleConnection con = new OracleConnection(conString);
+            string cmdStr = @"INSERT INTO HVK_RESERVATION_DISCOUNT(DISC_DISCOUNT_NUMBER, RES_RESERVATION_NUMBER) VALUES(:discType, :resNum)";
+            OracleCommand cmd = new OracleCommand(cmdStr, con);
+            cmd.Parameters.Add("discType", discType);
+            cmd.Parameters.Add("resNum", resNum);
+            OracleDataAdapter da = new OracleDataAdapter(cmd);
+            da.InsertCommand = cmd;
+            try
+            {
+                con.Open();
+                cmd.ExecuteNonQuery();
+            }
+            catch(Exception e)
+            {
+                Console.Write(e);
+            }
+            finally
+            {
+                con.Close();
+            }
+        }
+
+        public void deleteReservationDiscountDB(int discType, int resNum)
+        {
+            string conString = ConfigurationManager.ConnectionStrings["ConnectionString"].ConnectionString;
+            OracleConnection con = new OracleConnection(conString);
+            string cmdStr = @"DELETE FROM HVK_RESERVATION_DISCOUNT WHERE RES_RESERVATION_NUMBER = :resNum AND DISC_DISCOUNT_NUMBER = :discType";
+            OracleCommand cmd = new OracleCommand(cmdStr, con);
+            cmd.Parameters.Add("resNum", resNum);
+            cmd.Parameters.Add("discType", discType);
+            OracleDataAdapter da = new OracleDataAdapter(cmd);
+            da.DeleteCommand = cmd;
+            try
+            {
+                con.Open();
+                cmd.ExecuteNonQuery();
+                    
+            }
+            catch(Exception e)
+            {
+                Console.Write(e);
+            }
+            finally
+            {
+                con.Close();
+            }
+
+        }
     }
 }
