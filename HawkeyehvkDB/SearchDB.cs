@@ -168,7 +168,7 @@ PET_RES_NUMBER
 
 
         //check if pet has already a reservation in the range of date passed in 
-        public int searchReservationForPet(int petNum)
+        public int searchReservationForPet(int petNum , int resNum)
         {
 
             string conString = ConfigurationManager.ConnectionStrings["ConnectionString"].ConnectionString;
@@ -176,18 +176,16 @@ PET_RES_NUMBER
             string cmdStr = @"SELECT RES.RESERVATION_START_DATE , RES.RESERVATION_END_DATE
 FROM HVK_PET_RESERVATION PRES ,
   HVK_RESERVATION RES
-WHERE PET_PET_NUMBER            = :PET_PET_NUMBER
-AND RES.RESERVATION_NUMBER      = PRES.RES_RESERVATION_NUMBER";
+WHERE D RES.RESERVATION_NUMBER      = PRES.RES_RESERVATION_NUMBER";
             OracleCommand cmd = new OracleCommand(cmdStr, con);
             cmd.BindByName = true;
             cmd.Parameters.Add("PET_PET_NUMBER", petNum);
             OracleDataAdapter da = new OracleDataAdapter(cmd);
             da.SelectCommand = cmd;
 
-            da.SelectCommand = cmd;
             DataSet ds = new DataSet("AvailableRuns");
             da.Fill(ds);
-            for(int i = 0; i < ds.Tables[0].Rows.Count; i++)
+            for (int i = 0; i < ds.Tables[0].Rows.Count; i++)
             {
                 DateTime start = Convert.ToDateTime(ds.Tables[0].Rows[i]["RESERVATION_START_DATE"].ToString()).Date;
                 DateTime end = Convert.ToDateTime((ds.Tables[0].Rows[i]["RESERVATION_END_DATE"].ToString())).Date;
@@ -215,6 +213,41 @@ AND RES.RESERVATION_NUMBER      = PRES.RES_RESERVATION_NUMBER";
             }
 
         }
+
+
+
+
+//        public int searchPetOwner(int resNum , int petNumber)
+//        {
+
+//            string conString = ConfigurationManager.ConnectionStrings["ConnectionString"].ConnectionString;
+//            OracleConnection con = new OracleConnection(conString);
+//            string cmdStr = @"SELECT RES.RESERVATION_START_DATE , RES.RESERVATION_END_DATE
+//FROM HVK_PET_RESERVATION PRES ,
+//  HVK_RESERVATION RES
+//WHERE PET_PET_NUMBER            = :PET_PET_NUMBER
+//AND RES.RESERVATION_NUMBER      = PRES.RES_RESERVATION_NUMBER";
+//            OracleCommand cmd = new OracleCommand(cmdStr, con);
+//            cmd.BindByName = true;
+//            cmd.Parameters.Add("PET_PET_NUMBER", petNum);
+//            OracleDataAdapter da = new OracleDataAdapter(cmd);
+//            da.SelectCommand = cmd;
+
+//            da.SelectCommand = cmd;
+//            DataSet ds = new DataSet("AvailableRuns");
+//            da.Fill(ds);
+//            for (int i = 0; i < ds.Tables[0].Rows.Count; i++)
+//            {
+//                DateTime start = Convert.ToDateTime(ds.Tables[0].Rows[i]["RESERVATION_START_DATE"].ToString()).Date;
+//                DateTime end = Convert.ToDateTime((ds.Tables[0].Rows[i]["RESERVATION_END_DATE"].ToString())).Date;
+//                if (searchConflictingReservations(petNum, start, end) > 0)
+//                    return -1;
+//            }
+
+
+
+
+
 
 
     }
