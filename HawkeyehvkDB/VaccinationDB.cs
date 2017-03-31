@@ -194,7 +194,7 @@ namespace HawkeyehvkDB
             string conString = ConfigurationManager.ConnectionStrings["ConnectionString"].ConnectionString;
             OracleConnection con = new OracleConnection(conString);
             string cmdStr = @"update hvk_pet_vaccination
-                                set VACCINATION_EXPIRY_DATE = :EXPDATE)
+                                set VACCINATION_EXPIRY_DATE = :EXPDATE
                                 where PET_PET_NUMBER = :PETNUMBER
                                 and VACC_VACCINATION_NUMBER = :VACNUMBER";
 
@@ -227,7 +227,7 @@ namespace HawkeyehvkDB
         }
         public static int updatePetVaccinationCheckedDB(char isChecked, int vacNumber, int petNumber) {
             int result = 0;
-            if (isChecked!='Y'||isChecked!='N') {
+            if (isChecked!='Y' && isChecked!='N') {
                 return -2;
             }
             string conString = ConfigurationManager.ConnectionStrings["ConnectionString"].ConnectionString;
@@ -240,7 +240,7 @@ namespace HawkeyehvkDB
 
             OracleCommand cmd = new OracleCommand(cmdStr, con);
             cmd.BindByName = true;
-            cmd.Parameters.Add("CHECKED", isChecked);
+            cmd.Parameters.Add("CHECKED", isChecked.ToString());
             cmd.Parameters.Add("PETNUMBER", petNumber);
             cmd.Parameters.Add("VACNUMBER", vacNumber);
 
