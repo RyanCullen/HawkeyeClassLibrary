@@ -66,5 +66,33 @@ namespace HawkeyehvkBLL
             }
             return list;
         }
+
+        public static int addReservationDiscount(int discType, int resNum)
+        {
+            Search look = new Search();
+            if (!look.validateReservationNumber(resNum))
+            {
+                return -19;
+            }
+            else
+            {
+                Discount.addReservationDiscount(discType, resNum);
+                return 0;
+            }
+        }
+
+        public static int deleteReservationDiscount(int discType, int resNum)
+        {
+            Search look = new Search();
+            if (!look.validateReservationNumber(resNum))
+            {
+                return -19;
+            }
+            else
+            {
+                Discount.deleteReservationDiscount(discType, resNum);
+                return 0;
+            }
+        }
     }
 }

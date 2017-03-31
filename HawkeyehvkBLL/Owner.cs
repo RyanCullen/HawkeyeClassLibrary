@@ -112,17 +112,13 @@ namespace HawkeyehvkBLL
             }
             return ownerList;
         }
-        public List<Owner> getOwner(int ownerNum)
+        public Owner getOwner(int ownerNum)
         {
             OwnerDB ownDB = new OwnerDB();
 
             List<Owner> ownerList = new List<Owner>();
-            foreach (DataRow row in ownDB.listOwnersDB(ownerNum).Tables["hvk_owner"].Rows)
-            {
-
-                ownerList.Add(fillBox(row));
-            }
-            return ownerList;
+            return fillBox(ownDB.listOwnersDB(ownerNum).Tables["hvk_owner"].Rows[0]);
+           
         }
 
         private Owner fillBox(DataRow theRow)
@@ -149,7 +145,18 @@ namespace HawkeyehvkBLL
             }
             return own;
         }
-  
+        
+        public void addOwner(string fName, string lName, string _street, string _city, string _province, string _postalCode, string _phone, string _email, string _emerFName, string _emerLName, string _emerPhone)
+        {
+            OwnerDB ownDB = new OwnerDB();
+            ownDB.addOwnerDB(fName, lName, _street, _city, _province, _postalCode, _phone, _email, _emerFName, _emerLName, _emerPhone);
+        }
+
+        public void updateOwner(int ownNum, string fName, string lName, string _street, string _city, string _province, string _postalCode, string _phone, string _email, string _emerFName, string _emerLName, string _emerPhone)
+        {
+            OwnerDB ownDB = new OwnerDB();
+            ownDB.updateOwnerDB(ownNum, fName, lName, _street, _city, _province, _postalCode, _phone, _email, _emerFName, _emerLName, _emerPhone);
+        }
       
     }
 }
