@@ -53,10 +53,17 @@ namespace HawkeyehvkBLL
             return db.searchPetResDB(petResNum) == 1 ? true : false;
         }
 
-      public bool validateReservationForPet(int petNum)
+      public bool validateReservationForPet(int petNum, int resNum)
         {
             SearchDB db = new SearchDB();
-            return db.searchReservationForPet(petNum) == 1 ? true : false;
+            return db.searchReservationForPet(petNum, resNum) == 1 ? true : false;
+        }
+
+
+        public static int validateOwnerForPet(int resNum , int petNum)
+        {
+            SearchDB db = new SearchDB();
+            return db.searchPetOwner(resNum, petNum); 
         }
 
     }
