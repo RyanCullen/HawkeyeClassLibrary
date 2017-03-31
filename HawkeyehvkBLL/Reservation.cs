@@ -397,16 +397,15 @@ namespace HawkeyehvkBLL
                 return 2;
             }
             List<Pet> pets = Pet.listPetsByReservation(reservationNumber);
-            int largeDogs = 0, regDogs = 0;
+            int largeDogs = 0;
             foreach(Pet pet in pets) {
                 if (pet.size == 'L')
                     largeDogs++;
-                else
-                    regDogs++;
             }
             // check that there are available runs
+
             if (Run.checkRunAvailability(startDate, endDate, 'L') < largeDogs ||
-                Run.checkRunAvailability(startDate, endDate, 'R') < regDogs) {
+                Run.checkRunAvailability(startDate, endDate, 'R') < pets.Count) {
                 return 3; 
             }
             // change the res dates
