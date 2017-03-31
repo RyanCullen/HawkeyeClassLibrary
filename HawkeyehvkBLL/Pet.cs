@@ -140,5 +140,15 @@ namespace HawkeyehvkBLL
             PetDB petDB = new PetDB();
             return petDB.checkPetsInReservation(resNum);
         }
+
+        public static List<Pet> listPetsByReservation(int resNum) {
+            List<Pet> petList = new List<Pet>();
+            PetDB db = new PetDB();
+            foreach (DataRow row in db.listPetsByReservationDB(resNum).Tables[0].Rows) {
+                Pet pet = fillFromDataRow(row);
+                petList.Add(pet);
+            }
+            return petList;
+        }
     }
 }

@@ -352,28 +352,22 @@ namespace HawkeyehvkDB
         }
 
 
-        public int changeReservation(int resNum, DateTime startDate, DateTime endDate)
+        public int changeReservationDB(int resNum, DateTime startDate, DateTime endDate)
         {
             int result = 0;
             string conString = ConfigurationManager.ConnectionStrings["ConnectionString"].ConnectionString;
             OracleConnection con = new OracleConnection(conString);
-            string cmdStr = @"INSERT INTO HVK_RESERVATION
-                                (
-                                    RESERVATION_NUMBER, 
-                                    RESERVATION_START_DATE,
-                                    RESERVATION_END_DATE
-                                )
-                                VALUES
-                                (
-                                    HVK_RESERVATION_SEQ.NEXTVAL,
-                                    :start,
-                                    :end,
-                                )";
+            string cmdStr = @"UPDATE HVK_RESERVATION SET
+                                RESERVATION_START_DATE = :start,
+                                RESERVATION_END_DATE = :end
+                                WHERE RESERVATION_NUMBER = :resNum
+                                ";
             OracleCommand cmd = new OracleCommand(cmdStr, con);
             cmd.Parameters.Add("start", startDate);
             cmd.Parameters.Add("end", endDate);
+            cmd.Parameters.Add("resNum", resNum);
             OracleDataAdapter da = new OracleDataAdapter(cmd);
-            da.InsertCommand = cmd;
+            da.UpdateCommand = cmd;
             try
             {
                 con.Open();

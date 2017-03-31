@@ -393,8 +393,31 @@ namespace HawkeyehvkBLL
             if (!search.validateReservationNumber(reservationNumber))// check reservation number
             {
                 return 1;
+            } else if (startDate > endDate) { // check that dates are in a valid order
+                return 2;
             }
-            // check reservation number
+            List<Pet> pets = Pet.listPetsByReservation(reservationNumber);
+            int largeDogs = 0, regDogs = 0;
+            foreach(Pet pet in pets) {
+                if (pet.size == 'L')
+                    largeDogs++;
+                else
+                    regDogs++;
+            }
+            // check that there are available runs
+            if (Run.checkRunAvailability(startDate, endDate, 'L') < largeDogs ||
+                Run.checkRunAvailability(startDate, endDate, 'R') < regDogs) {
+                return 3; 
+            }
+            // change the res dates
+            try
+            {
+                ReservationDB db = new ReservationDB();
+                db.changeReservationDB(reservationNumber, startDate, endDate);
+            } catch
+            {
+                return 4;
+            }
             return 0;
         }
 

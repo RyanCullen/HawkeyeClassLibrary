@@ -449,13 +449,6 @@ namespace HawkeyeUnitTests
             Assert.AreEqual(3, hvk.changeReservation(6, new DateTime(16, 01, 19), new DateTime(16, 01, 22)), "No available runs returning Not Returning 3");
 
             //Input parameters:
-            //reservation number: 3
-            //Start date:01-JAN-16
-            //end date: 01-JAN-16
-            //Expected: 4
-            Assert.AreEqual(4, hvk.changeReservation(3, new DateTime(16, 01, 16), new DateTime(16, 01, 16)), "Start Date On the same Day as End Date Not Returning 4");
-
-            //Input parameters:
             //reservation number: 605
             //Start date:5/3/2017
             //end date: 9/3/2017

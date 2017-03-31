@@ -43,6 +43,27 @@ namespace HawkeyehvkDB
             return ds;
         }
 
+        public DataSet listPetsByReservationDB(int resNum) {
+            string conString = ConfigurationManager.ConnectionStrings["ConnectionString"].ConnectionString;
+            OracleConnection con = new OracleConnection(conString);
+            string cmdStr = @"SELECT PET_NUMBER, PET_NAME, PET_GENDER, 
+                              PET_FIXED, PET_BREED, PET_BIRTHDATE, DOG_SIZE, SPECIAL_NOTES 
+                              FROM HVK_PET P
+                              JOIN HVK_PET_RESERVATION PR
+                              ON P.PET_NUMBER = PR.PET_PET_NUMBER
+                              JOIN HVK_RESERVATION R
+                              ON PR.RES_RESERVATION_NUMBER = R.RESERVATION_NUMBER
+                              WHERE R.RESERVATION_NUMBER = :resNum
+                              ORDER BY PET_NUMBER";
+            OracleCommand cmd = new OracleCommand(cmdStr, con);
+            cmd.Parameters.Add("resNum", resNum);
+            OracleDataAdapter da = new OracleDataAdapter(cmd);
+            da.SelectCommand = cmd;
+            DataSet ds = new DataSet("petDataSet");
+            da.Fill(ds, "hvk_pet");
+            return ds;
+        }
+
         public int checkPetsInReservation(int resNum)
         {
             int returnNum = 0;
