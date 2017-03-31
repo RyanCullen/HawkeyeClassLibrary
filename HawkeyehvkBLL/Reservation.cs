@@ -284,8 +284,7 @@ namespace HawkeyehvkBLL
             }
             //return -14 No Run Available
            
-            Run theRun = new Run();
-            if (theRun.checkRunAvailability(startDate, endDate, check.getPetSize(petNumber)) <= 0)
+            if (Run.checkRunAvailability(startDate, endDate, check.getPetSize(petNumber)) <= 0)
                 return -14;
             //return -15 Insert Failed
             

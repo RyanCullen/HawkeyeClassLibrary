@@ -547,20 +547,20 @@ namespace HawkeyeUnitTests
             //Run is not available (Return 0)
             DateTime startDate = new DateTime(2018, 5, 12);
             DateTime endDate = new DateTime(2018, 5, 13);
-            Assert.AreEqual(0, hvk.checkRunAvailability(startDate, endDate, 'R'), "There should be no runs availible for this time.");
+            Assert.AreEqual(0, Run.checkRunAvailability(startDate, endDate, 'R'), "There should be no runs availible for this time.");
 
             // Test with regular size (Returns number of runs)
             startDate = new DateTime(2016, 09, 12);
             endDate = new DateTime(2016, 9, 30);
-            Assert.IsTrue(0<hvk.checkRunAvailability(startDate, endDate, 'R'), "During this time there should be multiple runs availible");
+            Assert.IsTrue(0< Run.checkRunAvailability(startDate, endDate, 'R'), "During this time there should be multiple runs availible");
             // Test with large size (Returns number of runs)
             startDate = new DateTime(2016, 09, 12);
             endDate = new DateTime(2016, 9, 30);
-            Assert.IsTrue(0 < hvk.checkRunAvailability(startDate, endDate, 'L'), "During this time there should be multiple runs availible");
+            Assert.IsTrue(0 < Run.checkRunAvailability(startDate, endDate, 'L'), "During this time there should be multiple runs availible");
             //End date before start date (Return -1)
             startDate = new DateTime(2015, 09, 12);
             endDate = new DateTime(2014, 1, 31);
-            Assert.AreEqual(-1, hvk.checkRunAvailability(startDate, endDate, 'R'),"A request when start is after end date should return -1.");
+            Assert.AreEqual(-1, Run.checkRunAvailability(startDate, endDate, 'R'),"A request when start is after end date should return -1.");
 
             //test case
             // more regular pets than there are regular runs causing for regular sized pets to be in large runs.
@@ -568,7 +568,7 @@ namespace HawkeyeUnitTests
             // this test is important because regular and large runs are seperated.
             startDate = new DateTime(2018, 8, 16);
             endDate = new DateTime(2018, 8, 20);
-            Assert.AreEqual(0, hvk.checkRunAvailability(startDate, endDate, 'L'), "There should be no runs (Large or normal) availible for this time.");
+            Assert.AreEqual(0, Run.checkRunAvailability(startDate, endDate, 'L'), "There should be no runs (Large or normal) availible for this time.");
 
             //test case 
             // test that our method works logically.
@@ -578,7 +578,7 @@ namespace HawkeyeUnitTests
             // the seccond most busy has 6 reservations but all large
             startDate = new DateTime(2018, 6, 17);
             endDate = new DateTime(2018, 6, 22);
-            Assert.AreEqual(0, hvk.checkRunAvailability(startDate, endDate, 'L'), "There should be no runs (Large) availible for this time.");
+            Assert.AreEqual(0, Run.checkRunAvailability(startDate, endDate, 'L'), "There should be no runs (Large) availible for this time.");
 
             //Reservation deletor = new Reservation();
             //deletor.cancelReservation(501);
