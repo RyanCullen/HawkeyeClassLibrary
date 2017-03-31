@@ -174,43 +174,23 @@ PET_RES_NUMBER
             string conString = ConfigurationManager.ConnectionStrings["ConnectionString"].ConnectionString;
             OracleConnection con = new OracleConnection(conString);
             string cmdStr = @"SELECT RES.RESERVATION_START_DATE , RES.RESERVATION_END_DATE
-FROM HVK_PET_RESERVATION PRES ,
-  HVK_RESERVATION RES
-WHERE D RES.RESERVATION_NUMBER      = PRES.RES_RESERVATION_NUMBER";
+ FROM HVK_RESERVATION RES
+WHERE RES.RESERVATION_NUMBER = :resNum";
             OracleCommand cmd = new OracleCommand(cmdStr, con);
             cmd.BindByName = true;
-            cmd.Parameters.Add("PET_PET_NUMBER", petNum);
+            cmd.Parameters.Add("resNum", resNum);
             OracleDataAdapter da = new OracleDataAdapter(cmd);
             da.SelectCommand = cmd;
 
             DataSet ds = new DataSet("AvailableRuns");
             da.Fill(ds);
-            for (int i = 0; i < ds.Tables[0].Rows.Count; i++)
-            {
-                DateTime start = Convert.ToDateTime(ds.Tables[0].Rows[i]["RESERVATION_START_DATE"].ToString()).Date;
-                DateTime end = Convert.ToDateTime((ds.Tables[0].Rows[i]["RESERVATION_END_DATE"].ToString())).Date;
+       
+                DateTime start = Convert.ToDateTime(ds.Tables[0].Rows[0]["RESERVATION_START_DATE"].ToString()).Date;
+                DateTime end = Convert.ToDateTime((ds.Tables[0].Rows[0]["RESERVATION_END_DATE"].ToString())).Date;
                 if (searchConflictingReservations(petNum, start, end) > 0)
                     return -1;
-            }
 
-
-
-            try
-            {
-                con.Open();
-                cmd.ExecuteNonQuery(); 
-
-                return Convert.ToInt16(cmd.ExecuteScalar());
-            }
-            catch (Exception e)
-            {
-                Console.Write(e);
-                return -1;
-            }
-            finally
-            {
-                con.Close();
-            }
+            return 1;
 
         }
 
