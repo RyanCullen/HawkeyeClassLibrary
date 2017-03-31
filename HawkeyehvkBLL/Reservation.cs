@@ -140,14 +140,6 @@ namespace HawkeyehvkBLL
             if (check.validateReservationNumber(resNum))
             {
 
-                //    if (db.updateReservation(resNum, startDate, endDate, petNumber, runNumber) == 1)
-                //        return 1;
-                //    else
-                //        return -1;
-                //}
-
-
-
                 if (check.validatePetNumber(petNumber) == false)
                 {
                     return -10;
