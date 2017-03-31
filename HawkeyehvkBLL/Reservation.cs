@@ -366,7 +366,7 @@ namespace HawkeyehvkBLL
                 {
                     return -2;
                 }
-                else if (!search.validateReservationForPet(petNumber))
+                else if (!search.validateReservationForPet(petNumber, reservationNumber))
                 {
                     return -3;
                 }
@@ -387,7 +387,7 @@ namespace HawkeyehvkBLL
             catch
             {
                 //Exception msg goes here 
-                return -1;
+                return -4;
             }
 
 

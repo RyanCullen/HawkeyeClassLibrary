@@ -11,9 +11,9 @@ namespace HawkeyehvkDB
 {
     public class SearchDB
     {
-        public int searchDB(String cmdStr, String parameterName, int parmNum)
+        public int searchDB(String cmdStr , String parameterName , int parmNum)
         {
-
+            
             string conString = ConfigurationManager.ConnectionStrings["ConnectionString"].ConnectionString;
             OracleConnection con = new OracleConnection(conString);
             OracleCommand cmd = new OracleCommand(cmdStr, con);
@@ -23,12 +23,12 @@ namespace HawkeyehvkDB
 
             try
             {
-                con.Open();
-                return Convert.ToInt16(cmd.ExecuteScalar());
+               con.Open();
+               return Convert.ToInt16(cmd.ExecuteScalar());
             }
             catch
             {
-                return -1;
+                return -1; 
             }
             finally
             {
@@ -45,7 +45,7 @@ namespace HawkeyehvkDB
                                 FROM HVK_RESERVATION R
                                 JOIN HVK_PET_RESERVATION PR
                                 ON R.RESERVATION_NUMBER=PR.RES_RESERVATION_NUMBER
-                                WHERE (R.RESERVATION_START_DATE BETWEEN :dateStart AND :dateEnd OR R.RESERVATION_END_DATE BETWEEN :dateStart AND :dateEnd)
+                                WHERE (R.RESERVATION_START_DATE BETWEEN :dateStart AND :dateEnd OR R.RESERVATION_END_DATE BETWEEN :dateStart AND :dateEnd OR R.RESERVATION_START_DATE < :dateStart  AND R.RESERVATION_END_DATE > :dateEnd)
                                 AND PR.PET_PET_NUMBER = :petNum";
             OracleCommand cmd = new OracleCommand(cmdStr, con);
             cmd.BindByName = true;
@@ -60,7 +60,7 @@ namespace HawkeyehvkDB
                 con.Open();
                 return Convert.ToInt16(cmd.ExecuteScalar());
             }
-            catch (Exception e)
+            catch(Exception e)
             {
                 Console.Write(e);
                 return -1;
@@ -99,13 +99,13 @@ namespace HawkeyehvkDB
         }
         public int searchPetDB(int petNumber)
         {
-            string cmdStr = @"SELECT COUNT(*)
+          string cmdStr =   @"SELECT COUNT(*)
                                 FROM HVK_PET
                                 WHERE
                                 PET_NUMBER = :PET_NUMBER
                                 GROUP BY PET_NUMBER";
 
-            return searchDB(cmdStr, "PET_NUMBER", petNumber);
+            return searchDB(cmdStr, "PET_NUMBER", petNumber); 
 
         }
 
@@ -168,115 +168,67 @@ PET_RES_NUMBER
 
 
         //check if pet has already a reservation in the range of date passed in 
-        public int searchReservationForPet(int petNum, int resNum)
+        public int searchReservationForPet(int petNum , int resNum)
         {
 
             string conString = ConfigurationManager.ConnectionStrings["ConnectionString"].ConnectionString;
             OracleConnection con = new OracleConnection(conString);
             string cmdStr = @"SELECT RES.RESERVATION_START_DATE , RES.RESERVATION_END_DATE
-FROM HVK_PET_RESERVATION PRES ,
-  HVK_RESERVATION RES
-WHERE D RES.RESERVATION_NUMBER      = PRES.RES_RESERVATION_NUMBER";
+ FROM HVK_RESERVATION RES
+WHERE RES.RESERVATION_NUMBER = :resNum";
             OracleCommand cmd = new OracleCommand(cmdStr, con);
             cmd.BindByName = true;
-            cmd.Parameters.Add("PET_PET_NUMBER", petNum);
+            cmd.Parameters.Add("resNum", resNum);
             OracleDataAdapter da = new OracleDataAdapter(cmd);
             da.SelectCommand = cmd;
 
             DataSet ds = new DataSet("AvailableRuns");
             da.Fill(ds);
-            for (int i = 0; i < ds.Tables[0].Rows.Count; i++)
-            {
-                DateTime start = Convert.ToDateTime(ds.Tables[0].Rows[i]["RESERVATION_START_DATE"].ToString()).Date;
-                DateTime end = Convert.ToDateTime((ds.Tables[0].Rows[i]["RESERVATION_END_DATE"].ToString())).Date;
+       
+                DateTime start = Convert.ToDateTime(ds.Tables[0].Rows[0]["RESERVATION_START_DATE"].ToString()).Date;
+                DateTime end = Convert.ToDateTime((ds.Tables[0].Rows[0]["RESERVATION_END_DATE"].ToString())).Date;
                 if (searchConflictingReservations(petNum, start, end) > 0)
                     return -1;
-            }
 
-
-
-            try
-            {
-                con.Open();
-                cmd.ExecuteNonQuery();
-
-                return Convert.ToInt16(cmd.ExecuteScalar());
-            }
-            catch (Exception e)
-            {
-                Console.Write(e);
-                return -1;
-            }
-            finally
-            {
-                con.Close();
-            }
+            return 1;
 
         }
 
 
 
 
-        public int searchPetOwner(int resNum, int petNumber)
-        {
+//        public int searchPetOwner(int resNum , int petNumber)
+//        {
 
-            string conString = ConfigurationManager.ConnectionStrings["ConnectionString"].ConnectionString;
-            OracleConnection con = new OracleConnection(conString);
-            string cmdStr = @"SELECT PET_PET_NUMBER
-FROM HVK_PET_RESERVATION
-WHERE RES_RESERVATION_NUMBER = :RES_RESERVATION_NUMBER
-AND ROWNUM = 1";
+//            string conString = ConfigurationManager.ConnectionStrings["ConnectionString"].ConnectionString;
+//            OracleConnection con = new OracleConnection(conString);
+//            string cmdStr = @"SELECT RES.RESERVATION_START_DATE , RES.RESERVATION_END_DATE
+//FROM HVK_PET_RESERVATION PRES ,
+//  HVK_RESERVATION RES
+//WHERE PET_PET_NUMBER            = :PET_PET_NUMBER
+//AND RES.RESERVATION_NUMBER      = PRES.RES_RESERVATION_NUMBER";
+//            OracleCommand cmd = new OracleCommand(cmdStr, con);
+//            cmd.BindByName = true;
+//            cmd.Parameters.Add("PET_PET_NUMBER", petNum);
+//            OracleDataAdapter da = new OracleDataAdapter(cmd);
+//            da.SelectCommand = cmd;
 
-            string cmdStr2 = @"SELECT OWN_OWNER_NUMBER FROM HVK_PET WHERE PET_NUMBER  = :RES_PET";
-            string cmdStr3 = @"SELECT OWN_OWNER_NUMBER FROM HVK_PET WHERE PET_NUMBER  = :NEW_PET";
-
-            OracleCommand cmd = new OracleCommand(cmdStr, con);
-            OracleCommand cmd2 = new OracleCommand(cmdStr2, con);
-            OracleCommand cmd3 = new OracleCommand(cmdStr3, con);
-
-            cmd.BindByName = true;
-            cmd.Parameters.Add("RES_RESERVATION_NUMBER", resNum);
-            OracleDataAdapter da = new OracleDataAdapter(cmd);
-            da.SelectCommand = cmd;
-
-            try
-            {
-                con.Open();
-                int tempPetNumber = Convert.ToInt16(cmd.ExecuteScalar());
-
-                cmd2.Parameters.Add("RES_PET", tempPetNumber);
-                OracleDataAdapter da2 = new OracleDataAdapter(cmd2);
-                da2.SelectCommand = cmd2;
-                int realOwner = Convert.ToInt16(cmd2.ExecuteScalar());
-
-
-                cmd3.Parameters.Add("NEW_PET", petNumber);
-                OracleDataAdapter da3 = new OracleDataAdapter(cmd2);
-                da3.SelectCommand = cmd3;
-                int newOwner = Convert.ToInt16(cmd3.ExecuteScalar());
-
-                if (newOwner != realOwner)
-                    return -4;
-
-
-                return 1;
-
-
-
-            }
-            catch (Exception e)
-            {
-                Console.Write(e);
-                return -1;
-            }
-            finally
-            {
-                con.Close();
-            }
+//            da.SelectCommand = cmd;
+//            DataSet ds = new DataSet("AvailableRuns");
+//            da.Fill(ds);
+//            for (int i = 0; i < ds.Tables[0].Rows.Count; i++)
+//            {
+//                DateTime start = Convert.ToDateTime(ds.Tables[0].Rows[i]["RESERVATION_START_DATE"].ToString()).Date;
+//                DateTime end = Convert.ToDateTime((ds.Tables[0].Rows[i]["RESERVATION_END_DATE"].ToString())).Date;
+//                if (searchConflictingReservations(petNum, start, end) > 0)
+//                    return -1;
+//            }
 
 
 
 
-        }
+
+
+
     }
 }
