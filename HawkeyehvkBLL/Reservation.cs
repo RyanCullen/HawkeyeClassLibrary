@@ -320,6 +320,12 @@ namespace HawkeyehvkBLL
                 {
                     return -3;
                 }
+                // add discount if we are adding a third pet reservation
+                int count = PetReservation.listPetRes(reservationNumber).Count;
+                if (count == 2)
+                {
+                    Discount.addReservationDiscount(2,reservationNumber);
+                }
 
                 db.addToReservationDB(reservationNumber, petNumber);
                     return 1;
@@ -364,8 +370,11 @@ namespace HawkeyehvkBLL
         }
         public int deleteDogFromReservation(int reservationNumber, int petNumber)
         {
+
+
+
             Search search = new HawkeyehvkBLL.Search();
-            
+
             if (!search.validateReservationNumber(reservationNumber))// check reservation number
             {
                 return 1;
@@ -378,12 +387,17 @@ namespace HawkeyehvkBLL
             {
                 return 3;
             }
-            else if (isReservationActive(reservationNumber))
+            else if (isReservationActive(reservationNumber))//check is res is active
             {
                 return 4;
             }
             else
             {
+                // before running check if the reservation is going from 3 to 2 dogs in order to remove the discount
+                int count = PetReservation.listPetRes(reservationNumber).Count;
+                if (count==3) {
+                    Discount.deleteReservationDiscount(2,reservationNumber);
+                }
                 return ReservationDB.deleteDogFromReservationDB(reservationNumber, petNumber);
             }
         }

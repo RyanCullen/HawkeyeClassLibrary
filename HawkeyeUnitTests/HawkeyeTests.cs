@@ -159,7 +159,7 @@ namespace HawkeyeUnitTests
         public void listVaccination1()
         {
             PetVaccination control = new PetVaccination();
-            Assert.AreEqual(6, control.listVaccinations(1).Count);
+            Assert.AreEqual(6, PetVaccination.listVaccinations(1).Count);
         }
 
         //Not Full Vaccination 
@@ -167,7 +167,7 @@ namespace HawkeyeUnitTests
         public void listVaccination2()
         {
             PetVaccination control = new PetVaccination();
-            Assert.AreEqual(4, control.listVaccinations(7).Count);
+            Assert.AreEqual(4, PetVaccination.listVaccinations(7).Count);
         }
 
         //Invalid Pet Number
@@ -176,7 +176,7 @@ namespace HawkeyeUnitTests
         public void listVaccination3()
         {
             PetVaccination control = new PetVaccination();
-            Assert.AreEqual(0, control.listVaccinations(0000).Count);
+            Assert.AreEqual(0, PetVaccination.listVaccinations(0000).Count);
         }
 
         //No Vaccination
@@ -184,7 +184,7 @@ namespace HawkeyeUnitTests
         public void listVaccination4()
         {
             PetVaccination control = new PetVaccination();
-            Assert.AreEqual(0, control.listVaccinations(10).Count);
+            Assert.AreEqual(0, PetVaccination.listVaccinations(10).Count);
         }
 
         //Invalid Pet Number 
@@ -582,108 +582,12 @@ namespace HawkeyeUnitTests
             endDate = new DateTime(2018, 6, 22);
             Assert.AreEqual(0, Run.checkRunAvailability(startDate, endDate, 'L'), "There should be no runs (Large) availible for this time.");
 
-            //Reservation deletor = new Reservation();
-            //deletor.cancelReservation(501);
-            //deletor.cancelReservation(1701);
-            //deletor.cancelReservation(1666);
-            //deletor.cancelReservation(1501);
+            
         }
 
 
 
-        [TestMethod]
-        public void testDeleteDogFromReservation()
-        {
-            Reservation hvk = new Reservation();
-            // Test Method: Solo pet in reservation
-            // Input Parameters: reservationNumber - 108
-            //                   petNumber - 3
-            // Expected Result: 0
-            Assert.AreEqual(0, hvk.deleteDogFromReservation(108, 3), "Solo dog in reservation didn't return 0");
-            //This should also delete the entire reservation since there was only one pet reservation
-            hvk.listReservations().ForEach(delegate (Reservation res)
-            {
-                if (res.reservationNumber == 108)
-                {
-                    Assert.Fail("The reservation 108 was not deleted.");
-                }
-            });
-            // not test to ensure: HVK_RESERVATION_DISCOUNT, hvk_pet_reservation_service entries were deleted because 
-            // they would have stopped the deletion of the pet reservation to begin with.
 
-            //Check to make sure that the pet reservation is gone
-            PetReservation presBLL = new PetReservation();
-            presBLL.listPetRes(108).ForEach(delegate (PetReservation pr)
-            {
-                if (pr.pet.petNumber == 3)
-                {
-                    Assert.Fail("Any pet reservation with Reservation number 108 and pet number 3 should not be there at this point.");
-                }
-            });
-
-            // Test Method: Sharing pet in reservation
-            // Input Parameters: reservationNumber - 140
-            //                   petNumber - 26
-            // Expected Result: 0 (Pet that was being shared with must be set to solo)
-            Assert.AreEqual(0, hvk.deleteDogFromReservation(140, 26), "Sharing dog in reservation didn't return 0");
-
-            // Test Method: Pet not part of the reservation
-            // Input Parameters: reservationNumber - 140
-            //                   petNumber - 1
-            // Expected Result: 3
-            Assert.AreEqual(3, hvk.deleteDogFromReservation(140, 1), "Pet not in reservation didn't return 3");
-            // Test Method: Invalid reservation number
-            // Input Parameters: reservationNumber - 0
-            //                   petNumber - 1
-            // Expected Result: 1
-            Assert.AreEqual(1, hvk.deleteDogFromReservation(0, 1), "Invalid reservation number didn't return 1");
-            // Test Method: Invalid pet number
-            // Input Parameters: reservationNumber - 140
-            //                   petNumber - 0
-            // Expected Result: 2
-            Assert.AreEqual(2, hvk.deleteDogFromReservation(140, 0), "Invalid pet number didn't return 2");
-
-            // This reservation was created in the opening script to be going on today. It should not work since an ongoing reservation cannot be modified
-            Assert.AreEqual(4, hvk.deleteDogFromReservation(500, 3), "cancel reservation that is ongoing cant be cancelled.");
-
-            // Removing dog from reservation causing for them to lose discount
-            // reservation 636 has 3 pet reservations. removing one pet should remove the entry in pet Reservation
-            Assert.AreEqual(0, hvk.deleteDogFromReservation(636, 6), "Removing a dog from a reservation with 3 pets should be successful.");
-
-            //if (Discount.listReservationDiscounts(636).Count > 0) {
-            //    Assert.Fail("After the deletion the reservation's discount should have been removved since it now has 2 pets.");
-            //}
-        }
-        [TestMethod]
-        public void testCancelReservation()
-        {
-            Reservation hvk = new Reservation();
-
-            //Reservation with one pet - Reservation 615
-            //check pet_res's are gone
-            Assert.AreEqual(0, hvk.cancelReservation(615), "cancel reservation 615 not succesfull.");
-            PetReservation presBLL = new PetReservation();
-            if (0 < presBLL.listPetRes(615).Count)
-            {
-                Assert.Fail("Deleting the reservation should also delete all pet reservations.");
-            }
-
-            // Reservation with multple pets
-            // Reservation number 100
-            Assert.AreEqual(0, hvk.cancelReservation(100), "cancel reservation 100 not succesfull.");
-            if (0 < presBLL.listPetRes(100).Count)
-            {
-                Assert.Fail("Deleting the reservation should also delete all pet reservations.");
-            }
-
-            //invalid reservation Number
-            //reservation number 5
-            Assert.AreEqual(1, hvk.cancelReservation(5), "cancel reservation with invalid reservation number was not successfull.");
-
-            // This reservation was created in the opening script to be going on today. It should not work
-            Assert.AreEqual(4, hvk.cancelReservation(500), "cancel reservation that is ongoing cant be cancelled.");
-
-        }
 
         /* addToReservation Test Cases  */
         // reservation# 603 , owner# 17 , pet in reservation 31 , 32 
@@ -756,6 +660,115 @@ namespace HawkeyeUnitTests
 
             //Test The Deletion
             Assert.AreEqual(0, Discount.listReservationDiscounts(800).Count, "Returned an unexpected List of Reservaion Discount for ResNum 800");
+        }
+        [TestMethod]
+        public void testDeleteDogFromReservation()
+        {
+            Reservation hvk = new Reservation();
+            // Test Method: Solo pet in reservation
+            // Input Parameters: reservationNumber - 108
+            //                   petNumber - 3
+            // Expected Result: 0
+            Assert.AreEqual(0, hvk.deleteDogFromReservation(108, 3), "Solo dog in reservation didn't return 0");
+            //This should also delete the entire reservation since there was only one pet reservation
+            hvk.listReservations().ForEach(delegate (Reservation res)
+            {
+                if (res.reservationNumber == 108)
+                {
+                    Assert.Fail("The reservation 108 was not deleted.");
+                }
+            });
+            // not test to ensure: HVK_RESERVATION_DISCOUNT, hvk_pet_reservation_service entries were deleted because 
+            // they would have stopped the deletion of the pet reservation to begin with.
+
+            //Check to make sure that the pet reservation is gone
+            PetReservation presBLL = new PetReservation();
+            presBLL.listPetRes(108).ForEach(delegate (PetReservation pr)
+            {
+                if (pr.pet.petNumber == 3)
+                {
+                    Assert.Fail("Any pet reservation with Reservation number 108 and pet number 3 should not be there at this point.");
+                }
+            });
+
+            // Test Method: Sharing pet in reservation
+            // Input Parameters: reservationNumber - 140
+            //                   petNumber - 26
+            // Expected Result: 0 (Pet that was being shared with must be set to solo)
+            Assert.AreEqual(0, hvk.deleteDogFromReservation(140, 26), "Sharing dog in reservation didn't return 0");
+
+            // Test Method: Pet not part of the reservation
+            // Input Parameters: reservationNumber - 140
+            //                   petNumber - 1
+            // Expected Result: 3
+            Assert.AreEqual(3, hvk.deleteDogFromReservation(140, 1), "Pet not in reservation didn't return 3");
+            // Test Method: Invalid reservation number
+            // Input Parameters: reservationNumber - 0
+            //                   petNumber - 1
+            // Expected Result: 1
+            Assert.AreEqual(1, hvk.deleteDogFromReservation(0, 1), "Invalid reservation number didn't return 1");
+            // Test Method: Invalid pet number
+            // Input Parameters: reservationNumber - 140
+            //                   petNumber - 0
+            // Expected Result: 2
+            Assert.AreEqual(2, hvk.deleteDogFromReservation(140, 0), "Invalid pet number didn't return 2");
+
+            // This reservation was created in the opening script to be going on today. It should not work since an ongoing reservation cannot be modified
+            Assert.AreEqual(4, hvk.deleteDogFromReservation(500, 3), "cancel reservation that is ongoing cant be cancelled.");
+
+            // Removing dog from reservation causing for them to lose discount
+            // reservation 636 has 3 pet reservations. removing one pet should remove the entry in pet Reservation
+            Assert.AreEqual(0, hvk.deleteDogFromReservation(636, 6), "Removing a dog from a reservation with 3 pets should be successful.");
+
+
+            // reservation goes from 3 to 2 dogs and therefor the discount should be deleted.
+            if (Discount.listReservationDiscounts(636).Count > 0)
+            {
+                Assert.Fail("After the deletion the reservation's discount should have been removved since it now has 2 pets.");
+            }
+        }
+        [TestMethod]
+        public void testCancelReservation()
+        {
+            Reservation hvk = new Reservation();
+
+            //Reservation with one pet - Reservation 615
+            //check pet_res's are gone
+            Assert.AreEqual(0, hvk.cancelReservation(615), "cancel reservation 615 not succesfull.");
+            PetReservation presBLL = new PetReservation();
+            if (0 < presBLL.listPetRes(615).Count)
+            {
+                Assert.Fail("Deleting the reservation should also delete all pet reservations.");
+            }
+
+            // Reservation with multple pets
+            // Reservation number 100
+            Assert.AreEqual(0, hvk.cancelReservation(100), "cancel reservation 100 not succesfull.");
+            if (0 < presBLL.listPetRes(100).Count)
+            {
+                Assert.Fail("Deleting the reservation should also delete all pet reservations.");
+            }
+
+            //invalid reservation Number
+            //reservation number 5
+            Assert.AreEqual(1, hvk.cancelReservation(5), "cancel reservation with invalid reservation number was not successfull.");
+
+            // This reservation was created in the opening script to be going on today. It should not work
+            Assert.AreEqual(4, hvk.cancelReservation(500), "cancel reservation that is ongoing cant be cancelled.");
+
+            // delete added reservations to not corrupt data in database
+            Reservation deletor = new Reservation();
+            deletor.cancelReservation(501);
+            deletor.cancelReservation(1701);
+            deletor.cancelReservation(1666);
+            deletor.cancelReservation(1501);
+            deletor.cancelReservation(2005);
+            deletor.cancelReservation(2004);
+            deletor.cancelReservation(2003);
+            deletor.cancelReservation(2002);
+            deletor.cancelReservation(2001);
+            deletor.cancelReservation(2000);
+
         }
     }
 }
