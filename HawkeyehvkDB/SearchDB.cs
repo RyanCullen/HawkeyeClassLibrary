@@ -196,39 +196,69 @@ WHERE RES.RESERVATION_NUMBER = :resNum";
 
 
 
+        public int searchPetOwner(int resNum, int petNumber)
+        {
 
-//        public int searchPetOwner(int resNum , int petNumber)
-//        {
+            string conString = ConfigurationManager.ConnectionStrings["ConnectionString"].ConnectionString;
+            OracleConnection con = new OracleConnection(conString);
+            string cmdStr = @"SELECT PET_PET_NUMBER
+FROM HVK_PET_RESERVATION
+WHERE RES_RESERVATION_NUMBER = :RES_RESERVATION_NUMBER
+AND ROWNUM = 1";
 
-//            string conString = ConfigurationManager.ConnectionStrings["ConnectionString"].ConnectionString;
-//            OracleConnection con = new OracleConnection(conString);
-//            string cmdStr = @"SELECT RES.RESERVATION_START_DATE , RES.RESERVATION_END_DATE
-//FROM HVK_PET_RESERVATION PRES ,
-//  HVK_RESERVATION RES
-//WHERE PET_PET_NUMBER            = :PET_PET_NUMBER
-//AND RES.RESERVATION_NUMBER      = PRES.RES_RESERVATION_NUMBER";
-//            OracleCommand cmd = new OracleCommand(cmdStr, con);
-//            cmd.BindByName = true;
-//            cmd.Parameters.Add("PET_PET_NUMBER", petNum);
-//            OracleDataAdapter da = new OracleDataAdapter(cmd);
-//            da.SelectCommand = cmd;
+            string cmdStr2 = @"SELECT OWN_OWNER_NUMBER FROM HVK_PET WHERE PET_NUMBER  = :RES_PET";
+            string cmdStr3 = @"SELECT OWN_OWNER_NUMBER FROM HVK_PET WHERE PET_NUMBER  = :NEW_PET";
 
-//            da.SelectCommand = cmd;
-//            DataSet ds = new DataSet("AvailableRuns");
-//            da.Fill(ds);
-//            for (int i = 0; i < ds.Tables[0].Rows.Count; i++)
-//            {
-//                DateTime start = Convert.ToDateTime(ds.Tables[0].Rows[i]["RESERVATION_START_DATE"].ToString()).Date;
-//                DateTime end = Convert.ToDateTime((ds.Tables[0].Rows[i]["RESERVATION_END_DATE"].ToString())).Date;
-//                if (searchConflictingReservations(petNum, start, end) > 0)
-//                    return -1;
-//            }
+            OracleCommand cmd = new OracleCommand(cmdStr, con);
+            OracleCommand cmd2 = new OracleCommand(cmdStr2, con);
+            OracleCommand cmd3 = new OracleCommand(cmdStr3, con);
 
+            cmd.BindByName = true;
+            cmd.Parameters.Add("RES_RESERVATION_NUMBER", resNum);
+            OracleDataAdapter da = new OracleDataAdapter(cmd);
+            da.SelectCommand = cmd;
 
+            try
+            {
+                con.Open();
+                int tempPetNumber = Convert.ToInt16(cmd.ExecuteScalar());
 
-
+                cmd2.Parameters.Add("RES_PET", tempPetNumber);
+                OracleDataAdapter da2 = new OracleDataAdapter(cmd2);
+                da2.SelectCommand = cmd2;
+                int realOwner = Convert.ToInt16(cmd2.ExecuteScalar());
 
 
+                cmd3.Parameters.Add("NEW_PET", petNumber);
+                OracleDataAdapter da3 = new OracleDataAdapter(cmd2);
+                da3.SelectCommand = cmd3;
+                int newOwner = Convert.ToInt16(cmd3.ExecuteScalar());
 
+                if (newOwner != realOwner)
+                    return -4;
+
+
+                return 1;
+
+
+
+            }
+            catch (Exception e)
+            {
+                Console.Write(e);
+                return -1;
+            }
+            finally
+            {
+                con.Close();
+            }
+
+
+
+
+
+
+
+
+        }
     }
-}
