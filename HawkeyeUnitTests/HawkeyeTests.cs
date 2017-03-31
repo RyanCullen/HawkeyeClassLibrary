@@ -698,6 +698,23 @@ namespace HawkeyeUnitTests
                 Reservation.cancelReservation(2000);
             }
 
+            //Scenario Tests
+            [TestMethod]
+            public void testing1PetAddReservation()
+            {
+                //Pet Number 33
+                //Owner number 19
+                //Start Date 2017-4-12
+                //End Date 2017-4-13
+                Reservation.addReservation(33, new DateTime(2017, 4, 12), new DateTime(2017, 4, 13));
+
+                Assert.AreEqual(new DateTime(2017, 4, 12), Reservation.listReservations(19)[1].startDate, "Not returning date 2017-4-12");
+                Assert.AreEqual(new DateTime(2017, 4, 13), Reservation.listReservations(19)[1].endDate, "Not returning date 2017-4-13");
+                Assert.AreEqual(33, PetReservation.listPetRes(2006)[0].pet.petNumber, "Not Returning the pet number 33");
+
+                
+            }
+
             /* addToReservation Test Cases  */
             // reservation# 603 , owner# 17 , pet in reservation 31 , 32 
             //Input : pet# 30   Expected : 1 row inserted  
