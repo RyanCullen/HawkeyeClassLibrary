@@ -121,6 +121,7 @@ namespace HawkeyehvkDB
         }
 
 
+
         public DataSet listActiveReservationsDB(int ownerNumber)
         {
             //Overloaded List all active reservation base on owner number 
@@ -246,6 +247,87 @@ namespace HawkeyehvkDB
 
             return result;
         }
+
+
+
+        public int updateReservation(int resNum , DateTime startDate , DateTime  endDate , int petNumber, int runNumber)
+        {
+            string conString = ConfigurationManager.ConnectionStrings["ConnectionString"].ConnectionString;
+            OracleConnection con = new OracleConnection(conString);
+            string cmdStr = @"UPDATE HVK_RESERVATION
+SET RESERVATION_START_DATE                      = :RESERVATION_START_DATE
+, RESERVATION_END_DATE                          = :RESERVATION_END_DATE
+WHERE RESERVATION_NUMBER   = :RESERVATION_NUMBER ";
+            OracleCommand cmd = new OracleCommand(cmdStr, con);
+            cmd.BindByName = true;
+            cmd.Parameters.Add("RESERVATION_START_DATE", startDate);
+            cmd.Parameters.Add("RESERVATION_END_DATE", endDate);
+            cmd.Parameters.Add("RESERVATION_NUMBER", resNum);
+
+            OracleDataAdapter da = new OracleDataAdapter(cmd);
+            da.InsertCommand = cmd; 
+
+            try
+            {
+                con.Open();
+                cmd.ExecuteNonQuery();
+                if (updatePetReservation(resNum, petNumber, runNumber) == 1)
+                    return 1;
+                else
+                    return -2; 
+            }
+            catch (Exception e)
+            {
+                return -1;
+            }
+            finally
+            {
+                con.Close();
+            }
+
+        }
+
+
+
+        public int updatePetReservation(int resNum, int petNumber, int runNumber)
+        {
+            string conString = ConfigurationManager.ConnectionStrings["ConnectionString"].ConnectionString;
+            OracleConnection con = new OracleConnection(conString);
+            string cmdStr = @"UPDATE HVK_PET_RESERVATION
+SET RUN_RUN_NUMBER = :RUN_RUN_NUMBER , 
+PR_SHARING_WITH = NULL
+WHERE RES_RESERVATION_NUMBER = :RES_RESERVATION_NUMBER
+AND PET_PET_NUMBER  = :PET_PET_NUMBER";
+            OracleCommand cmd = new OracleCommand(cmdStr, con);
+            cmd.BindByName = true;
+            cmd.Parameters.Add("PET_PET_NUMBER", petNumber);
+            cmd.Parameters.Add("RUN_RUN_NUMBER", runNumber);
+            cmd.Parameters.Add("RES_RESERVATION_NUMBER", resNum);
+
+            OracleDataAdapter da = new OracleDataAdapter(cmd);
+            da.InsertCommand = cmd;
+
+            try
+            {
+                con.Open();
+                cmd.ExecuteNonQuery();
+                return 1;
+            }
+            catch (Exception e)
+            {
+                return -1;
+            }
+            finally
+            {
+                con.Close();
+            }
+
+        }
+
+
+
+
+
         public DataSet listAvailableRunsDB(DateTime start, DateTime end)
         {
             string conString = ConfigurationManager.ConnectionStrings["ConnectionString"].ConnectionString;
