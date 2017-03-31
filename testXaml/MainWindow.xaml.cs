@@ -30,7 +30,7 @@ namespace testXaml
             /* addToReservation Test Cases  */
             // reservation# 603 , owner# 17 , pet in reservation 31 , 32 
             //Input : pet# 30   Expected : 1 row inserted  
-            int  i = Reservation.addToReservation(603,30);
+            //int  i = Reservation.addToReservation(603,30);
                
             //lblNum.Content = "Between march 3rd and 4th 2017 there are : "+re.checkRunAvailability(new DateTime(2017,3,3), new DateTime(2017,3,4), 'L')+" Large Runs Available.";
             // PetVaccination petVac = new PetVaccination();

@@ -28,7 +28,7 @@ namespace HawkeyehvkBLL
 
         public static int addReservedService(int petResNum, int serviceNum) {
             ReservedServiceDB db = new ReservedServiceDB();
-            if (addReservedService(petResNum, serviceNum) != 0) {
+            if (db.addReservedServiceDB(petResNum, serviceNum) != 0) {
                 return 1;
             }
             return 0;
@@ -36,7 +36,7 @@ namespace HawkeyehvkBLL
 
         public static int deleteReservedService(int petResNum, int serviceNum) {
             ReservedServiceDB db = new ReservedServiceDB();
-            if (deleteReservedService(petResNum, serviceNum) != 0) {
+            if (db.deleteReservedServiceDB(petResNum, serviceNum) != 0) {
                 return 1;
             }
             return 0;
@@ -47,9 +47,9 @@ namespace HawkeyehvkBLL
 
         }
 
-        private ReservedService fillReservedService(DataRow row)
-        {
+        //private ReservedService fillReservedService(DataRow row)
+        //{
 
-        }
+        //}
     }
 }

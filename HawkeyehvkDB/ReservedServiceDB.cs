@@ -10,7 +10,7 @@ using Oracle.ManagedDataAccess.Client;
 namespace HawkeyehvkDB {
     public class ReservedServiceDB {
 
-        public int addReservedService(int petResNum, int serviceNum) {
+        public int addReservedServiceDB(int petResNum, int serviceNum) {
             string conString = ConfigurationManager.ConnectionStrings["ConnectionString"].ConnectionString;
             OracleConnection con = new OracleConnection(conString);
             string cmdStr = @"INSERT INTO HVK_PET_RESERVATION_SERVICE VALUES
