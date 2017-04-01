@@ -153,11 +153,11 @@ namespace HawkeyehvkDB
             string conString = ConfigurationManager.ConnectionStrings["ConnectionString"].ConnectionString;
             OracleConnection con = new OracleConnection(conString);
             string cmdStr = @"SELECT RES.RESERVATION_NUMBER, RES.RESERVATION_START_DATE, RES.RESERVATION_END_DATE, PET.PET_NUMBER,PRES.RUN_RUN_NUMBER, O.OWNER_NUMBER, PET.OWN_OWNER_NUMBER
-                FROM   TEAMHAWKEYE.HVK_PET_RESERVATION PRES INNER JOIN
-             TEAMHAWKEYE.HVK_RESERVATION RES ON PRES.RES_RESERVATION_NUMBER = RES.RESERVATION_NUMBER INNER JOIN
-             TEAMHAWKEYE.HVK_PET PET ON PRES.PET_PET_NUMBER = PET.PET_NUMBER INNER JOIN
-             TEAMHAWKEYE.HVK_OWNER O ON PET.OWN_OWNER_NUMBER = O.OWNER_NUMBER 
-                WHERE (RES.RESERVATION_START_DATE >= :DateParameter)";
+                                FROM   TEAMHAWKEYE.HVK_PET_RESERVATION PRES INNER JOIN
+                             TEAMHAWKEYE.HVK_RESERVATION RES ON PRES.RES_RESERVATION_NUMBER = RES.RESERVATION_NUMBER INNER JOIN
+                             TEAMHAWKEYE.HVK_PET PET ON PRES.PET_PET_NUMBER = PET.PET_NUMBER INNER JOIN
+                             TEAMHAWKEYE.HVK_OWNER O ON PET.OWN_OWNER_NUMBER = O.OWNER_NUMBER 
+                                WHERE (RES.RESERVATION_START_DATE >= :DateParameter)";
 
             OracleCommand cmd = new OracleCommand(cmdStr, con);
             cmd.Parameters.Add("DateParameter", reservationDate);
@@ -440,14 +440,15 @@ AND PET_PET_NUMBER  = :PET_PET_NUMBER";
             string conString = ConfigurationManager.ConnectionStrings["ConnectionString"].ConnectionString;
             OracleConnection con = new OracleConnection(conString);
             string cmdStr = @"UPDATE HVK_RESERVATION SET
-                                RESERVATION_START_DATE = :start,
-                                RESERVATION_END_DATE = :end
-                                WHERE RESERVATION_NUMBER = :resNum
+                                RESERVATION_START_DATE = :startDate,
+                                RESERVATION_END_DATE = :endDate
+                                WHERE RESERVATION_NUMBER = :resNumber
                                 ";
             OracleCommand cmd = new OracleCommand(cmdStr, con);
-            cmd.Parameters.Add("start", startDate);
-            cmd.Parameters.Add("end", endDate);
-            cmd.Parameters.Add("resNum", resNum);
+            cmd.BindByName = true;
+            cmd.Parameters.Add("startDate", startDate);
+            cmd.Parameters.Add("endDate", endDate);
+            cmd.Parameters.Add("resNumber", resNum);
             OracleDataAdapter da = new OracleDataAdapter(cmd);
             da.UpdateCommand = cmd;
             try
@@ -455,7 +456,7 @@ AND PET_PET_NUMBER  = :PET_PET_NUMBER";
                 con.Open();
                 cmd.ExecuteNonQuery();
             }
-            catch
+            catch(Exception e)
             {
                 result = -1;
             }
@@ -474,7 +475,7 @@ AND PET_PET_NUMBER  = :PET_PET_NUMBER";
             string conString = ConfigurationManager.ConnectionStrings["ConnectionString"].ConnectionString;
             OracleConnection con = new OracleConnection(conString);
             string cmdStr = @"Delete From hvk_pet_reservation_service
-                            where PR_PET_RES_NUMBER= (select pet_res_number 
+                            where PR_PET_RES_NUMBER in (select pet_res_number 
                                                       from hvk_pet_reservation 
                                                       where RES_RESERVATION_NUMBER = :RESNUM
                                                       and pet_pet_number = :PETNUM )";
@@ -509,7 +510,7 @@ AND PET_PET_NUMBER  = :PET_PET_NUMBER";
                 cmd2.ExecuteNonQuery();
                 cmd3.ExecuteNonQuery();
             }
-            catch
+            catch (Exception e)
             {
                 result = -1;
             }

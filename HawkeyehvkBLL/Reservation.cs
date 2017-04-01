@@ -369,7 +369,7 @@ namespace HawkeyehvkBLL
                 }
                 else if (Search.validateOwnerForPet(reservationNumber, petNumber) < 0)
                     return -4;
-                else if (!search.validateReservationForPet(petNumber, reservationNumber))
+                else if (search.validateReservationForPet(petNumber, reservationNumber))
                 {
                     return -3;
                 }

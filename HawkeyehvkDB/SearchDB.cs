@@ -38,7 +38,7 @@ namespace HawkeyehvkDB
         }
 
         public int searchConflictingReservations(int petNumber, DateTime startDate, DateTime endDate)
-        {
+        {// checks if pet already has vaccination on those days
             string conString = ConfigurationManager.ConnectionStrings["ConnectionString"].ConnectionString;
             OracleConnection con = new OracleConnection(conString);
             string cmdStr = @"SELECT COUNT(*)
@@ -69,8 +69,6 @@ namespace HawkeyehvkDB
             {
                 con.Close();
             }
-
-
         }
 
         public char getPetSize(int petNumber)
@@ -173,25 +171,31 @@ PET_RES_NUMBER
 
             string conString = ConfigurationManager.ConnectionStrings["ConnectionString"].ConnectionString;
             OracleConnection con = new OracleConnection(conString);
-            string cmdStr = @"SELECT RES.RESERVATION_START_DATE , RES.RESERVATION_END_DATE
- FROM HVK_RESERVATION RES
-WHERE RES.RESERVATION_NUMBER = :resNum";
+            string cmdStr = @"select count(*) from hvk_reservation
+                            where RESERVATION_NUMBER = :resnum
+                            and RESERVATION_NUMBER in 
+                            (select res_reservation_number 
+                            from hvk_pet_reservation
+                            where PET_PET_NUMBER = :petNum)";
             OracleCommand cmd = new OracleCommand(cmdStr, con);
             cmd.BindByName = true;
             cmd.Parameters.Add("resNum", resNum);
+            cmd.Parameters.Add("petNum", petNum);
             OracleDataAdapter da = new OracleDataAdapter(cmd);
             da.SelectCommand = cmd;
 
-            DataSet ds = new DataSet("AvailableRuns");
-            da.Fill(ds);
-
-            DateTime start = Convert.ToDateTime(ds.Tables[0].Rows[0]["RESERVATION_START_DATE"].ToString()).Date;
-            DateTime end = Convert.ToDateTime((ds.Tables[0].Rows[0]["RESERVATION_END_DATE"].ToString())).Date;
-            if (searchConflictingReservations(petNum, start, end) > 0)
-                return -1;
-
-            return 1;
-
+            
+            try {
+                DataSet ds = new DataSet("AvailableRuns");
+                da.Fill(ds);
+                int returned = Convert.ToInt32(ds.Tables[0].Rows[0][0].ToString());
+                if (returned > 0)
+                    returned = 1;
+                return returned;
+            }
+            catch {
+                return -2;
+            }           
         }
 
 

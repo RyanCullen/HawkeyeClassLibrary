@@ -322,6 +322,7 @@ namespace HawkeyeUnitTests
                 //pet number: 7 
                 //reservation:631 
                 //  Expected: 2 (Error pet has reservation at that time already)
+                Reservation.addReservation(7,new DateTime(2016,1,1),new DateTime(2016,1,4));
                 Assert.AreEqual(-3, Reservation.addToReservation(631, 7), "Pet has reservation during those days");
 
 
@@ -330,16 +331,6 @@ namespace HawkeyeUnitTests
                 // reservation number: 900
                 //Expected: -2 (invalid res number)
                 Assert.AreEqual(-2, Reservation.addToReservation(0000, 7), "invalid reservation number test");
-
-
-                //Happy Case
-                // Input Parameters: 
-                // reservation number: 108
-                // pet number:  6
-                // 
-                //Expected: success (1)
-                //Assert.AreEqual(1, Reservation.addToReservation(, ), "Happy Path");
-
 
                 //pets from different owners
                 // Input Parameters: 
@@ -648,7 +639,7 @@ namespace HawkeyeUnitTests
                 OwnerDB ownDB = new HawkeyehvkDB.OwnerDB();
                 //listOwnersDB
                 DataSet ds = ownDB.listOwnersDB();
-                Assert.AreEqual(20, ds.Tables[0].Rows.Count, "Count of X was expected from this function");
+                Assert.AreEqual(20, ds.Tables[0].Rows.Count, "Count of 20 was expected from this function");
 
                 //listOwnersDB(ownerNum) Owner 1 has phone: 8195551111
                 Assert.AreEqual("8195551111", ownDB.listOwnersDB(1).Tables[0].Rows[0]["OWNER_PHONE"].ToString());
@@ -668,19 +659,7 @@ namespace HawkeyeUnitTests
                 ds = pres.listPetResDB(700);//res 700 has one (pet number 16)
                 Assert.AreEqual(1, ds.Tables[0].Rows.Count, "reservation 700 has 1 pet");
                 Assert.AreEqual("16", ds.Tables[0].Rows[0]["PET_PET_NUMBER"].ToString(), "Reservation 700 has one pet. Pet 16");
-                //----------------Reservation----------------
-                //listReservationDB() reservations returned == X
-                //listReservationDB(ownerNum) owner 19 has 1 reservation 705 and pres(257)
-                //listActiveReservationDB() one of ongoing should be res 500
-                //listActiveReservationDB(ownerNum) reservation 500 is for owner 2
-                //listUpcomingReservationsDB(reservationDate)
-                //addReservation(petNum, startDate, endDate)
-                //listAvailableRunsDB(start, end)
-                //addToReservationDB(resNum, petNum)
-                //changeReservation(resNum,start,end)
-                //deleteDogFromReservationDB(resNum,dogNum)
-                //cancelReservationDB(resNum)
-                //isDogInReservation( resNum,  petNum)
+                
                 //----------------runDB----------------
                 RunDB run = new RunDB();
                 //totalLargeRunsDB()
@@ -694,26 +673,109 @@ namespace HawkeyeUnitTests
                 Assert.AreEqual(6, run.getNumAvailableLargeRunsDB(DateTime.Now.AddYears(10), DateTime.Now.AddYears(10).AddDays(1)), "At this date there should be 0 reservations");
                 Assert.IsTrue(0 >= run.getNumAvailableLargeRunsDB(new DateTime(2018, 05, 12), new DateTime(2018, 05, 13)), "At this date there should be no availible large runs");
                 //----------------searchDB----------------
+                SearchDB search = new SearchDB();
                 //searchConflictingReservationsDB(petNumber,start,end)
+                Assert.IsTrue(0 != search.searchConflictingReservations(1,DateTime.Now.AddMonths(-20), DateTime.Now),"Pet one has a reservation between 20 months ago and now.");
+                Assert.IsTrue(0 == search.searchConflictingReservations(1, DateTime.Now.AddMonths(40), DateTime.Now.AddMonths(40)), "Pet one has no reservations 40 months from now");
                 //getPetSize(petNum)
+                Assert.AreEqual('S',search.getPetSize(1),"Pet one is size small");
                 //searchPetDB(petNumber)
+                Assert.AreEqual(1,search.searchPetDB(1),"pet Number 1 exists");
+                Assert.AreNotEqual(1, search.searchPetDB(666), "pet Number 666 doesnt exist");
                 //searchOwnerDB(ownerNum)
+                Assert.AreEqual(1, search.searchOwnerDB(1), "owner Number 1 exists");
+                Assert.AreNotEqual(1, search.searchOwnerDB(33), "owner Number 33 doesnt exist");
                 //searchReservationsDB(resNum)
+                Assert.AreEqual(1, search.searchReservationDB(605), "reservation number 605 exists");
+                Assert.AreNotEqual(1, search.searchReservationDB(3124), "reservationNumber 3124 doesnt exist");
                 //searchVaccDB(vacNum)
+                Assert.AreEqual(1, search.searchVaccDB(1), "vaccination Number 1 exists");
+                Assert.AreNotEqual(1, search.searchVaccDB(12), "vaccination Number 12 doesnt exist");
                 //searchPetResDB(petRes)
+                Assert.AreEqual(1, search.searchPetResDB(261), "pet reservation Number 261 exists");
+                Assert.AreNotEqual(1, search.searchPetResDB(994), "Pet reservationNumber 994 doesnt exist");
                 //searchReserrvationForPet(petNum)
+                Assert.AreEqual(1,search.searchReservationForPet(2,703),"Pet 2 is in res 703");
+                Assert.AreNotEqual(1, search.searchReservationForPet(9, 100),"Pet 9 is not in res 100");                
                 //----------------ServiceDB----------------
                 //listServicesDB(petRes)
+                ServiceDB serv = new ServiceDB();
+                Assert.AreEqual(3,serv.listServicesDB(224).Tables[0].Rows.Count,"Pet reservation 224 has 3 services");
                 //----------------VaccinationDB----------------
+                VaccinationDB vacDB = new VaccinationDB();
                 //listVaccinationsDB
+                Assert.AreEqual(6,vacDB.listVaccinationsDB().Tables[0].Rows.Count,"There should be 6 vaccinations in the database");
                 //listVaccinationsDB(petNum)
-                //CheckVaccinationsDB(petNUm, resNum)
+                Assert.AreEqual(6,vacDB.listVaccinationsDB(1).Tables[0].Rows.Count, "There should be 6 vaccinations in the database for pet 1");
+                //CheckVaccinationsDB(petNUm, resNum) returns expired vaccines at the time of the reservation
+                Assert.AreEqual(6, vacDB.checkVaccinationsDB(6, 103).Tables[0].Rows.Count, "For reservation 103 all pet 6's vaccinations are expired.");
+                Assert.AreEqual(0, vacDB.checkVaccinationsDB(3, 115).Tables[0].Rows.Count, "For reservation 103 0 0f pet 6's vaccinations are expired.");
                 //CheckVaccinationsDB(petNUm, date)
-                //getVaccinationDB(vaccNum)
+                Assert.AreEqual(6,vacDB.checkVaccinationsDB(6,DateTime.Now).Tables[0].Rows.Count, "As of now all pet 6's vaccinations are expired.");
+                //getVaccinationDB(vaccNum) returns the name for a vaccination number
+                Assert.AreEqual("Bordetella", vacDB.getVaccinationDB(1).Tables[0].Rows[0]["vaccination_name"], "Vaccination 1 is Bordetella..");
                 //----------------DiscountDB----------------
-                //listReservationDiscountDB(reservationNumber)
-                //listPetReservationDiscountDB(petReservationNumber)
+                //listReservationDiscountDB(reservationNumber) 713, 717
+                DiscountDB disc = new DiscountDB();
+                Assert.AreEqual("2",disc.listReservationDiscountsDB(713).Tables[0].Rows[0]["DISCOUNT_NUMBER"].ToString(),"The discount number for this reservation should be 2.");
+                //----------------Reservation----------------
+                ReservationDB resDB = new ReservationDB();
+                //listReservationDB() reservations returned == X
+                Assert.AreEqual(162, resDB.listResevationsDB().Tables[0].Rows.Count, "There should be 163 reservations total");
+                //listReservationDB(ownerNum) owner 19 has 1 reservation 705 and pres(257)
+                Assert.AreEqual(2, resDB.listResevationsDB(19).Tables[0].Rows.Count, "There should be 2 reservations total for owner 1");
+                //listActiveReservationDB() one of ongoing should be res 500
+                bool isTrue = false;
+                ds = resDB.listActiveReservationsDB();
+                for (int i = 0; i < ds.Tables[0].Rows.Count; i++) {
+                    try {
+                        if (ds.Tables[0].Rows[i]["reservation_number"].ToString() == "500") {
+                            isTrue = true;
+                        }
+                    }
+                    catch (Exception e) {
+                        Assert.Fail("Unexpected error thrown");
+                    }
 
+                }
+                if (!isTrue) {
+                    Assert.Fail("Reservation 500 was not returned");
+                }
+                //listActiveReservationDB(ownerNum) reservation 500 is for owner 2
+                isTrue = false;
+                ds = resDB.listActiveReservationsDB(2);
+                for (int i = 0; i < ds.Tables[0].Rows.Count; i++) {
+                    try {
+                        if (ds.Tables[0].Rows[i]["reservation_number"].ToString() == "500") {
+                            isTrue = true;
+                        }
+                    }
+                    catch (Exception e) {
+                        Assert.Fail("Unexpected error thrown");
+                    }
+
+                }
+                if (!isTrue) {
+                    Assert.Fail("Reservation 500 was not returned");
+                }
+                //listUpcomingReservationsDB(reservationDate)
+                Assert.AreEqual(129, resDB.listUpcomingReservationsDB(DateTime.Now.AddMonths(-45)).Tables[0].Rows.Count, "these should both return all the reservations");
+                //listAvailableRunsDB(start, end)
+                Assert.AreEqual(12, resDB.listAvailableRunsDB(new DateTime(2027, 1, 2), new DateTime(2027, 1, 1)).Tables[0].Rows.Count, "At this time in the future there should be all runs availible");
+                //isDogInReservation( resNum,  petNum)
+                Assert.IsTrue(ReservationDB.isDogInReservation(120, 9), "Dog 9 is in reservation 120");
+                Assert.IsFalse(ReservationDB.isDogInReservation(120, 1), "Dog 1 is not in reservation 120");
+
+                //addReservation(petNum, startDate, endDate)
+                Assert.AreEqual(0, resDB.addReservation(31, DateTime.Now.AddDays(3), DateTime.Now.AddMonths(1)), "Reservation creation should have been succesful.");
+                //addToReservationDB(resNum, petNum)
+                Assert.AreEqual(1, resDB.addToReservationDB(635, 11), "Adding to reservation should be succesful.");
+                //changeReservation(resNum,start,end)
+                Assert.AreEqual(0, resDB.changeReservationDB(711, DateTime.Now.AddDays(1), DateTime.Now.AddDays(5)),"Change reservation should be successful.");
+                //deleteDogFromReservationDB(resNum,dogNum)
+                Assert.AreEqual(0, ReservationDB.deleteDogFromReservationDB(635, 11), "Delete should be succesful");
+                //cancelReservationDB(resNum)
+                Assert.AreEqual(0, ReservationDB.cancelReservationDB(501), "Should be succesful");
 
                 // delete added reservations to not corrupt data in database
                 //Reservation.cancelReservation(501);
