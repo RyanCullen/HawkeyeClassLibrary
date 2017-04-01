@@ -53,13 +53,13 @@ namespace HawkeyehvkDB {
             }
         }
 
-        public void listReservedService(int petResNum)
+        public DataSet listReservedService(int petResNum)
         {
             string conString = ConfigurationManager.ConnectionStrings["ConnectionString"].ConnectionString;
             OracleConnection con = new OracleConnection(conString);
             string cmdStr = @"SELECT PRS.SERVICE_FREQUENCY,
                               S.SERVICE_NUMBER,
-                              S.SERVICE_NUMBER
+                              S.SERVICE_DESCRIPTION
                             FROM HVK_PET_RESERVATION_SERVICE PRS
                             JOIN HVK_SERVICE S
                             ON PRS.SERV_SERVICE_NUMBER = S.SERVICE_NUMBER
@@ -67,7 +67,11 @@ namespace HawkeyehvkDB {
             OracleCommand cmd = new OracleCommand(cmdStr, con);
             cmd.Parameters.Add("petResNum", petResNum);
             OracleDataAdapter da = new OracleDataAdapter(cmd);
-            da.InsertCommand = cmd;
+            da.SelectCommand = cmd;
+            DataSet ds = new DataSet("dsListReservedService");
+            da.Fill(ds, "hvk_res_service");
+
+            return ds;
 
 
         }
