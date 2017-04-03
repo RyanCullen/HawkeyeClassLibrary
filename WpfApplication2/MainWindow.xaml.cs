@@ -30,7 +30,7 @@ namespace WpfApplication2
             dataGrid2.ItemsSource = own.petList;
             dataGrid3.ItemsSource = own.reservationList;
             dataGrid4.ItemsSource = own.reservationList[0].petReservationList;
-            lbl_pet.Content = own.reservationList[0].petReservationList[0].pet.name+"$$$$$$$";
+            lbl_pet.Content = own.reservationList[0].petReservationList[0].run.runNumber+"$$$$$$$";
         }
     }
 }
