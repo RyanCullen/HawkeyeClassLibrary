@@ -40,6 +40,20 @@ namespace HawkeyehvkDB
             da.Fill(ds, "hvk_owner");
             return ds;
         }
+        public DataSet listOwnersDB(string email)
+        {
+            string conString = ConfigurationManager.ConnectionStrings["ConnectionString"].ConnectionString;
+            OracleConnection con = new OracleConnection(conString);
+            string cmdStr = "SELECT OWNER_NUMBER, OWNER_LAST_NAME, OWNER_FIRST_NAME, OWNER_STREET, OWNER_CITY, OWNER_PROVINCE, OWNER_POSTAL_CODE, OWNER_PHONE, OWNER_EMAIL, EMERGENCY_CONTACT_FIRST_NAME, EMERGENCY_CONTACT_LAST_NAME, EMERGENCY_CONTACT_PHONE FROM HVK_OWNER WHERE OWNER_EMAIL = :OWNEMAIL ORDER BY OWNER_LAST_NAME";
+            OracleCommand cmd = new OracleCommand(cmdStr, con);
+            cmd.Parameters.Add("OWNEMAIL", email);
+            OracleDataAdapter da = new OracleDataAdapter(cmd);
+            da.SelectCommand = cmd;
+
+            DataSet ds = new DataSet("ownerDataSet");
+            da.Fill(ds, "hvk_owner");
+            return ds;
+        }
 
         public void addOwnerDB(string fName, string lName, string _street, string _city, string _province, string _postalCode, string _phone, string _email, string _emerFName, string _emerLName, string _emerPhone)
         {

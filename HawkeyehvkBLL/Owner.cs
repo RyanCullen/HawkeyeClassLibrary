@@ -120,7 +120,21 @@ namespace HawkeyehvkBLL
             return fillBox(ownDB.listOwnersDB(ownerNum).Tables["hvk_owner"].Rows[0]);
            
         }
-
+        public static Owner getFullOwner(string email) {
+            OwnerDB ownDB = new OwnerDB();
+            Owner own = new Owner();
+            try
+            {
+                own = fillBox(ownDB.listOwnersDB(email).Tables["hvk_owner"].Rows[0]);
+            }
+            catch(Exception e) {
+                return null;
+            }
+            
+            own.petList = Pet.listPets(own.ownerNumber);
+            own.reservationList = Reservation.listReservations(own.ownerNumber);
+            return own;
+        }
         private static Owner fillBox(DataRow theRow)
         {
             Owner own = new Owner();

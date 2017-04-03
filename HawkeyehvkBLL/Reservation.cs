@@ -103,7 +103,7 @@ namespace HawkeyehvkBLL
             ReservationDB db = new ReservationDB();
             DataSet ds = db.listResevationsDB(ownerNumber);
 
-            return fillReservation(ds);
+            return fillReservationDetail(ds);
         }
 
         public static List<Reservation> listActiveReservations()
