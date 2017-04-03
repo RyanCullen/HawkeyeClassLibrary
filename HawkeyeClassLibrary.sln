@@ -14,8 +14,6 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Scripts", "Scripts", "{D77C
 		HawkeyeBackUp.sql = HawkeyeBackUp.sql
 	EndProjectSection
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WpfApplication2", "WpfApplication2\WpfApplication2.csproj", "{43D9F76F-8379-40A9-9C77-9FCB75166FD2}"
-EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -34,10 +32,6 @@ Global
 		{8436810A-AFB7-435A-A63A-B6AE24568A08}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{8436810A-AFB7-435A-A63A-B6AE24568A08}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{8436810A-AFB7-435A-A63A-B6AE24568A08}.Release|Any CPU.Build.0 = Release|Any CPU
-		{43D9F76F-8379-40A9-9C77-9FCB75166FD2}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{43D9F76F-8379-40A9-9C77-9FCB75166FD2}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{43D9F76F-8379-40A9-9C77-9FCB75166FD2}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{43D9F76F-8379-40A9-9C77-9FCB75166FD2}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

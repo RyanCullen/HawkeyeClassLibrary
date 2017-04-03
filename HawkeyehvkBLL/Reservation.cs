@@ -253,22 +253,22 @@ namespace HawkeyehvkBLL
                         try
                         {
                             run.runNumber = Convert.ToInt32(ds.Tables[0].Rows[i]["RUN_RUN_NUMBER"].ToString());
-                            res.petReservationList[i].run = run;
+                            res.petReservationList[res.petReservationList.Count - 1].run = run;
                         }
                         catch {
                             //run was null
                         }
                         
                         Pet pet = new Pet();
-                        pet.petNumber = Convert.ToInt32(ds.Tables[0].Rows[i]["PET.PET_NUMBER"].ToString());
-                        pet.name = ds.Tables[0].Rows[i]["PET.PET_NAME"].ToString();
-                        pet.gender = ds.Tables[0].Rows[i]["PET.PET_GENDER"].ToString().ToCharArray()[0];
-                        pet.isFixed = ds.Tables[0].Rows[i]["PET.PET_FIXED"].ToString().ToCharArray()[0];
-                        pet.breed = ds.Tables[0].Rows[i]["PET.PET_BREED"].ToString();
-                        pet.birthday = DateTime.Parse(ds.Tables[0].Rows[i]["PET.PET_BIRTHDATE"].ToString());
-                        pet.size = ds.Tables[0].Rows[i]["PET.DOG_SIZE"].ToString().ToCharArray()[0];
-                        pet.notes = ds.Tables[0].Rows[i]["PET.SPECIAL_NOTES"].ToString();
-
+                        pet.petNumber = Convert.ToInt32(ds.Tables[0].Rows[i]["PET_NUMBER"].ToString());
+                        pet.name = ds.Tables[0].Rows[i]["PET_NAME"].ToString();
+                        pet.gender = ds.Tables[0].Rows[i]["PET_GENDER"].ToString().ToCharArray()[0];
+                        pet.isFixed = ds.Tables[0].Rows[i]["PET_FIXED"].ToString().ToCharArray()[0];
+                        pet.breed = ds.Tables[0].Rows[i]["PET_BREED"].ToString();
+                        pet.birthday = DateTime.Parse(ds.Tables[0].Rows[i]["PET_BIRTHDATE"].ToString());
+                        pet.size = ds.Tables[0].Rows[i]["DOG_SIZE"].ToString().ToCharArray()[0];
+                        pet.notes = ds.Tables[0].Rows[i]["SPECIAL_NOTES"].ToString();
+                        res.petReservationList[res.petReservationList.Count - 1].pet = pet;
                         resList.Add(res);
                         res = new Reservation();
                     }
