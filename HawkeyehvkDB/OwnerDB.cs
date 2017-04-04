@@ -12,6 +12,7 @@ namespace HawkeyehvkDB
 {
     public class OwnerDB
     {
+        [DataObjectMethod(DataObjectMethodType.Select, true)]
         public DataSet listOwnersDB()
         {
             string conString = ConfigurationManager.ConnectionStrings["ConnectionString"].ConnectionString;
