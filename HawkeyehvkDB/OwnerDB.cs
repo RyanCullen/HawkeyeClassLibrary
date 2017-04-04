@@ -1,6 +1,7 @@
 ﻿using Oracle.ManagedDataAccess.Client;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Configuration;
 using System.Data;
 using System.Linq;
@@ -40,6 +41,8 @@ namespace HawkeyehvkDB
             da.Fill(ds, "hvk_owner");
             return ds;
         }
+        [DataObjectMethod(DataObjectMethodType.Select, true)]
+
         public DataSet listOwnersDB(string email)
         {
             string conString = ConfigurationManager.ConnectionStrings["ConnectionString"].ConnectionString;
