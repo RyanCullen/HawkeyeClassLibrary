@@ -23,6 +23,7 @@ namespace HawkeyehvkDB
                               RES.RESERVATION_START_DATE,
                               RES.RESERVATION_END_DATE,
                               PRES.RUN_RUN_NUMBER,
+                              PRES.PET_RES_NUMBER,
                               PET.PET_NAME,
                               PET.PET_NUMBER,
                               PET.PET_GENDER,
@@ -37,7 +38,7 @@ namespace HawkeyehvkDB
                             ON RES.RESERVATION_NUMBER = PRES.RES_RESERVATION_NUMBER
                             INNER JOIN TEAMHAWKEYE.HVK_PET PET
                             ON PRES.PET_PET_NUMBER = PET.PET_NUMBER
-                            ORDER BY RES.RESERVATION_NUMBER ";
+                            ORDER BY RES.RESERVATION_NUMBER";
             OracleCommand cmd = new OracleCommand(cmdStr, con);
 
             OracleDataAdapter da = new OracleDataAdapter(cmd);
@@ -59,6 +60,7 @@ namespace HawkeyehvkDB
                               RES.RESERVATION_START_DATE,
                               RES.RESERVATION_END_DATE,
                               PRES.RUN_RUN_NUMBER,
+                              PRES.PET_RES_NUMBER,
                               PET.PET_NAME,
                               PET.PET_NUMBER,
                               PET.PET_GENDER,

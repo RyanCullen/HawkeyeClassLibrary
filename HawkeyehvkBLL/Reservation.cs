@@ -273,6 +273,7 @@ namespace HawkeyehvkBLL
                         pet.size = ds.Tables[0].Rows[i]["DOG_SIZE"].ToString().ToCharArray()[0];
                         pet.notes = ds.Tables[0].Rows[i]["SPECIAL_NOTES"].ToString();
                         res.petReservationList[res.petReservationList.Count - 1].pet = pet;
+                        res.petReservationList[res.petReservationList.Count - 1].petResNumber = Convert.ToInt32(ds.Tables[0].Rows[i]["PET_RES_NUMBER"]); 
                         resList.Add(res);
                         res = new Reservation();
                     }
