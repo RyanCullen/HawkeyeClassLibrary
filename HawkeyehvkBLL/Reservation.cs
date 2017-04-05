@@ -94,8 +94,20 @@ namespace HawkeyehvkBLL
         {
             ReservationDB db = new ReservationDB();
             DataSet ds = db.listResevationsDB();
-             
-            return fillReservationModified(ds);
+
+            List<Reservation> reservationList = fillReservationModified(ds);
+
+            ReservedService rs = new ReservedService();
+            reservationList.ForEach(delegate (Reservation res) {
+                res.petReservationList.ForEach(delegate (PetReservation pres) {
+                    List<ReservedService> ser = rs.listReservedService(pres.petResNumber);
+                    if (ser.Count != 0) {
+                        pres.serviceList = rs.listReservedService(pres.petResNumber);
+                    }
+                });
+            });
+
+            return reservationList;
         }
 
         public static List<Reservation> listReservations(int ownerNumber)
@@ -119,12 +131,39 @@ namespace HawkeyehvkBLL
             return reservationList;
         }
 
+        public static Reservation getReservation(int resNum) {
+            ReservationDB db = new ReservationDB();
+            DataSet ds = db.getReservationDB(resNum);
+            Reservation res = fillReservationModified(ds)[0];
+
+            ReservedService rs = new ReservedService();
+            res.petReservationList.ForEach(delegate (PetReservation pres) {
+                List<ReservedService> ser = rs.listReservedService(pres.petResNumber);
+                if (ser.Count != 0) {
+                    pres.serviceList = rs.listReservedService(pres.petResNumber);
+                }
+            });
+            return res;
+        }
+
         public static List<Reservation> listActiveReservations()
         {
             ReservationDB db = new ReservationDB();
-            DataSet ds = db.listActiveReservationsDB(); 
+            DataSet ds = db.listActiveReservationsDB();
 
-            return fillReservation(ds);
+            List<Reservation> reservationList = fillReservationModified(ds);
+
+            ReservedService rs = new ReservedService();
+            reservationList.ForEach(delegate (Reservation res) {
+                res.petReservationList.ForEach(delegate (PetReservation pres) {
+                    List<ReservedService> ser = rs.listReservedService(pres.petResNumber);
+                    if (ser.Count != 0) {
+                        pres.serviceList = rs.listReservedService(pres.petResNumber);
+                    }
+                });
+            });
+
+            return reservationList;
         }
 
 
@@ -133,7 +172,19 @@ namespace HawkeyehvkBLL
             ReservationDB db = new ReservationDB();
             DataSet ds = db.listActiveReservationsDB(ownerNumber);
 
-            return fillReservation(ds);
+            List<Reservation> reservationList = fillReservationModified(ds);
+
+            ReservedService rs = new ReservedService();
+            reservationList.ForEach(delegate (Reservation res) {
+                res.petReservationList.ForEach(delegate (PetReservation pres) {
+                    List<ReservedService> ser = rs.listReservedService(pres.petResNumber);
+                    if (ser.Count != 0) {
+                        pres.serviceList = rs.listReservedService(pres.petResNumber);
+                    }
+                });
+            });
+
+            return reservationList;
         }
 
         public static List<Reservation> listUpcomingReservations(DateTime reservationDate)
@@ -141,7 +192,19 @@ namespace HawkeyehvkBLL
             ReservationDB db = new ReservationDB();
             DataSet ds = db.listUpcomingReservationsDB(reservationDate);
 
-            return fillReservationModified(ds);
+            List<Reservation> reservationList = fillReservationModified(ds);
+
+            ReservedService rs = new ReservedService();
+            reservationList.ForEach(delegate (Reservation res) {
+                res.petReservationList.ForEach(delegate (PetReservation pres) {
+                    List<ReservedService> ser = rs.listReservedService(pres.petResNumber);
+                    if (ser.Count != 0) {
+                        pres.serviceList = rs.listReservedService(pres.petResNumber);
+                    }
+                });
+            });
+
+            return reservationList;
         }
 
 

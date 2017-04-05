@@ -12,6 +12,39 @@ namespace HawkeyehvkDB
     public class ReservationDB
     {
 
+        public DataSet getReservationDB(int resNum) {
+            string conString = ConfigurationManager.ConnectionStrings["ConnectionString"].ConnectionString;
+            OracleConnection con = new OracleConnection(conString);
+            string cmdStr = @"SELECT RES.RESERVATION_NUMBER,
+                              RES.RESERVATION_START_DATE,
+                              RES.RESERVATION_END_DATE,
+                              PRES.RUN_RUN_NUMBER,
+                              PRES.PET_RES_NUMBER,
+                              PET.PET_NAME,
+                              PET.PET_NUMBER,
+                              PET.PET_GENDER,
+                              PET.PET_FIXED,
+                              PET.PET_BREED,
+                              PET.PET_BIRTHDATE,
+                              PET.DOG_SIZE,
+                              PET.SPECIAL_NOTES,
+                              PET.OWN_OWNER_NUMBER AS OWNER_NUMBER 
+                            FROM TEAMHAWKEYE.HVK_RESERVATION RES
+                            INNER JOIN TEAMHAWKEYE.HVK_PET_RESERVATION PRES
+                            ON RES.RESERVATION_NUMBER = PRES.RES_RESERVATION_NUMBER
+                            INNER JOIN TEAMHAWKEYE.HVK_PET PET
+                            ON PRES.PET_PET_NUMBER = PET.PET_NUMBER
+                            WHERE RES.RESERVATION_NUMBER = :resNum";
+            OracleCommand cmd = new OracleCommand(cmdStr, con);
+            cmd.Parameters.Add("resNum", resNum);
+            OracleDataAdapter da = new OracleDataAdapter(cmd);
+            da.SelectCommand = cmd;
+            DataSet ds = new DataSet("dsReservation");
+            da.Fill(ds);
+
+            return ds;
+        }
+
         public DataSet listResevationsDB()
         {
             //return a list of reservation with it details 
@@ -93,11 +126,25 @@ namespace HawkeyehvkDB
             //Display : clerk Home page 
             string conString = ConfigurationManager.ConnectionStrings["ConnectionString"].ConnectionString;
             OracleConnection con = new OracleConnection(conString);
-            string cmdStr = @"SELECT RES.RESERVATION_NUMBER,OWN.OWNER_NUMBER AS OWNER_NUMBER, OWN.OWNER_LAST_NAME, OWN.OWNER_FIRST_NAME, PRES.PET_PET_NUMBER AS PET_NUMBER, PET.PET_NAME, PRES.RUN_RUN_NUMBER, RES.RESERVATION_START_DATE, RES.RESERVATION_END_DATE
-             FROM   TEAMHAWKEYE.HVK_RESERVATION RES INNER JOIN
-             TEAMHAWKEYE.HVK_PET_RESERVATION PRES ON RES.RESERVATION_NUMBER = PRES.RES_RESERVATION_NUMBER INNER JOIN
-             TEAMHAWKEYE.HVK_PET PET ON PRES.PET_PET_NUMBER = PET.PET_NUMBER INNER JOIN
-             TEAMHAWKEYE.HVK_OWNER OWN ON PET.OWN_OWNER_NUMBER = OWN.OWNER_NUMBER
+            string cmdStr = @"SELECT RES.RESERVATION_NUMBER,
+                              RES.RESERVATION_START_DATE,
+                              RES.RESERVATION_END_DATE,
+                              PRES.RUN_RUN_NUMBER,
+                              PRES.PET_RES_NUMBER,
+                              PET.PET_NAME,
+                              PET.PET_NUMBER,
+                              PET.PET_GENDER,
+                              PET.PET_FIXED,
+                              PET.PET_BREED,
+                              PET.PET_BIRTHDATE,
+                              PET.DOG_SIZE,
+                              PET.SPECIAL_NOTES,
+                              PET.OWN_OWNER_NUMBER AS OWNER_NUMBER 
+                            FROM TEAMHAWKEYE.HVK_RESERVATION RES
+                            INNER JOIN TEAMHAWKEYE.HVK_PET_RESERVATION PRES
+                            ON RES.RESERVATION_NUMBER = PRES.RES_RESERVATION_NUMBER
+                            INNER JOIN TEAMHAWKEYE.HVK_PET PET
+                            ON PRES.PET_PET_NUMBER = PET.PET_NUMBER
              WHERE (RES.RESERVATION_START_DATE <= SYSDATE) AND (RES.RESERVATION_END_DATE > SYSDATE) AND (PRES.RUN_RUN_NUMBER IS NOT NULL)
             ORDER BY RES.RESERVATION_NUMBER";
 
@@ -118,11 +165,25 @@ namespace HawkeyehvkDB
             //Display : clerk or user Home page 
             string conString = ConfigurationManager.ConnectionStrings["ConnectionString"].ConnectionString;
             OracleConnection con = new OracleConnection(conString);
-            string cmdStr = @"SELECT RES.RESERVATION_NUMBER,OWN.OWNER_NUMBER AS OWNER_NUMBER, OWN.OWNER_LAST_NAME, OWN.OWNER_FIRST_NAME, PRES.PET_PET_NUMBER AS PET_NUMBER, PET.PET_NAME, PRES.RUN_RUN_NUMBER, RES.RESERVATION_START_DATE, RES.RESERVATION_END_DATE
-             FROM   TEAMHAWKEYE.HVK_RESERVATION RES INNER JOIN
-             TEAMHAWKEYE.HVK_PET_RESERVATION PRES ON RES.RESERVATION_NUMBER = PRES.RES_RESERVATION_NUMBER INNER JOIN
-             TEAMHAWKEYE.HVK_PET PET ON PRES.PET_PET_NUMBER = PET.PET_NUMBER INNER JOIN
-             TEAMHAWKEYE.HVK_OWNER OWN ON PET.OWN_OWNER_NUMBER = OWN.OWNER_NUMBER
+            string cmdStr = @"SELECT RES.RESERVATION_NUMBER,
+                              RES.RESERVATION_START_DATE,
+                              RES.RESERVATION_END_DATE,
+                              PRES.RUN_RUN_NUMBER,
+                              PRES.PET_RES_NUMBER,
+                              PET.PET_NAME,
+                              PET.PET_NUMBER,
+                              PET.PET_GENDER,
+                              PET.PET_FIXED,
+                              PET.PET_BREED,
+                              PET.PET_BIRTHDATE,
+                              PET.DOG_SIZE,
+                              PET.SPECIAL_NOTES,
+                              PET.OWN_OWNER_NUMBER AS OWNER_NUMBER 
+                            FROM TEAMHAWKEYE.HVK_RESERVATION RES
+                            INNER JOIN TEAMHAWKEYE.HVK_PET_RESERVATION PRES
+                            ON RES.RESERVATION_NUMBER = PRES.RES_RESERVATION_NUMBER
+                            INNER JOIN TEAMHAWKEYE.HVK_PET PET
+                            ON PRES.PET_PET_NUMBER = PET.PET_NUMBER
              WHERE (RES.RESERVATION_START_DATE <= SYSDATE) AND (RES.RESERVATION_END_DATE > SYSDATE) AND (PRES.RUN_RUN_NUMBER IS NOT NULL)
              AND PET.OWN_OWNER_NUMBER = :OWNER_NUMBER 
                 ORDER BY RES.RESERVATION_NUMBER";
