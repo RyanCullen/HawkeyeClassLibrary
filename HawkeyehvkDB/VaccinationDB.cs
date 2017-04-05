@@ -41,6 +41,28 @@ namespace HawkeyehvkDB
             return ds;
         }
 
+        public DataSet listNonPetVaccinationsDB(int petNum)
+        {
+            string conString = ConfigurationManager.ConnectionStrings["ConnectionString"].ConnectionString;
+            OracleConnection con = new OracleConnection(conString);
+            string cmdStr = @"SELECT V.vaccination_number,
+                                  V.vaccination_name
+                                FROM HVK_vaccination V
+                                WHERE V.vaccination_number NOT IN
+                                  (SELECT PV.VACC_VACCINATION_NUMBER
+                                  FROM HVK_PET_VACCINATION PV
+                                  WHERE PV.PET_PET_NUMBER = :pet
+                                  )";
+            OracleCommand cmd = new OracleCommand(cmdStr, con);
+            cmd.Parameters.Add("pet", petNum);
+            OracleDataAdapter da = new OracleDataAdapter(cmd);
+            da.SelectCommand = cmd;
+            DataSet ds = new DataSet("vaccDataSet");
+            da.Fill(ds, "hvk_vaccination");
+            return ds;
+
+        }
+
         public DataSet checkVaccinationsDB(int petNum, int resNum)
         {
             string conString = ConfigurationManager.ConnectionStrings["ConnectionString"].ConnectionString;
