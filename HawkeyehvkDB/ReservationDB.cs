@@ -24,8 +24,6 @@ namespace HawkeyehvkDB
                               RES.RESERVATION_END_DATE,
                               PRES.RUN_RUN_NUMBER,
                               PET.PET_NAME,
-                              SERV.SERVICE_DESCRIPTION,
-                              RES_SERV.SERVICE_FREQUENCY,
                               PET.PET_NUMBER,
                               PET.PET_GENDER,
                               PET.PET_FIXED,
@@ -33,17 +31,13 @@ namespace HawkeyehvkDB
                               PET.PET_BIRTHDATE,
                               PET.DOG_SIZE,
                               PET.SPECIAL_NOTES,
-                              PET.OWN_OWNER_NUMBER
+                              PET.OWN_OWNER_NUMBER AS OWNER_NUMBER 
                             FROM TEAMHAWKEYE.HVK_RESERVATION RES
                             INNER JOIN TEAMHAWKEYE.HVK_PET_RESERVATION PRES
                             ON RES.RESERVATION_NUMBER = PRES.RES_RESERVATION_NUMBER
                             INNER JOIN TEAMHAWKEYE.HVK_PET PET
                             ON PRES.PET_PET_NUMBER = PET.PET_NUMBER
-                            INNER JOIN TEAMHAWKEYE.HVK_PET_RESERVATION_SERVICE RES_SERV
-                            ON PRES.PET_RES_NUMBER = RES_SERV.PR_PET_RES_NUMBER
-                            INNER JOIN TEAMHAWKEYE.HVK_SERVICE SERV
-                            ON RES_SERV.SERV_SERVICE_NUMBER = SERV.SERVICE_NUMBER
-                            ORDER BY RES.RESERVATION_NUMBER  ";
+                            ORDER BY RES.RESERVATION_NUMBER ";
             OracleCommand cmd = new OracleCommand(cmdStr, con);
 
             OracleDataAdapter da = new OracleDataAdapter(cmd);
@@ -66,8 +60,6 @@ namespace HawkeyehvkDB
                               RES.RESERVATION_END_DATE,
                               PRES.RUN_RUN_NUMBER,
                               PET.PET_NAME,
-                              SERV.SERVICE_DESCRIPTION,
-                              RES_SERV.SERVICE_FREQUENCY,
                               PET.PET_NUMBER,
                               PET.PET_GENDER,
                               PET.PET_FIXED,
@@ -81,10 +73,6 @@ namespace HawkeyehvkDB
                             ON RES.RESERVATION_NUMBER = PRES.RES_RESERVATION_NUMBER
                             INNER JOIN TEAMHAWKEYE.HVK_PET PET
                             ON PRES.PET_PET_NUMBER = PET.PET_NUMBER
-                            INNER JOIN TEAMHAWKEYE.HVK_PET_RESERVATION_SERVICE RES_SERV
-                            ON PRES.PET_RES_NUMBER = RES_SERV.PR_PET_RES_NUMBER
-                            INNER JOIN TEAMHAWKEYE.HVK_SERVICE SERV
-                            ON RES_SERV.SERV_SERVICE_NUMBER = SERV.SERVICE_NUMBER
                             WHERE  PET.OWN_OWNER_NUMBER = :OwnerNum
                             ORDER BY RES.RESERVATION_NUMBER";
             OracleCommand cmd = new OracleCommand(cmdStr, con);
