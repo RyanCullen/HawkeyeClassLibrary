@@ -227,7 +227,6 @@ namespace HawkeyeUnitTests
         //on the same date 
         [TestMethod]
         public void upcomingReservation4() {
-            //amir is here
             Assert.AreEqual(5, Reservation.listUpcomingReservations(new DateTime(2017, 8, 20)).Count);
         }
 
@@ -769,6 +768,15 @@ namespace HawkeyeUnitTests
                 //Reservation.cancelReservation(2001);
                 //Reservation.cancelReservation(2000);
             }
+
+
+            [TestMethod]
+            public void testListReservation1()
+            {
+                List<Reservation> resList = Reservation.listReservations(1);
+                
+            }
+
         }
     }
 }

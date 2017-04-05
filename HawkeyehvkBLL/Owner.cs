@@ -138,6 +138,18 @@ namespace HawkeyehvkBLL
             
             own.petList = Pet.listPets(own.ownerNumber);
             own.reservationList = Reservation.listReservations(own.ownerNumber);
+
+            ReservedService rs = new ReservedService();
+            own.reservationList.ForEach(delegate (Reservation res) {
+                res.petReservationList.ForEach(delegate (PetReservation pres) {
+                    List<ReservedService> ser = rs.listReservedService(pres.petResNumber);
+                    if (ser.Count != 0)
+                    {
+                        pres.serviceList = rs.listReservedService(pres.petResNumber);
+                    }
+                });
+            });
+
             return own;
         }
         private static Owner fillBox(DataRow theRow)

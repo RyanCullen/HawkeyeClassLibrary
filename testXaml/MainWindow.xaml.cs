@@ -41,13 +41,14 @@ namespace testXaml
             //lblNum.Content = control.addReservation(35, new DateTime(2017, 3, 30), new DateTime(2017, 3, 31));
             //PetVaccination petVac = new PetVaccination();
             //datagrid.ItemsSource = petVac.checkVaccinations(9, DateTime.Now); 
-           
-            lblNum.Content = lblNum.Content + PetVaccination.addPetVaccination(DateTime.Now.AddMonths(40),3,20).ToString();
-            lblNum.Content = lblNum.Content + PetVaccination.updatePetVaccinationChecked('Y', 2, 20).ToString();
-            lblNum.Content = lblNum.Content + PetVaccination.updatePetVaccinationExpiry(DateTime.Now.AddMonths(4), 1, 20).ToString();
 
-            lblNum.Content = ReservedService.addReservedService(206, 2);
-               
+            //lblNum.Content = lblNum.Content + PetVaccination.addPetVaccination(DateTime.Now.AddMonths(40),3,20).ToString();
+            //lblNum.Content = lblNum.Content + PetVaccination.updatePetVaccinationChecked('Y', 2, 20).ToString();
+            //lblNum.Content = lblNum.Content + PetVaccination.updatePetVaccinationExpiry(DateTime.Now.AddMonths(4), 1, 20).ToString();
+
+            //lblNum.Content = ReservedService.addReservedService(206, 2);
+
+            List<Reservation> resList = Reservation.listReservations(1); 
             
 
         }

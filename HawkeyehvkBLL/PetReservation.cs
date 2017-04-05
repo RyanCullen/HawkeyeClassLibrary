@@ -33,7 +33,7 @@ namespace HawkeyehvkBLL
 
         public List<Medication> medicationList { get; protected set; }
 
-        public List<ReservedService> serviceList { get; protected set; }
+        public List<ReservedService> serviceList { get; set; }
 
         public PetFood food { get; set; }
 
