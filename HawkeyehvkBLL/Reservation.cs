@@ -124,7 +124,7 @@ namespace HawkeyehvkBLL
             ReservationDB db = new ReservationDB();
             DataSet ds = db.listActiveReservationsDB(); 
 
-            return fillReservationModified(ds);
+            return fillReservation(ds);
         }
 
 
@@ -133,7 +133,7 @@ namespace HawkeyehvkBLL
             ReservationDB db = new ReservationDB();
             DataSet ds = db.listActiveReservationsDB(ownerNumber);
 
-            return fillReservationModified(ds);
+            return fillReservation(ds);
         }
 
         public static List<Reservation> listUpcomingReservations(DateTime reservationDate)

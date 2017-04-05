@@ -142,12 +142,27 @@ namespace HawkeyehvkDB
         {
             string conString = ConfigurationManager.ConnectionStrings["ConnectionString"].ConnectionString;
             OracleConnection con = new OracleConnection(conString);
-            string cmdStr = @"SELECT RES.RESERVATION_NUMBER, RES.RESERVATION_START_DATE, RES.RESERVATION_END_DATE, PET.PET_NUMBER,PRES.RUN_RUN_NUMBER, O.OWNER_NUMBER, PET.OWN_OWNER_NUMBER
-                                FROM   TEAMHAWKEYE.HVK_PET_RESERVATION PRES INNER JOIN
-                             TEAMHAWKEYE.HVK_RESERVATION RES ON PRES.RES_RESERVATION_NUMBER = RES.RESERVATION_NUMBER INNER JOIN
-                             TEAMHAWKEYE.HVK_PET PET ON PRES.PET_PET_NUMBER = PET.PET_NUMBER INNER JOIN
-                             TEAMHAWKEYE.HVK_OWNER O ON PET.OWN_OWNER_NUMBER = O.OWNER_NUMBER 
-                                WHERE (RES.RESERVATION_START_DATE >= :DateParameter)";
+            string cmdStr = @"SELECT RES.RESERVATION_NUMBER,
+                              RES.RESERVATION_START_DATE,
+                              RES.RESERVATION_END_DATE,
+                              PRES.RUN_RUN_NUMBER,
+                              PRES.PET_RES_NUMBER,
+                              PET.PET_NAME,
+                              PET.PET_NUMBER,
+                              PET.PET_GENDER,
+                              PET.PET_FIXED,
+                              PET.PET_BREED,
+                              PET.PET_BIRTHDATE,
+                              PET.DOG_SIZE,
+                              PET.SPECIAL_NOTES,
+                              PET.OWN_OWNER_NUMBER AS OWNER_NUMBER 
+                            FROM TEAMHAWKEYE.HVK_RESERVATION RES
+                            INNER JOIN TEAMHAWKEYE.HVK_PET_RESERVATION PRES
+                            ON RES.RESERVATION_NUMBER = PRES.RES_RESERVATION_NUMBER
+                            INNER JOIN TEAMHAWKEYE.HVK_PET PET
+                            ON PRES.PET_PET_NUMBER = PET.PET_NUMBER 
+                            WHERE (RES.RESERVATION_START_DATE >= :DateParameter)
+                            ORDER BY RES.RESERVATION_START_DATE";
 
             OracleCommand cmd = new OracleCommand(cmdStr, con);
             cmd.Parameters.Add("DateParameter", reservationDate);
