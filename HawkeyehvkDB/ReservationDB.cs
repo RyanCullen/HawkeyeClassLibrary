@@ -34,7 +34,8 @@ namespace HawkeyehvkDB
                             ON RES.RESERVATION_NUMBER = PRES.RES_RESERVATION_NUMBER
                             INNER JOIN TEAMHAWKEYE.HVK_PET PET
                             ON PRES.PET_PET_NUMBER = PET.PET_NUMBER
-                            WHERE RES.RESERVATION_NUMBER = :resNum";
+                            WHERE RES.RESERVATION_NUMBER = :resNum
+                            ORDER BY PET.PET_NAME";
             OracleCommand cmd = new OracleCommand(cmdStr, con);
             cmd.Parameters.Add("resNum", resNum);
             OracleDataAdapter da = new OracleDataAdapter(cmd);
@@ -71,7 +72,7 @@ namespace HawkeyehvkDB
                             ON RES.RESERVATION_NUMBER = PRES.RES_RESERVATION_NUMBER
                             INNER JOIN TEAMHAWKEYE.HVK_PET PET
                             ON PRES.PET_PET_NUMBER = PET.PET_NUMBER
-                            ORDER BY RES.RESERVATION_NUMBER";
+                            ORDER BY RES.RESERVATION_NUMBER, PET.PET_NAME";
             OracleCommand cmd = new OracleCommand(cmdStr, con);
 
             OracleDataAdapter da = new OracleDataAdapter(cmd);
@@ -109,7 +110,7 @@ namespace HawkeyehvkDB
                             INNER JOIN TEAMHAWKEYE.HVK_PET PET
                             ON PRES.PET_PET_NUMBER = PET.PET_NUMBER
                             WHERE  PET.OWN_OWNER_NUMBER = :OwnerNum
-                            ORDER BY RES.RESERVATION_NUMBER";
+                            ORDER BY RES.RESERVATION_NUMBER, PET.PET_NAME";
             OracleCommand cmd = new OracleCommand(cmdStr, con);
             cmd.Parameters.Add("OwnerNum", ownerNumber);
             OracleDataAdapter da = new OracleDataAdapter(cmd);
@@ -146,7 +147,7 @@ namespace HawkeyehvkDB
                             INNER JOIN TEAMHAWKEYE.HVK_PET PET
                             ON PRES.PET_PET_NUMBER = PET.PET_NUMBER
              WHERE (RES.RESERVATION_START_DATE <= SYSDATE) AND (RES.RESERVATION_END_DATE > SYSDATE) AND (PRES.RUN_RUN_NUMBER IS NOT NULL)
-            ORDER BY RES.RESERVATION_NUMBER";
+            ORDER BY RES.RESERVATION_NUMBER, PET.PET_NAME";
 
             OracleCommand cmd = new OracleCommand(cmdStr, con);
             OracleDataAdapter da = new OracleDataAdapter(cmd);
@@ -186,7 +187,7 @@ namespace HawkeyehvkDB
                             ON PRES.PET_PET_NUMBER = PET.PET_NUMBER
              WHERE (RES.RESERVATION_START_DATE <= SYSDATE) AND (RES.RESERVATION_END_DATE > SYSDATE) AND (PRES.RUN_RUN_NUMBER IS NOT NULL)
              AND PET.OWN_OWNER_NUMBER = :OWNER_NUMBER 
-                ORDER BY RES.RESERVATION_NUMBER";
+                ORDER BY RES.RESERVATION_NUMBER, PET.PET_NAME";
 
             OracleCommand cmd = new OracleCommand(cmdStr, con);
             cmd.Parameters.Add("OWNER_NUMBER", ownerNumber);
@@ -223,7 +224,7 @@ namespace HawkeyehvkDB
                             INNER JOIN TEAMHAWKEYE.HVK_PET PET
                             ON PRES.PET_PET_NUMBER = PET.PET_NUMBER 
                             WHERE (RES.RESERVATION_START_DATE >= :DateParameter)
-                            ORDER BY RES.RESERVATION_START_DATE";
+                            ORDER BY RES.RESERVATION_START_DATE, RES.RESERVATION_NUMBER, PET.PET_NAME";
 
             OracleCommand cmd = new OracleCommand(cmdStr, con);
             cmd.Parameters.Add("DateParameter", reservationDate);
