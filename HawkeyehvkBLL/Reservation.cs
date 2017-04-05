@@ -95,7 +95,7 @@ namespace HawkeyehvkBLL
             ReservationDB db = new ReservationDB();
             DataSet ds = db.listResevationsDB();
              
-            return fillReservation(ds);
+            return fillReservationModified(ds);
         }
 
         public static List<Reservation> listReservations(int ownerNumber)
@@ -111,7 +111,7 @@ namespace HawkeyehvkBLL
             ReservationDB db = new ReservationDB();
             DataSet ds = db.listActiveReservationsDB(); 
 
-            return fillReservation(ds);
+            return fillReservationModified(ds);
         }
 
 
@@ -120,7 +120,7 @@ namespace HawkeyehvkBLL
             ReservationDB db = new ReservationDB();
             DataSet ds = db.listActiveReservationsDB(ownerNumber);
 
-            return fillReservation(ds);
+            return fillReservationModified(ds);
         }
 
         public static List<Reservation> listUpcomingReservations(DateTime reservationDate)
@@ -265,10 +265,15 @@ namespace HawkeyehvkBLL
                         pet.gender = ds.Tables[0].Rows[i]["PET_GENDER"].ToString().ToCharArray()[0];
                         pet.isFixed = ds.Tables[0].Rows[i]["PET_FIXED"].ToString().ToCharArray()[0];
                         pet.breed = ds.Tables[0].Rows[i]["PET_BREED"].ToString();
-                        pet.birthday = DateTime.Parse(ds.Tables[0].Rows[i]["PET_BIRTHDATE"].ToString());
+                        try {
+                            pet.birthday = DateTime.Parse(ds.Tables[0].Rows[i]["PET_BIRTHDATE"].ToString());
+                        } catch {
+                            //birthday was null
+                        }
                         pet.size = ds.Tables[0].Rows[i]["DOG_SIZE"].ToString().ToCharArray()[0];
                         pet.notes = ds.Tables[0].Rows[i]["SPECIAL_NOTES"].ToString();
                         res.petReservationList[res.petReservationList.Count - 1].pet = pet;
+                        res.petReservationList[res.petReservationList.Count - 1].petResNumber = Convert.ToInt32(ds.Tables[0].Rows[i]["PET_RES_NUMBER"]); 
                         resList.Add(res);
                         res = new Reservation();
                     }

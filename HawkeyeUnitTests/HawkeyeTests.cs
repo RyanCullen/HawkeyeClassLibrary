@@ -227,7 +227,6 @@ namespace HawkeyeUnitTests
         //on the same date 
         [TestMethod]
         public void upcomingReservation4() {
-            //amir is here
             Assert.AreEqual(5, Reservation.listUpcomingReservations(new DateTime(2017, 8, 20)).Count);
         }
 
