@@ -103,7 +103,20 @@ namespace HawkeyehvkBLL
             ReservationDB db = new ReservationDB();
             DataSet ds = db.listResevationsDB(ownerNumber);
 
-            return fillReservationModified(ds);
+            List<Reservation> reservationList = fillReservationModified(ds);
+
+            ReservedService rs = new ReservedService();
+            reservationList.ForEach(delegate (Reservation res) {
+                res.petReservationList.ForEach(delegate (PetReservation pres) {
+                    List<ReservedService> ser = rs.listReservedService(pres.petResNumber);
+                    if (ser.Count != 0)
+                    {
+                        pres.serviceList = rs.listReservedService(pres.petResNumber);
+                    }
+                });
+            });
+
+            return reservationList;
         }
 
         public static List<Reservation> listActiveReservations()
