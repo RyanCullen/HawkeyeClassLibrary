@@ -39,6 +39,33 @@ namespace HawkeyehvkBLL
             return vals;
         }
 
+        public static List<Vaccination> listNonPetVaccinations(int petNum)
+        {
+            VaccinationDB vaccDB = new VaccinationDB();
+            List<Vaccination> vaccList = new List<Vaccination>();
+            foreach(DataRow row in vaccDB.listNonPetVaccinationsDB(petNum).Tables["hvk_vaccination"].Rows)
+            {
+                vaccList.Add(fillVaccination(row));
+            }
+
+            return vaccList;
+
+        }
+
+        private static Vaccination fillVaccination(DataRow row)
+        {
+            Vaccination vacc = new Vaccination();
+            try
+            {
+                vacc.vaccinationNumber = Convert.ToInt32(row["VACCINATION_NUMBER"].ToString());
+                vacc.name = row["VACCINATION_NAME"].ToString();
+            }
+            catch
+            {
+                Console.Write("Error");
+            }
+            return vacc;
+        }
 
     }
 }
