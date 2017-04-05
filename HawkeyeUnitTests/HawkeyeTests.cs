@@ -768,6 +768,15 @@ namespace HawkeyeUnitTests
                 //Reservation.cancelReservation(2001);
                 //Reservation.cancelReservation(2000);
             }
+
+
+            [TestMethod]
+            public void testListReservation1()
+            {
+                List<Reservation> resList = Reservation.listReservations(1);
+                
+            }
+
         }
     }
 }
