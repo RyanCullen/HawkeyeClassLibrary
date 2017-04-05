@@ -16,23 +16,11 @@ namespace HawkeyehvkBLL
 
         public DateTime endDate { get; set; }
 
-
         public List<Discount> discountList { get; protected set; }
 
         public List<PetReservation> petReservationList { get; protected set; }
 
-        private Owner own { get; set; }
-
-        public Owner owner
-        {
-            get { return own; }
-            set
-            {
-                own = value;
-                if (!own.reservationList.Contains(this))
-                    own.addReservation(this);
-            }
-        }
+        public int ownerNumber;
 
         public Reservation()
         {
@@ -41,7 +29,7 @@ namespace HawkeyehvkBLL
             this.endDate = DateTime.MaxValue;
             this.discountList = new List<Discount>();
             this.petReservationList = new List<PetReservation>();
-            this.owner = new Owner();
+            this.ownerNumber = 0;
         }
 
         public Reservation(int resNumber, DateTime start, DateTime end)
@@ -51,17 +39,16 @@ namespace HawkeyehvkBLL
             this.endDate = end;
             this.discountList = new List<Discount>();
             this.petReservationList = new List<PetReservation>();
-            this.owner = new Owner();
+            this.ownerNumber = 0;
         }
 
-        public Reservation(int resNumber, DateTime start, DateTime end, Owner owner)
-        {
+        public Reservation(int resNumber, DateTime start, DateTime end, int ownerNumber) {
             this.reservationNumber = resNumber;
             this.startDate = start;
             this.endDate = end;
             this.discountList = new List<Discount>();
             this.petReservationList = new List<PetReservation>();
-            this.owner = owner;
+            this.ownerNumber = ownerNumber;
         }
 
         public bool addDiscount(Discount discount)
@@ -281,7 +268,7 @@ namespace HawkeyehvkBLL
                         res.startDate = DateTime.Parse(ds.Tables[0].Rows[i]["RESERVATION_START_DATE"].ToString());
                         res.endDate = DateTime.Parse(ds.Tables[0].Rows[i]["RESERVATION_END_DATE"].ToString());
                         res.petReservationList.Add(new PetReservation());
-                        res.owner.ownerNumber = Convert.ToInt16(ds.Tables[0].Rows[i]["OWNER_NUMBER"].ToString());
+                        res.ownerNumber = Convert.ToInt16(ds.Tables[0].Rows[i]["OWNER_NUMBER"].ToString());
                         res.petReservationList[res.petReservationList.Count - 1].pet.petNumber = Convert.ToInt16(ds.Tables[0].Rows[i]["PET_NUMBER"].ToString());
                         //res.petReservationList[i].run.runNumber = Convert.ToInt16(ds.Tables[0].Rows[i]["RUN_RUN_NUMBER"].ToString());
                         resList.Add(res);
@@ -300,6 +287,7 @@ namespace HawkeyehvkBLL
 
 
         }
+
         public static List<Reservation> fillReservationModified(DataSet ds)
         {// this was modified to get pet info and run number
             Reservation res = new Reservation();
@@ -351,7 +339,7 @@ namespace HawkeyehvkBLL
                         res.reservationNumber = Convert.ToInt32(ds.Tables[0].Rows[i]["RESERVATION_NUMBER"]);
                         res.startDate = DateTime.Parse(ds.Tables[0].Rows[i]["RESERVATION_START_DATE"].ToString());
                         res.endDate = DateTime.Parse(ds.Tables[0].Rows[i]["RESERVATION_END_DATE"].ToString());
-                        res.owner.ownerNumber = Convert.ToInt16(ds.Tables[0].Rows[i]["OWNER_NUMBER"].ToString());
+                        res.ownerNumber = Convert.ToInt16(ds.Tables[0].Rows[i]["OWNER_NUMBER"].ToString());
                         res.petReservationList.Add(new PetReservation());
                        // int petNum = Convert.ToInt16(ds.Tables[0].Rows[i]["PET_NUMBER"].ToString()); 
                         //res.petReservationList[res.petReservationList.Count - 1].pet.petNumber = Convert.ToInt16(ds.Tables[0].Rows[i]["PET_NUMBER"].ToString());
@@ -427,7 +415,7 @@ namespace HawkeyehvkBLL
                         res.startDate = DateTime.Parse(ds.Tables[0].Rows[i]["RESERVATION_START_DATE"].ToString());
                         res.endDate = DateTime.Parse(ds.Tables[0].Rows[i]["RESERVATION_END_DATE"].ToString());
                         res.petReservationList.Add(new PetReservation());
-                        res.owner.ownerNumber = Convert.ToInt16(ds.Tables[0].Rows[i]["OWN_OWNER_NUMBER"].ToString());
+                        res.ownerNumber = Convert.ToInt16(ds.Tables[0].Rows[i]["OWN_OWNER_NUMBER"].ToString());
                         res.petReservationList[i].pet.name = ds.Tables[0].Rows[i]["PET_NAME"].ToString();
                         res.petReservationList[i].pet.breed = ds.Tables[0].Rows[i]["pet_breed"].ToString();
                         res.petReservationList[i].pet.size = Convert.ToChar(ds.Tables[0].Rows[i]["dog_size"].ToString());

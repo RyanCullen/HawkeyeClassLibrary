@@ -92,14 +92,11 @@ namespace HawkeyehvkBLL
         public bool addReservation(Reservation res)
         {
             this.reservationList.Add(res);
-            if (!res.owner.Equals(this))
-                res.owner = this;
             return true;
         }
 
         public bool removeReservation(Reservation res)
         {
-            res.owner = new Owner();
             return this.reservationList.Remove(res);
         }
 
@@ -119,8 +116,30 @@ namespace HawkeyehvkBLL
         {
             OwnerDB ownDB = new OwnerDB();
 
-            List<Owner> ownerList = new List<Owner>();
-            return fillBox(ownDB.listOwnersDB(ownerNum).Tables["hvk_owner"].Rows[0]);
+            Owner own = new Owner();
+            try
+            {
+                own = fillBox(ownDB.listOwnersDB(ownerNum).Tables["hvk_owner"].Rows[0]);
+            }
+            catch(Exception e) {
+                return null;
+            }
+            
+            own.petList = Pet.listPets(own.ownerNumber);
+            own.reservationList = Reservation.listReservations(own.ownerNumber);
+
+            ReservedService rs = new ReservedService();
+            own.reservationList.ForEach(delegate (Reservation res) {
+                res.petReservationList.ForEach(delegate (PetReservation pres) {
+                    List<ReservedService> ser = rs.listReservedService(pres.petResNumber);
+                    if (ser.Count != 0)
+                    {
+                        pres.serviceList = rs.listReservedService(pres.petResNumber);
+                    }
+                });
+            });
+
+            return own;
            
         }
 
