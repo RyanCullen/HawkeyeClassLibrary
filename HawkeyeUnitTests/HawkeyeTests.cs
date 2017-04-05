@@ -607,27 +607,7 @@ namespace HawkeyeUnitTests
 
 
             }
-
-            //Scenario Tests
-            [TestMethod]
-            public void testing1PetAddReservation()
-            {
-                //Pet Number 33
-                //Owner number 19
-                //Start Date 2017-4-12
-                //End Date 2017-4-13
-                Reservation.addReservation(33, new DateTime(2017, 4, 12), new DateTime(2017, 4, 13));
-
-                Assert.AreEqual(new DateTime(2017, 4, 12), Reservation.listReservations(19)[1].startDate, "Not returning date 2017-4-12");
-                Assert.AreEqual(new DateTime(2017, 4, 13), Reservation.listReservations(19)[1].endDate, "Not returning date 2017-4-13");
-                Assert.AreEqual(33, PetReservation.listPetRes(2006)[0].pet.petNumber, "Not Returning the pet number 33");
-
-                
-            }
-
-            /* addToReservation Test Cases  */
-            // reservation# 603 , owner# 17 , pet in reservation 31 , 32 
-            //Input : pet# 30   Expected : 1 row inserted  
+            
 
             [TestMethod]
             public void testDBMethods() {
@@ -720,7 +700,7 @@ namespace HawkeyeUnitTests
                 //----------------Reservation----------------
                 ReservationDB resDB = new ReservationDB();
                 //listReservationDB() reservations returned == X
-                Assert.AreEqual(162, resDB.listResevationsDB().Tables[0].Rows.Count, "There should be 163 reservations total");
+                Assert.AreEqual(161, resDB.listResevationsDB().Tables[0].Rows.Count, "There should be 163 reservations total");
                 //listReservationDB(ownerNum) owner 19 has 1 reservation 705 and pres(257)
                 Assert.AreEqual(2, resDB.listResevationsDB(19).Tables[0].Rows.Count, "There should be 2 reservations total for owner 1");
                 //listActiveReservationDB() one of ongoing should be res 500
@@ -758,7 +738,7 @@ namespace HawkeyeUnitTests
                     Assert.Fail("Reservation 500 was not returned");
                 }
                 //listUpcomingReservationsDB(reservationDate)
-                Assert.AreEqual(129, resDB.listUpcomingReservationsDB(DateTime.Now.AddMonths(-45)).Tables[0].Rows.Count, "these should both return all the reservations");
+                Assert.AreEqual(128, resDB.listUpcomingReservationsDB(DateTime.Now.AddMonths(-45)).Tables[0].Rows.Count, "these should both return all the reservations");
                 //listAvailableRunsDB(start, end)
                 Assert.AreEqual(12, resDB.listAvailableRunsDB(new DateTime(2027, 1, 2), new DateTime(2027, 1, 1)).Tables[0].Rows.Count, "At this time in the future there should be all runs availible");
                 //isDogInReservation( resNum,  petNum)

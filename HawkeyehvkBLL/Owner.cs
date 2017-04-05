@@ -5,6 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using HawkeyehvkDB;
+using System.ComponentModel;
 
 namespace HawkeyehvkBLL
 {
@@ -81,6 +82,8 @@ namespace HawkeyehvkBLL
             return true;
         }
 
+
+
         public bool removePet(Pet pet)
         {
             return this.petList.Remove(pet);
@@ -121,6 +124,22 @@ namespace HawkeyehvkBLL
            
         }
 
+        [DataObjectMethod(DataObjectMethodType.Select, true)]
+        public static Owner getFullOwner(string email) {
+            OwnerDB ownDB = new OwnerDB();
+            Owner own = new Owner();
+            try
+            {
+                own = fillBox(ownDB.listOwnersDB(email).Tables["hvk_owner"].Rows[0]);
+            }
+            catch(Exception e) {
+                return null;
+            }
+            
+            own.petList = Pet.listPets(own.ownerNumber);
+            own.reservationList = Reservation.listReservations(own.ownerNumber);
+            return own;
+        }
         private static Owner fillBox(DataRow theRow)
         {
             Owner own = new Owner();
